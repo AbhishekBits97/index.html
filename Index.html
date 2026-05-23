@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumetha — Private Real Estate Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Instrument+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --void:    #09080A;
+  --ink:     #0F0E10;
+  --srf:     #141316;
+  --srf2:    #1A191C;
+  --srf3:    #201F23;
+  --line:    rgba(196,163,94,0.12);
+  --line2:   rgba(196,163,94,0.24);
+  --gold:    #C4A35E;
+  --gold-lt: #E2C98A;
+  --gold-dk: #9A7C3E;
+  --gold-bg: rgba(196,163,94,0.06);
+  --gold-bg2:rgba(196,163,94,0.11);
+  --cream:   #EDE8E0;
+  --cream2:  #C8C0B4;
+  --muted:   #6E6860;
+  --dimmed:  #3A3830;
+  --white:   #F5F2EC;
+  --fhead:   'Cormorant Garamond', Georgia, serif;
+  --fbody:   'Instrument Sans', system-ui, sans-serif;
+  --fmono:   'DM Mono', 'Courier New', monospace;
+  --r:       2px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  background:var(--void);
+  color:var(--cream);
+  font-family:var(--fbody);
+  font-weight:400;
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection { background:rgba(196,163,94,0.25); }
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:var(--ink); }
+::-webkit-scrollbar-thumb { background:var(--gold-dk); }
+
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  opacity:0.018;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size:180px;
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  height:72px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 64px;
+  background:rgba(9,8,10,0.88);
+  backdrop-filter:blur(24px) saturate(180%);
+  border-bottom:1px solid var(--line);
+}
+.nav-left { display:flex; align-items:center; gap:48px; }
+.logo {
+  font-family:var(--fhead); font-size:22px; font-weight:500;
+  letter-spacing:6px; color:var(--white); text-decoration:none;
+  text-transform:uppercase;
+}
+.logo em { color:var(--gold); font-style:normal; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a {
+  font-family:var(--fbody); font-size:12px; font-weight:400;
+  color:var(--muted); text-decoration:none; letter-spacing:1.8px;
+  text-transform:uppercase; transition:color .3s;
+}
+.nav-links a:hover { color:var(--cream2); }
+.nav-links a.active { color:var(--gold-lt); }
+.nav-right { display:flex; align-items:center; gap:24px; }
+.nav-badge {
+  font-family:var(--fmono); font-size:10px; color:var(--gold);
+  letter-spacing:1.5px; padding:4px 12px;
+  border:1px solid var(--line2); text-transform:uppercase;
+}
+.nav-btn {
+  font-family:var(--fbody); font-size:12px; font-weight:500;
+  letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--void); background:var(--gold);
+  padding:10px 24px; border:none; cursor:pointer;
+  text-decoration:none; display:inline-block;
+  transition:background .25s, color .25s;
+}
+.nav-btn:hover { background:var(--gold-lt); }
+
+/* ── HERO ── */
+.hero {
+  min-height:100vh;
+  display:grid; grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:120px 64px 80px;
+  position:relative; z-index:1;
+  border-bottom:1px solid var(--line);
+}
+.hero-left { padding-right:80px; }
+.kicker {
+  display:inline-flex; align-items:center; gap:12px;
+  font-family:var(--fmono); font-size:10px;
+  color:var(--gold); letter-spacing:3px; text-transform:uppercase;
+  margin-bottom:40px;
+}
+.kicker-line { width:40px; height:1px; background:var(--gold); opacity:.5; }
+.hero h1 {
+  font-family:var(--fhead); font-size:clamp(52px,5.5vw,88px);
+  font-weight:300; line-height:1.05; letter-spacing:-1px;
+  color:var(--white); margin-bottom:32px;
+}
+.hero h1 em { font-style:italic; color:var(--gold-lt); display:block; }
+.hero-body {
+  font-size:15px; font-weight:300; color:var(--cream2);
+  line-height:1.8; max-width:420px; margin-bottom:48px;
+  border-left:1px solid var(--line2); padding-left:20px;
+}
+.hero-actions { display:flex; gap:16px; align-items:center; }
+.btn-gold {
+  display:inline-block; padding:14px 36px;
+  background:var(--gold); color:var(--void);
+  font-family:var(--fbody); font-size:11px; font-weight:600;
+  letter-spacing:2px; text-transform:uppercase; text-decoration:none;
+  border:none; cursor:pointer; transition:all .3s;
+}
+.btn-gold:hover { background:var(--gold-lt); transform:translateY(-1px); }
+.btn-ghost {
+  display:inline-block; padding:14px 36px;
+  background:transparent; color:var(--cream2);
+  font-family:var(--fbody); font-size:11px; font-weight:400;
+  letter-spacing:2px; text-transform:uppercase; text-decoration:none;
+  border:1px solid var(--line2); cursor:pointer; transition:all .3s;
+}
+.btn-ghost:hover { border-color:rgba(196,163,94,0.4); color:var(--gold-lt); }
+
+.hero-right { display:flex; flex-direction:column; gap:20px; }
+.hero-panel {
+  background:var(--srf2);
+  border:1px solid var(--line);
+  padding:32px;
+}
+.panel-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:28px; padding-bottom:20px; border-bottom:1px solid var(--line);
+}
+.panel-label {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:3px; text-transform:uppercase;
+}
+.live-indicator {
+  display:flex; align-items:center; gap:6px;
+  font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:1px;
+}
+.live-dot {
+  width:5px; height:5px; border-radius:50%; background:#4CAF6E;
+  animation:breathe 2.5s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(76,175,110,.4); }
+  50%{ opacity:.6; box-shadow:0 0 0 5px rgba(76,175,110,0); }
+}
+.score-display { text-align:center; padding:16px 0 28px; }
+.score-number {
+  font-family:var(--fhead); font-size:80px; font-weight:300;
+  color:var(--gold-lt); line-height:1; letter-spacing:-2px;
+}
+.score-denom { font-size:28px; color:var(--muted); }
+.score-loc {
+  font-family:var(--fbody); font-size:13px; font-weight:300;
+  color:var(--cream2); letter-spacing:.5px; margin-top:8px;
+}
+.score-subloc {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase; margin-top:4px;
+}
+.score-metrics { display:flex; flex-direction:column; gap:14px; }
+.sm-row { display:flex; align-items:center; gap:12px; }
+.sm-key {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:1px; width:76px; flex-shrink:0; text-transform:uppercase;
+}
+.sm-bar { flex:1; height:2px; background:rgba(255,255,255,0.05); position:relative; }
+.sm-fill { height:100%; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+.sm-val {
+  font-family:var(--fmono); font-size:10px; width:30px;
+  text-align:right; flex-shrink:0;
+}
+
+.hero-stats-row {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--line); background:var(--srf);
+}
+.hstat { padding:24px; border-right:1px solid var(--line); }
+.hstat:last-child { border:none; }
+.hstat-val {
+  font-family:var(--fhead); font-size:30px; font-weight:300;
+  color:var(--white); line-height:1; margin-bottom:6px;
+}
+.hstat-val span { color:var(--gold-lt); }
+.hstat-key { font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
+.hstat-chg { font-family:var(--fmono); font-size:9px; margin-top:4px; }
+.pos { color:#4CAF6E; } .neg { color:#D16B6B; }
+
+/* ── TICKER ── */
+.ticker {
+  background:var(--srf); border-bottom:1px solid var(--line);
+  padding:14px 0; overflow:hidden; position:relative; z-index:1;
+}
+.ticker-wrap {
+  display:flex; white-space:nowrap;
+  animation:scroll-ticker 35s linear infinite;
+}
+.ticker-wrap:hover { animation-play-state:paused; }
+@keyframes scroll-ticker { from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+.tick {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:0 36px; border-right:1px solid var(--line);
+  font-family:var(--fmono); font-size:11px;
+}
+.tn { color:var(--muted); }
+.tv { color:var(--cream2); font-weight:500; }
+.tc { font-size:10px; }
+
+/* ── SECTION BASE ── */
+section { position:relative; z-index:1; }
+.sec-inner { padding:100px 64px; }
+.sec-kicker {
+  display:flex; align-items:center; gap:14px;
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:4px; text-transform:uppercase; margin-bottom:20px;
+}
+.sec-kicker::before { content:''; width:32px; height:1px; background:var(--gold); opacity:.5; }
+.sec-title {
+  font-family:var(--fhead); font-size:clamp(36px,4vw,60px);
+  font-weight:300; line-height:1.1; color:var(--white);
+  margin-bottom:20px;
+}
+.sec-title em { font-style:italic; color:var(--gold-lt); }
+.sec-body {
+  font-size:15px; font-weight:300; color:var(--cream2);
+  max-width:500px; line-height:1.8; margin-bottom:64px;
+}
+
+/* ── AI INTELLIGENCE ── */
+.ai-wrap { background:var(--srf); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.ai-layout { display:grid; grid-template-columns:1fr 1.1fr; gap:64px; align-items:start; }
+
+.capability-list { display:flex; flex-direction:column; gap:1px; margin-top:40px; }
+.cap {
+  display:flex; gap:20px; align-items:flex-start;
+  padding:22px 0; border-bottom:1px solid var(--line);
+  transition:padding .3s;
+}
+.cap:last-child { border:none; }
+.cap:hover { padding-left:6px; }
+.cap-num {
+  font-family:var(--fmono); font-size:11px; color:var(--gold-dk);
+  letter-spacing:1px; min-width:28px; margin-top:2px;
+}
+.cap-body h4 {
+  font-family:var(--fbody); font-size:14px; font-weight:500;
+  color:var(--cream); margin-bottom:4px; letter-spacing:.3px;
+}
+.cap-body p { font-size:13px; color:var(--muted); line-height:1.7; }
+
+/* CONCIERGE CHAT */
+.concierge {
+  background:var(--srf2); border:1px solid var(--line);
+  display:flex; flex-direction:column; height:600px;
+}
+.conc-top {
+  padding:22px 28px; border-bottom:1px solid var(--line);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.conc-brand { display:flex; align-items:center; gap:14px; }
+.conc-mark {
+  width:38px; height:38px; background:var(--gold-bg);
+  border:1px solid var(--line2);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--fhead); font-size:16px; font-weight:500; color:var(--gold-lt);
+}
+.conc-name {
+  font-family:var(--fbody); font-size:13px; font-weight:500;
+  color:var(--cream); letter-spacing:.5px;
+}
+.conc-sub {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:1px; margin-top:2px;
+  display:flex; align-items:center; gap:6px;
+}
+.conc-sub::before { content:''; width:4px; height:4px; border-radius:50%; background:#4CAF6E; }
+.conc-msgs {
+  flex:1; overflow-y:auto; padding:28px;
+  display:flex; flex-direction:column; gap:20px;
+  scrollbar-width:thin; scrollbar-color:var(--dimmed) transparent;
+}
+.cmsg { max-width:90%; animation:fadeup .35s ease; }
+@keyframes fadeup { from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+.cmsg.you { align-self:flex-end; }
+.cmsg.ai  { align-self:flex-start; }
+.cmsg-bub {
+  padding:14px 18px; font-size:14px; line-height:1.7;
+  white-space:pre-wrap; word-break:break-word;
+}
+.cmsg.you .cmsg-bub {
+  background:var(--gold-bg2); border:1px solid var(--line2); color:var(--cream);
+}
+.cmsg.ai .cmsg-bub {
+  background:var(--srf3); border:1px solid var(--line);
+  color:var(--cream); border-left:2px solid var(--gold-dk);
+}
+.cmsg-meta {
+  font-family:var(--fmono); font-size:9px; color:var(--dimmed);
+  margin-top:5px; padding:0 2px; letter-spacing:1px;
+}
+.cmsg.you .cmsg-meta { text-align:right; }
+.typing-ind {
+  align-self:flex-start; display:flex; gap:5px;
+  padding:14px 18px; background:var(--srf3);
+  border:1px solid var(--line); border-left:2px solid var(--gold-dk);
+  align-items:center;
+}
+.tdot {
+  width:5px; height:5px; background:var(--gold);
+  border-radius:50%; opacity:.5;
+  animation:tdot .9s ease-in-out infinite;
+}
+.tdot:nth-child(2){ animation-delay:.18s; }
+.tdot:nth-child(3){ animation-delay:.36s; }
+@keyframes tdot{ 0%,100%{ opacity:.3; transform:translateY(0); } 50%{ opacity:1; transform:translateY(-4px); } }
+
+.conc-suggestions {
+  display:flex; flex-wrap:wrap; gap:8px;
+  padding:0 28px 16px;
+}
+.sug {
+  padding:6px 14px;
+  background:transparent; border:1px solid var(--line);
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:1px; cursor:pointer; transition:all .25s;
+  text-align:left;
+}
+.sug:hover { border-color:var(--line2); color:var(--gold-lt); background:var(--gold-bg); }
+
+.conc-input-row {
+  padding:20px 28px; border-top:1px solid var(--line);
+  display:flex; gap:12px; align-items:flex-end;
+}
+.conc-input {
+  flex:1; background:var(--srf3); border:1px solid var(--line);
+  color:var(--cream); font-family:var(--fbody); font-size:14px;
+  padding:11px 16px; outline:none; resize:none; height:44px;
+  transition:border-color .25s; font-weight:300;
+}
+.conc-input:focus { border-color:var(--line2); }
+.conc-input::placeholder { color:var(--dimmed); font-weight:300; }
+.conc-send {
+  padding:0 22px; height:44px; background:var(--gold);
+  color:var(--void); font-family:var(--fbody); font-size:11px;
+  font-weight:600; letter-spacing:2px; text-transform:uppercase;
+  border:none; cursor:pointer; transition:all .25s;
+}
+.conc-send:hover { background:var(--gold-lt); }
+.conc-send:disabled { background:var(--srf3); color:var(--dimmed); cursor:not-allowed; }
+
+/* ── DASHBOARD ── */
+.dash-bg { background:var(--ink); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.kpi-row {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line); margin-bottom:40px;
+}
+.kpi { padding:32px 28px; border-right:1px solid var(--line); }
+.kpi:last-child { border:none; }
+.kpi-label {
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:16px;
+  padding-bottom:12px; border-bottom:1px solid var(--line);
+}
+.kpi-val {
+  font-family:var(--fhead); font-size:36px; font-weight:300;
+  color:var(--white); line-height:1; margin-bottom:8px;
+}
+.kpi-val.gold { color:var(--gold-lt); }
+.kpi-chg { font-family:var(--fmono); font-size:10px; letter-spacing:1px; }
+.chart-row { display:grid; grid-template-columns:3fr 2fr; gap:24px; margin-bottom:24px; }
+.chart-panel { background:var(--srf); border:1px solid var(--line); padding:28px; }
+.cp-title {
+  font-family:var(--fbody); font-size:13px; font-weight:500;
+  color:var(--cream2); letter-spacing:1px; margin-bottom:4px;
+}
+.cp-sub {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:1.5px; margin-bottom:24px;
+}
+
+/* ── SECTORS ── */
+.sectors-bg { background:var(--void); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.sectors-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); }
+.sc {
+  background:var(--srf); padding:32px;
+  transition:background .3s;
+  cursor:default; position:relative; overflow:hidden;
+}
+.sc::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--gold-dk), transparent);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .4s ease;
+}
+.sc:hover { background:var(--srf2); }
+.sc:hover::after { transform:scaleX(1); }
+.sc-rank {
+  font-family:var(--fmono); font-size:9px; color:var(--dimmed);
+  letter-spacing:3px; margin-bottom:20px; text-transform:uppercase;
+}
+.sc-name {
+  font-family:var(--fhead); font-size:22px; font-weight:400;
+  color:var(--white); margin-bottom:4px; line-height:1.2;
+}
+.sc-type {
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:2.5px; text-transform:uppercase; margin-bottom:24px;
+}
+.sc-score-row { display:flex; align-items:baseline; gap:6px; margin-bottom:4px; }
+.sc-score {
+  font-family:var(--fhead); font-size:52px; font-weight:300;
+  line-height:1; color:var(--gold-lt);
+}
+.sc-score-max { font-family:var(--fmono); font-size:14px; color:var(--muted); }
+.sc-score-lbl {
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase; margin-bottom:24px;
+}
+.sc-divider { height:1px; background:var(--line); margin-bottom:20px; }
+.sc-metrics { display:flex; flex-direction:column; gap:10px; }
+.sm { display:flex; justify-content:space-between; align-items:center; }
+.smk { font-family:var(--fbody); font-size:13px; color:var(--muted); font-weight:300; }
+.smv { font-family:var(--fmono); font-size:12px; font-weight:500; }
+
+/* ── PROPERTY ANALYSER (NEW SECTION) ── */
+.analyser-bg {
+  background:var(--void);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.analyser-layout {
+  display:grid;
+  grid-template-columns:1fr 2.2fr;
+  gap:64px;
+  align-items:start;
+}
+.analyser-left { position:sticky; top:100px; }
+.analyser-features { display:flex; flex-direction:column; gap:1px; margin-top:40px; }
+.af {
+  display:flex; gap:16px; align-items:flex-start;
+  padding:18px 0; border-bottom:1px solid var(--line);
+}
+.af:last-child { border:none; }
+.af-icon {
+  width:32px; height:32px; background:var(--gold-bg);
+  border:1px solid var(--line); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--fhead); font-size:13px; color:var(--gold-lt);
+}
+.af-body h4 {
+  font-family:var(--fbody); font-size:13px; font-weight:500;
+  color:var(--cream); margin-bottom:3px;
+}
+.af-body p { font-size:12px; color:var(--muted); line-height:1.6; }
+
+/* Analyser frame shell */
+.analyser-shell {
+  background:var(--srf2);
+  border:1px solid var(--line);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+.analyser-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 24px;
+  background:var(--srf);
+  border-bottom:1px solid var(--line);
+  flex-shrink:0;
+}
+.analyser-bar-left { display:flex; align-items:center; gap:14px; }
+.a-dots { display:flex; gap:6px; }
+.a-dot {
+  width:9px; height:9px; border-radius:50%;
+}
+.a-dot-r { background:rgba(209,107,107,0.5); }
+.a-dot-y { background:rgba(196,163,94,0.5); }
+.a-dot-g { background:rgba(76,175,110,0.5); }
+.analyser-url {
+  font-family:var(--fmono); font-size:10px; color:var(--dimmed);
+  letter-spacing:1px; padding:4px 14px;
+  background:var(--srf3); border:1px solid var(--line);
+}
+.analyser-bar-right { display:flex; align-items:center; gap:16px; }
+.analyser-badge {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:2px; padding:4px 10px;
+  border:1px solid var(--line2); text-transform:uppercase;
+}
+.analyser-open-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase;
+  padding:5px 12px; border:1px solid var(--line);
+  background:transparent; cursor:pointer; text-decoration:none;
+  transition:all .25s;
+}
+.analyser-open-btn:hover { border-color:var(--line2); color:var(--gold-lt); }
+.analyser-open-btn svg { width:10px; height:10px; opacity:.6; }
+
+/* iframe wrapper with loader */
+.analyser-frame-wrap {
+  position:relative;
+  width:100%;
+  height:820px;
+  background:var(--srf3);
+}
+.frame-loader {
+  position:absolute; inset:0; z-index:5;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:20px;
+  background:var(--srf3);
+  transition:opacity .6s ease;
+}
+.frame-loader.hidden { opacity:0; pointer-events:none; }
+.loader-mark {
+  width:56px; height:56px;
+  border:1px solid var(--line2);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--fhead); font-size:24px; font-weight:400; color:var(--gold-lt);
+  animation:pulse-mark 2s ease-in-out infinite;
+}
+@keyframes pulse-mark {
+  0%,100%{ box-shadow:0 0 0 0 rgba(196,163,94,0.2); }
+  50%{ box-shadow:0 0 0 12px rgba(196,163,94,0); }
+}
+.loader-bar-wrap {
+  width:200px; height:1px; background:var(--line);
+  position:relative; overflow:hidden;
+}
+.loader-bar-fill {
+  height:100%; background:var(--gold);
+  animation:load-fill 2.5s ease-in-out infinite;
+}
+@keyframes load-fill {
+  0%{ width:0; opacity:1; }
+  80%{ width:100%; opacity:1; }
+  100%{ width:100%; opacity:0; }
+}
+.loader-text {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:3px; text-transform:uppercase;
+}
+.analyser-iframe {
+  width:100%; height:100%;
+  border:none; display:block;
+  filter:brightness(0.96) contrast(1.02);
+  /* Dark-mode overlay via hue-rotate trick */
+}
+
+/* Analyser footer bar */
+.analyser-foot {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 24px;
+  border-top:1px solid var(--line);
+  background:var(--srf); flex-shrink:0;
+}
+.analyser-foot-label {
+  font-family:var(--fmono); font-size:9px; color:var(--dimmed);
+  letter-spacing:2px; text-transform:uppercase;
+}
+.analyser-foot-status {
+  display:flex; align-items:center; gap:6px;
+  font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:1px;
+}
+
+/* ── ROI ── */
+.roi-bg { background:var(--srf); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.roi-layout { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+.param-group { display:flex; flex-direction:column; gap:32px; }
+.param { display:flex; flex-direction:column; gap:10px; }
+.param-head { display:flex; justify-content:space-between; align-items:baseline; }
+.param-label {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase;
+}
+.param-val {
+  font-family:var(--fhead); font-size:20px; font-weight:400; color:var(--gold-lt);
+}
+input[type=range] {
+  -webkit-appearance:none; appearance:none; width:100%;
+  height:1px; background:var(--line2); outline:none; cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; appearance:none;
+  width:14px; height:14px; background:var(--gold);
+  border-radius:50%; border:2px solid var(--void);
+}
+input[type=range]::-moz-range-thumb {
+  width:14px; height:14px; background:var(--gold);
+  border-radius:50%; border:2px solid var(--void);
+}
+.result-panel {
+  background:var(--srf2); border:1px solid var(--line);
+  padding:40px;
+}
+.rp-label {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:4px; text-transform:uppercase; margin-bottom:36px;
+  padding-bottom:20px; border-bottom:1px solid var(--line);
+}
+.rp-roi {
+  font-family:var(--fhead); font-size:72px; font-weight:300;
+  color:var(--white); line-height:1; margin-bottom:6px; letter-spacing:-2px;
+}
+.rp-roi.positive { color:#7EC8A0; }
+.rp-roi-sub {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase; margin-bottom:36px;
+}
+.rp-rows { display:flex; flex-direction:column; gap:0; }
+.rp-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:16px 0; border-bottom:1px solid var(--line);
+}
+.rp-row:last-child { border:none; padding-bottom:0; }
+.rp-k { font-family:var(--fbody); font-size:14px; color:var(--muted); font-weight:300; }
+.rp-v { font-family:var(--fhead); font-size:20px; font-weight:400; color:var(--white); }
+.roi-chart-box { margin-top:32px; padding-top:28px; border-top:1px solid var(--line); height:160px; position:relative; }
+
+/* ── RISK ── */
+.risk-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); margin-top:0; }
+.risk-cell { background:var(--srf); padding:28px; }
+.rc-label {
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:20px;
+}
+.rc-score-row { display:flex; align-items:baseline; gap:4px; margin-bottom:14px; }
+.rc-score {
+  font-family:var(--fhead); font-size:44px; font-weight:300; line-height:1;
+}
+.rc-score.l { color:#7EC8A0; }
+.rc-score.m { color:var(--gold-lt); }
+.rc-score.h { color:#D16B6B; }
+.rc-max { font-family:var(--fmono); font-size:14px; color:var(--dimmed); }
+.rc-bar { height:1px; background:rgba(255,255,255,0.06); margin-bottom:14px; position:relative; }
+.rc-fill { height:1px; position:absolute; top:0; left:0; }
+.rc-tag {
+  display:inline-block; padding:4px 10px;
+  font-family:var(--fmono); font-size:9px; letter-spacing:2px; text-transform:uppercase;
+}
+.rc-tag.l { background:rgba(126,200,160,.08); color:#7EC8A0; }
+.rc-tag.m { background:rgba(196,163,94,.08); color:var(--gold-lt); }
+.rc-tag.h { background:rgba(209,107,107,.08); color:#D16B6B; }
+
+/* ── ECOSYSTEM ── */
+.eco-bg { background:var(--void); border-top:1px solid var(--line); }
+.eco-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.eco-card {
+  background:var(--srf); border:1px solid var(--line);
+  padding:40px 36px;
+  position:relative; overflow:hidden;
+  transition:border-color .35s, background .35s;
+}
+.eco-card:hover { border-color:var(--line2); background:var(--srf2); }
+.eco-ghost {
+  position:absolute; right:-10px; bottom:-20px;
+  font-family:var(--fhead); font-size:120px; font-weight:300;
+  color:rgba(196,163,94,0.04); line-height:1; pointer-events:none;
+}
+.eco-phase {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:28px;
+  display:flex; align-items:center; gap:10px;
+}
+.eco-phase::before { content:''; width:20px; height:1px; background:var(--gold); opacity:.5; }
+.eco-name {
+  font-family:var(--fhead); font-size:28px; font-weight:400;
+  color:var(--white); margin-bottom:16px; line-height:1.1;
+}
+.eco-desc {
+  font-size:14px; font-weight:300; color:var(--muted);
+  line-height:1.8; margin-bottom:28px;
+}
+.eco-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.etag {
+  padding:5px 12px; border:1px solid var(--line);
+  font-family:var(--fmono); font-size:9px; color:var(--dimmed);
+  letter-spacing:1.5px; text-transform:uppercase;
+}
+
+/* ── FOOTER ── */
+footer {
+  background:var(--ink); border-top:1px solid var(--line);
+  padding:72px 64px 40px; position:relative; z-index:1;
+}
+.footer-grid { display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:48px; margin-bottom:64px; }
+.footer-logo {
+  font-family:var(--fhead); font-size:24px; font-weight:400;
+  letter-spacing:5px; color:var(--white); text-transform:uppercase;
+  margin-bottom:16px; display:block;
+}
+.footer-logo em { color:var(--gold-lt); font-style:normal; }
+.footer-brand p {
+  font-size:14px; font-weight:300; color:var(--muted);
+  line-height:1.8; max-width:280px;
+}
+.footer-col h5 {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:24px;
+}
+.footer-col a {
+  display:block; font-size:14px; font-weight:300; color:var(--muted);
+  text-decoration:none; margin-bottom:12px; transition:color .25s;
+  letter-spacing:.3px;
+}
+.footer-col a:hover { color:var(--cream2); }
+.footer-bottom {
+  border-top:1px solid var(--line); padding-top:28px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.footer-copy {
+  font-family:var(--fmono); font-size:10px; color:var(--dimmed); letter-spacing:1.5px;
+}
+.footer-links { display:flex; gap:28px; }
+.footer-links a {
+  font-family:var(--fmono); font-size:10px; color:var(--dimmed);
+  text-decoration:none; letter-spacing:1.5px; transition:color .25s;
+}
+.footer-links a:hover { color:var(--muted); }
+
+/* REVEAL ANIMATIONS */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
+.reveal.in { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:.1s; }
+.reveal-delay-2 { transition-delay:.2s; }
+.reveal-delay-3 { transition-delay:.3s; }
+
+/* Expand toggle */
+.analyser-expand-btn {
+  background:transparent; border:1px solid var(--line);
+  color:var(--muted); font-family:var(--fmono); font-size:9px;
+  letter-spacing:2px; text-transform:uppercase;
+  padding:5px 12px; cursor:pointer; transition:all .25s;
+  display:flex; align-items:center; gap:6px;
+}
+.analyser-expand-btn:hover { border-color:var(--line2); color:var(--gold-lt); }
+.analyser-frame-wrap.expanded { height:1100px; }
+
+@media(max-width:1100px){
+  nav { padding:0 28px; }
+  .nav-links { display:none; }
+  .hero, .ai-layout, .roi-layout, .chart-row, .analyser-layout { grid-template-columns:1fr; }
+  .hero { padding:120px 28px 80px; }
+  .hero-left { padding-right:0; }
+  .sec-inner { padding:72px 28px; }
+  .analyser-left { position:static; }
+  .sectors-grid, .eco-grid { grid-template-columns:1fr 1fr; }
+  .kpi-row, .risk-row { grid-template-columns:1fr 1fr; }
+  .footer-grid { grid-template-columns:1fr 1fr; }
+  footer { padding:48px 28px 28px; }
+  .risk-row { margin:0 28px 72px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="#" class="logo">LUME<em>THA</em></a>
+    <ul class="nav-links">
+      <li><a href="#intelligence">Concierge</a></li>
+      <li><a href="#analyser">Analyser</a></li>
+      <li><a href="#dashboard">Markets</a></li>
+      <li><a href="#sectors">Sectors</a></li>
+      <li><a href="#roi">Returns</a></li>
+      <li><a href="#ecosystem">Platform</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <span class="nav-badge">Gurgaon · Live</span>
+    <a href="#analyser" class="nav-btn">Property Analyser</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section>
+  <div class="hero" style="z-index:1;">
+    <div class="hero-left">
+      <div class="kicker"><span class="kicker-line"></span>Lumetha Realty Intelligence</div>
+      <h1>Invest<br>with<br><em>precision.</em></h1>
+      <p class="hero-body">AI-powered real estate intelligence built exclusively for Gurgaon's most discerning investors. Price forecasting, ROI modelling, and risk analysis — synthesised in real time.</p>
+      <div class="hero-actions">
+        <a href="#analyser" class="btn-gold">Property Analyser</a>
+        <a href="#dashboard" class="btn-ghost">View Markets</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-panel">
+        <div class="panel-header">
+          <span class="panel-label">Intelligence Score · Live</span>
+          <span class="live-indicator"><span class="live-dot"></span>Active</span>
+        </div>
+        <div class="score-display">
+          <div class="score-number">87<span class="score-denom">/100</span></div>
+          <div class="score-loc">Golf Course Extension, Sector 66</div>
+          <div class="score-subloc">Premium Residential · Gurgaon</div>
+        </div>
+        <div class="score-metrics">
+          <div class="sm-row">
+            <span class="sm-key">Price Trend</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:92%;background:var(--gold);"></div></div>
+            <span class="sm-val" style="color:var(--gold-lt);">92</span>
+          </div>
+          <div class="sm-row">
+            <span class="sm-key">ROI Model</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:85%;background:var(--cream2);"></div></div>
+            <span class="sm-val" style="color:var(--cream2);">85</span>
+          </div>
+          <div class="sm-row">
+            <span class="sm-key">Infrastructure</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:78%;background:var(--muted);"></div></div>
+            <span class="sm-val" style="color:var(--muted);">78</span>
+          </div>
+          <div class="sm-row">
+            <span class="sm-key">Risk</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:22%;background:#7EC8A0;"></div></div>
+            <span class="sm-val" style="color:#7EC8A0;">Low</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats-row">
+        <div class="hstat">
+          <div class="hstat-val">₹<span>12,400</span></div>
+          <div class="hstat-key">Avg. price / sqft</div>
+          <div class="hstat-chg pos">▲ 8.3% YoY</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><span>+23%</span></div>
+          <div class="hstat-key">3Y appreciation</div>
+          <div class="hstat-chg pos">Gurgaon avg.</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><span>4.2%</span></div>
+          <div class="hstat-key">Rental yield</div>
+          <div class="hstat-chg pos">▲ 0.4pp YoY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-wrap" id="tickerEl">
+    <span class="tick"><span class="tn">DLF Camellias</span><span class="tv">₹68,000/sqft</span><span class="tc pos">▲ 3.2%</span></span>
+    <span class="tick"><span class="tn">Golf Course Ext.</span><span class="tv">₹14,200/sqft</span><span class="tc pos">▲ 1.8%</span></span>
+    <span class="tick"><span class="tn">New Gurgaon</span><span class="tv">₹8,400/sqft</span><span class="tc pos">▲ 4.1%</span></span>
+    <span class="tick"><span class="tn">Sohna Road</span><span class="tv">₹7,200/sqft</span><span class="tc pos">▲ 2.4%</span></span>
+    <span class="tick"><span class="tn">Dwarka Expy</span><span class="tv">₹11,500/sqft</span><span class="tc pos">▲ 5.6%</span></span>
+    <span class="tick"><span class="tn">MG Road</span><span class="tv">₹18,000/sqft</span><span class="tc neg">▼ 0.3%</span></span>
+    <span class="tick"><span class="tn">Sector 57–65</span><span class="tv">₹10,800/sqft</span><span class="tc pos">▲ 1.1%</span></span>
+    <span class="tick"><span class="tn">Palam Vihar</span><span class="tv">₹9,600/sqft</span><span class="tc pos">▲ 0.9%</span></span>
+    <span class="tick"><span class="tn">Manesar</span><span class="tv">₹5,800/sqft</span><span class="tc pos">▲ 3.8%</span></span>
+    <span class="tick"><span class="tn">DLF Camellias</span><span class="tv">₹68,000/sqft</span><span class="tc pos">▲ 3.2%</span></span>
+    <span class="tick"><span class="tn">Golf Course Ext.</span><span class="tv">₹14,200/sqft</span><span class="tc pos">▲ 1.8%</span></span>
+    <span class="tick"><span class="tn">New Gurgaon</span><span class="tv">₹8,400/sqft</span><span class="tc pos">▲ 4.1%</span></span>
+    <span class="tick"><span class="tn">Sohna Road</span><span class="tv">₹7,200/sqft</span><span class="tc pos">▲ 2.4%</span></span>
+    <span class="tick"><span class="tn">Dwarka Expy</span><span class="tv">₹11,500/sqft</span><span class="tc pos">▲ 5.6%</span></span>
+    <span class="tick"><span class="tn">MG Road</span><span class="tv">₹18,000/sqft</span><span class="tc neg">▼ 0.3%</span></span>
+    <span class="tick"><span class="tn">Sector 57–65</span><span class="tv">₹10,800/sqft</span><span class="tc pos">▲ 1.1%</span></span>
+    <span class="tick"><span class="tn">Palam Vihar</span><span class="tv">₹9,600/sqft</span><span class="tc pos">▲ 0.9%</span></span>
+    <span class="tick"><span class="tn">Manesar</span><span class="tv">₹5,800/sqft</span><span class="tc pos">▲ 3.8%</span></span>
+  </div>
+</div>
+
+<!-- AI INTELLIGENCE -->
+<section id="intelligence" class="ai-wrap">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">AI Concierge</div>
+    <div class="sec-title">Private Intelligence.<br><em>Instant answers.</em></div>
+    <p class="sec-body">Ask anything about the Gurgaon market. Our intelligence engine synthesises price trends, infrastructure data, builder performance, and investment patterns on demand.</p>
+
+    <div class="ai-layout">
+      <div>
+        <div class="capability-list">
+          <div class="cap">
+            <span class="cap-num">01</span>
+            <div class="cap-body">
+              <h4>Price Forecasting</h4>
+              <p>ML-based appreciation modelling across all Gurgaon micro-markets, with 1–10 year horizon projections and confidence intervals.</p>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="cap-num">02</span>
+            <div class="cap-body">
+              <h4>Infrastructure Impact</h4>
+              <p>Quantifies how metro expansion, expressways, and DMIC corridors shift valuations sector by sector — before the market prices them in.</p>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="cap-num">03</span>
+            <div class="cap-body">
+              <h4>ROI & Risk Scoring</h4>
+              <p>Multi-factor scoring: price volatility, builder delivery history, area growth stability, absorption rates, and liquidity depth.</p>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="cap-num">04</span>
+            <div class="cap-body">
+              <h4>Sector Intelligence</h4>
+              <p>Deep comparative analysis across every Gurgaon sector — rental yields, demand-supply dynamics, and institutional capital flows.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONCIERGE CHAT -->
+      <div class="concierge">
+        <div class="conc-top">
+          <div class="conc-brand">
+            <div class="conc-mark">L</div>
+            <div>
+              <div class="conc-name">Lumetha Intelligence</div>
+              <div class="conc-sub">Gurgaon Market · Live Analysis</div>
+            </div>
+          </div>
+        </div>
+        <div class="conc-suggestions">
+          <button class="sug" onclick="useSug(this)">Best sectors under ₹1.5Cr?</button>
+          <button class="sug" onclick="useSug(this)">Dwarka Expressway 2027 outlook</button>
+          <button class="sug" onclick="useSug(this)">Top rental yield corridors</button>
+          <button class="sug" onclick="useSug(this)">New Gurgaon vs Sohna Road</button>
+        </div>
+        <div class="conc-msgs" id="msgs">
+          <div class="cmsg ai">
+            <div class="cmsg-bub">Good morning. I'm your Lumetha intelligence concierge, with deep knowledge of the Gurgaon and NCR property market.
+
+I can analyse specific sectors, project appreciation, model ROI scenarios, and compare investment opportunities across any budget.
+
+How may I assist you today?</div>
+            <div class="cmsg-meta">LUMETHA INTELLIGENCE · READY</div>
+          </div>
+        </div>
+        <div class="conc-input-row">
+          <textarea class="conc-input" id="chatIn" placeholder="Ask about any sector, budget, or investment strategy…" onkeydown="onKey(event)"></textarea>
+          <button class="conc-send" id="sendBtn" onclick="send()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PROPERTY ANALYSER — NEW INTEGRATED SECTION
+     ══════════════════════════════════════════ -->
+<section id="analyser" class="analyser-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">Property Analyser</div>
+    <div class="sec-title">Deep-dive<br><em>any property.</em></div>
+    <p class="sec-body">Run full AI-powered analysis on any listing — valuation, neighbourhood scoring, price history, growth potential, and rental yield — all in a single tool.</p>
+
+    <div class="analyser-layout">
+
+      <!-- LEFT: Feature list -->
+      <div class="analyser-left">
+        <div class="analyser-features">
+          <div class="af">
+            <div class="af-icon">₹</div>
+            <div class="af-body">
+              <h4>Instant Valuation</h4>
+              <p>AI-assessed fair market value vs. listing price. Know if you're getting a deal or overpaying.</p>
+            </div>
+          </div>
+          <div class="af">
+            <div class="af-icon">↗</div>
+            <div class="af-body">
+              <h4>Price History & Trends</h4>
+              <p>Historical price trajectory for the locality, with forward appreciation projections.</p>
+            </div>
+          </div>
+          <div class="af">
+            <div class="af-icon">⊙</div>
+            <div class="af-body">
+              <h4>Neighbourhood Score</h4>
+              <p>Infrastructure, connectivity, social amenities, and future development proximity — all scored.</p>
+            </div>
+          </div>
+          <div class="af">
+            <div class="af-icon">%</div>
+            <div class="af-body">
+              <h4>Rental Yield Forecast</h4>
+              <p>Projected rental income based on current demand, comparable leases, and micro-market depth.</p>
+            </div>
+          </div>
+          <div class="af">
+            <div class="af-icon">⚑</div>
+            <div class="af-body">
+              <h4>Risk Flags</h4>
+              <p>Builder track record, RERA compliance status, legal encumbrances, and delivery risk assessment.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA below feature list -->
+        <div style="margin-top:36px;padding:24px;background:var(--gold-bg);border:1px solid var(--line);">
+          <div style="font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Powered by</div>
+          <div style="font-family:var(--fhead);font-size:22px;font-weight:400;color:var(--white);margin-bottom:8px;">Lumetha AI Engine</div>
+          <p style="font-size:13px;font-weight:300;color:var(--muted);line-height:1.7;">Trained on Gurgaon transaction data, RERA filings, builder performance records, and infrastructure timelines.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Embedded Streamlit App -->
+      <div class="analyser-shell reveal reveal-delay-1">
+
+        <!-- Browser-style top bar -->
+        <div class="analyser-bar">
+          <div class="analyser-bar-left">
+            <div class="a-dots">
+              <div class="a-dot a-dot-r"></div>
+              <div class="a-dot a-dot-y"></div>
+              <div class="a-dot a-dot-g"></div>
+            </div>
+            <div class="analyser-url">realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app</div>
+          </div>
+          <div class="analyser-bar-right">
+            <span class="analyser-badge">Live · AI Powered</span>
+            <button class="analyser-expand-btn" onclick="toggleExpand()" id="expandBtn">
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              Expand
+            </button>
+            <a href="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app" target="_blank" class="analyser-open-btn">
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 1H1V11H11V7M11 1H7M11 1V5M6 6L11 1" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              Open Full
+            </a>
+          </div>
+        </div>
+
+        <!-- iframe with loader overlay -->
+        <div class="analyser-frame-wrap" id="frameWrap">
+          <div class="frame-loader" id="frameLoader">
+            <div class="loader-mark">L</div>
+            <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+            <div class="loader-text">Initialising Analyser</div>
+          </div>
+          <iframe
+            id="analyserFrame"
+            class="analyser-iframe"
+            src="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app/?embed=true&embed_options=dark_theme,hide_loading_screen,hide_footer"
+            title="Lumetha Property Analyser"
+            allow="clipboard-read; clipboard-write"
+            loading="lazy"
+            onload="frameLoaded()"
+          ></iframe>
+        </div>
+
+        <!-- Footer status bar -->
+        <div class="analyser-foot">
+          <span class="analyser-foot-label">Lumetha Property Analyser · Gurgaon & NCR</span>
+          <div class="analyser-foot-status">
+            <span class="live-dot" style="width:4px;height:4px;"></span>
+            <span id="frameStatus">Connecting…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="dash-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">Market Intelligence</div>
+    <div class="sec-title">Gurgaon<br><em>at a glance.</em></div>
+    <p class="sec-body">Real-time analytics across Gurgaon's major corridors. Price trends, transaction volumes, and growth patterns across all micro-markets.</p>
+
+    <div class="kpi-row reveal">
+      <div class="kpi">
+        <div class="kpi-label">Average Price / Sqft</div>
+        <div class="kpi-val gold">₹12,400</div>
+        <div class="kpi-chg pos">▲ 8.3% year on year</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Transactions · 2024</div>
+        <div class="kpi-val">24,800</div>
+        <div class="kpi-chg pos">▲ 14.2% vs 2023</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Average Rental Yield</div>
+        <div class="kpi-val gold">4.2%</div>
+        <div class="kpi-chg pos">▲ 0.4pp year on year</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">New Launches · 2024</div>
+        <div class="kpi-val">18,600</div>
+        <div class="kpi-chg" style="color:var(--muted);">Units launched</div>
+      </div>
+    </div>
+
+    <div class="chart-row reveal">
+      <div class="chart-panel">
+        <div class="cp-title">Price Appreciation — Historical Trend</div>
+        <div class="cp-sub">₹ PER SQFT · GURGAON WEIGHTED AVERAGE · 2018–2024</div>
+        <div style="position:relative;height:240px;">
+          <canvas id="priceC"></canvas>
+        </div>
+      </div>
+      <div class="chart-panel">
+        <div class="cp-title">Market Composition</div>
+        <div class="cp-sub">BY TRANSACTION VOLUME · 2024</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#C4A35E;display:inline-block;"></span>RESIDENTIAL 62%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#EDE8E0;display:inline-block;"></span>COMMERCIAL 21%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#7EC8A0;display:inline-block;"></span>PLOTS 12%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#6E6860;display:inline-block;"></span>OTHER 5%</span>
+        </div>
+        <div style="position:relative;height:188px;">
+          <canvas id="typeC"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-panel reveal">
+      <div class="cp-title">Sector-Wise Price Comparison</div>
+      <div class="cp-sub">₹ PER SQFT · MAJOR GURGAON CORRIDORS · 2024</div>
+      <div style="position:relative;height:220px;">
+        <canvas id="sectorC"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTOR SCORING -->
+<section id="sectors" class="sectors-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">Investment Scoring</div>
+    <div class="sec-title">Ranked<br><em>by intelligence.</em></div>
+    <p class="sec-body">Every Gurgaon micro-market scored across twelve parameters: price trajectory, infrastructure proximity, builder quality, demand depth, rental potential, and risk profile.</p>
+  </div>
+
+  <div class="sectors-grid">
+    <div class="sc reveal">
+      <div class="sc-rank">RANK 01</div>
+      <div class="sc-name">Golf Course Extension</div>
+      <div class="sc-type">Premium Residential</div>
+      <div class="sc-score-row"><span class="sc-score">87</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹14,200/sqft</span></div>
+        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+28%</span></div>
+        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">3.8%</span></div>
+        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:#7EC8A0;">Low</span></div>
+      </div>
+    </div>
+    <div class="sc reveal reveal-delay-1">
+      <div class="sc-rank">RANK 02</div>
+      <div class="sc-name">Dwarka Expressway</div>
+      <div class="sc-type">High Growth Corridor</div>
+      <div class="sc-score-row"><span class="sc-score">84</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹11,500/sqft</span></div>
+        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+34%</span></div>
+        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">4.4%</span></div>
+        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:var(--gold-lt);">Medium</span></div>
+      </div>
+    </div>
+    <div class="sc reveal reveal-delay-2">
+      <div class="sc-rank">RANK 03</div>
+      <div class="sc-name">New Gurgaon</div>
+      <div class="sc-type">Emerging Micro-Market</div>
+      <div class="sc-score-row"><span class="sc-score">81</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹8,400/sqft</span></div>
+        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+41%</span></div>
+        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">5.1%</span></div>
+        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:var(--gold-lt);">Medium</span></div>
+      </div>
+    </div>
+    <div class="sc reveal">
+      <div class="sc-rank">RANK 04</div>
+      <div class="sc-name">Sohna Road</div>
+      <div class="sc-type">Mid-Segment Residential</div>
+      <div class="sc-score-row"><span class="sc-score">74</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹7,200/sqft</span></div>
+        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+19%</span></div>
+        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">4.8%</span></div>
+        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:#7EC8A0;">Low</span></div>
+      </div>
+    </div>
+    <div class="sc reveal reveal-delay-1">
+      <div class="sc-rank">RANK 05</div>
+      <div class="sc-name">Sector 57–65</div>
+      <div class="sc-type">Established Residential</div>
+      <div class="sc-score-row"><span class="sc-score">71</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹10,800/sqft</span></div>
+        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+15%</span></div>
+        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">4.1%</span></div>
+        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:#7EC8A0;">Low</span></div>
+      </div>
+    </div>
+    <div class="sc reveal reveal-delay-2">
+      <div class="sc-rank">RANK 06</div>
+      <div class="sc-name">MG Road</div>
+      <div class="sc-type">Commercial Premium</div>
+      <div class="sc-score-row"><span class="sc-score">65</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹18,000/sqft</span></div>
+        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:var(--gold-lt);">+8%</span></div>
+        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">6.2%</span></div>
+        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:var(--gold-lt);">Medium</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section id="roi" class="roi-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">Return Engine</div>
+    <div class="sec-title">Model your<br><em>returns.</em></div>
+    <p class="sec-body">Adjust the parameters below to simulate your investment scenario. Exit value, rental income, capital gain, and CAGR — calculated live.</p>
+
+    <div class="roi-layout">
+      <div class="param-group">
+        <div class="param">
+          <div class="param-head">
+            <span class="param-label">Investment Amount</span>
+            <span class="param-val" id="pInvest">₹1,00,00,000</span>
+          </div>
+          <input type="range" min="5000000" max="100000000" step="500000" value="10000000" id="sInvest" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head">
+            <span class="param-label">Holding Period</span>
+            <span class="param-val" id="pHold">5 Years</span>
+          </div>
+          <input type="range" min="1" max="20" step="1" value="5" id="sHold" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head">
+            <span class="param-label">Annual Appreciation</span>
+            <span class="param-val" id="pAppr">10.0%</span>
+          </div>
+          <input type="range" min="3" max="25" step="0.5" value="10" id="sAppr" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head">
+            <span class="param-label">Rental Yield</span>
+            <span class="param-val" id="pYield">4.2%</span>
+          </div>
+          <input type="range" min="1" max="10" step="0.1" value="4.2" id="sYield" oninput="calcROI()">
+        </div>
+      </div>
+
+      <div class="result-panel">
+        <div class="rp-label">Projected Returns</div>
+        <div class="rp-roi positive" id="rROI">+68.2%</div>
+        <div class="rp-roi-sub" id="rSub">TOTAL ROI OVER 5 YEARS</div>
+        <div class="rp-rows">
+          <div class="rp-row">
+            <span class="rp-k">Exit Value</span>
+            <span class="rp-v" id="rExit" style="color:var(--gold-lt);">₹1,61,05,100</span>
+          </div>
+          <div class="rp-row">
+            <span class="rp-k">Total Rental Income</span>
+            <span class="rp-v" id="rRental" style="color:#7EC8A0;">₹21,00,000</span>
+          </div>
+          <div class="rp-row">
+            <span class="rp-k">Capital Gain</span>
+            <span class="rp-v" id="rGain">₹61,05,100</span>
+          </div>
+          <div class="rp-row">
+            <span class="rp-k">Net Profit</span>
+            <span class="rp-v" id="rNet" style="color:#7EC8A0;font-size:24px;">₹82,05,100</span>
+          </div>
+          <div class="rp-row">
+            <span class="rp-k">CAGR</span>
+            <span class="rp-v" id="rCAGR">11.0%</span>
+          </div>
+        </div>
+        <div class="roi-chart-box">
+          <canvas id="roiC"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK -->
+<section style="background:var(--ink);border-top:1px solid var(--line);">
+  <div class="sec-inner reveal" style="padding-bottom:0;">
+    <div class="sec-kicker">Risk Intelligence</div>
+    <div class="sec-title">Know your<br><em>exposure.</em></div>
+    <p class="sec-body">Multi-dimensional risk scoring across Gurgaon's key investment parameters. Lower scores indicate lower risk.</p>
+  </div>
+  <div class="risk-row reveal" style="margin:0 64px 100px;">
+    <div class="risk-cell">
+      <div class="rc-label">Price Volatility</div>
+      <div class="rc-score-row"><span class="rc-score l">24</span><span class="rc-max">/100</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:24%;background:#7EC8A0;"></div></div>
+      <span class="rc-tag l">Low Risk</span>
+    </div>
+    <div class="risk-cell">
+      <div class="rc-label">Builder Default</div>
+      <div class="rc-score-row"><span class="rc-score m">41</span><span class="rc-max">/100</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:41%;background:var(--gold);"></div></div>
+      <span class="rc-tag m">Medium Risk</span>
+    </div>
+    <div class="risk-cell">
+      <div class="rc-label">Liquidity Risk</div>
+      <div class="rc-score-row"><span class="rc-score l">31</span><span class="rc-max">/100</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:31%;background:#7EC8A0;"></div></div>
+      <span class="rc-tag l">Low Risk</span>
+    </div>
+    <div class="risk-cell">
+      <div class="rc-label">Regulatory Risk</div>
+      <div class="rc-score-row"><span class="rc-score m">38</span><span class="rc-max">/100</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:38%;background:var(--gold);"></div></div>
+      <span class="rc-tag m">Medium Risk</span>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem" class="eco-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">The Platform</div>
+    <div class="sec-title">One ecosystem.<br><em>Three futures.</em></div>
+    <p class="sec-body">Lumetha is built as a unified AI platform — sharing intelligence infrastructure, user systems, and data engines across every product.</p>
+
+    <div class="eco-grid">
+      <div class="eco-card reveal">
+        <div class="eco-ghost">I</div>
+        <div class="eco-phase">Stage One · Now</div>
+        <div class="eco-name">LifeQuest AI</div>
+        <p class="eco-desc">A gamified life simulator where real habits drive virtual progression. Productivity becomes gameplay. AI becomes your personal mentor.</p>
+        <div class="eco-tags">
+          <span class="etag">Habit Engine</span>
+          <span class="etag">XP System</span>
+          <span class="etag">AI Coach</span>
+          <span class="etag">City Builder</span>
+        </div>
+      </div>
+      <div class="eco-card reveal reveal-delay-1" style="border-color:var(--line2);">
+        <div class="eco-ghost">II</div>
+        <div class="eco-phase" style="color:var(--gold);">Stage Two · Active</div>
+        <div class="eco-name">Lumetha Realty AI</div>
+        <p class="eco-desc">India's most sophisticated real estate intelligence platform. Price forecasting, ROI modelling, risk analysis, and sector scoring for Gurgaon's market.</p>
+        <div class="eco-tags">
+          <span class="etag">Price AI</span>
+          <span class="etag">ROI Engine</span>
+          <span class="etag">Heatmaps</span>
+          <span class="etag">Risk Scoring</span>
+        </div>
+      </div>
+      <div class="eco-card reveal reveal-delay-2">
+        <div class="eco-ghost">III</div>
+        <div class="eco-phase">Stage Three · Vision</div>
+        <div class="eco-name">Construction Tycoon</div>
+        <p class="eco-desc">India's first large-scale AI-driven real estate simulation. Buy land, develop projects, navigate market cycles, and build a property empire.</p>
+        <div class="eco-tags">
+          <span class="etag">AI Economy</span>
+          <span class="etag">Land Trading</span>
+          <span class="etag">Market Cycles</span>
+          <span class="etag">Multiplayer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="footer-logo">LUME<em>THA</em></span>
+      <p>AI-powered real estate intelligence for Gurgaon's most discerning investors. Precision forecasting. Private insight. Institutional-grade analysis.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <a href="#intelligence">AI Concierge</a>
+      <a href="#analyser">Property Analyser</a>
+      <a href="#dashboard">Market Dashboard</a>
+      <a href="#sectors">Sector Scores</a>
+      <a href="#roi">Return Engine</a>
+    </div>
+    <div class="footer-col">
+      <h5>Products</h5>
+      <a href="#">LifeQuest AI</a>
+      <a href="#">Realty Intelligence</a>
+      <a href="#">Construction Tycoon</a>
+      <a href="#">Lumetha Cloud</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="#">About Lumetha</a>
+      <a href="#">Lumetha Labs</a>
+      <a href="#">Research</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Lumetha AI. All rights reserved. · Gurugram, India</span>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── CHARTS ────────────────────────────────────────────────────────────
+Chart.defaults.color = '#6E6860';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 10;
+const gridColor = 'rgba(196,163,94,0.06)';
+
+new Chart(document.getElementById('priceC'), {
+  type:'line',
+  data:{
+    labels:['2018','2019','2020','2021','2022','2023','2024'],
+    datasets:[{
+      data:[6800,7200,6900,7800,9400,11200,12400],
+      borderColor:'#C4A35E', backgroundColor:'rgba(196,163,94,0.05)',
+      borderWidth:1.5, pointBackgroundColor:'#C4A35E',
+      pointRadius:3, pointHoverRadius:5, fill:true, tension:.4
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:gridColor}, ticks:{letterSpacing:1}},
+      y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/1000).toFixed(0)+'K'}}
+    }
+  }
+});
+
+new Chart(document.getElementById('typeC'), {
+  type:'doughnut',
+  data:{
+    labels:['Residential','Commercial','Plots','Other'],
+    datasets:[{
+      data:[62,21,12,5],
+      backgroundColor:['#C4A35E','#EDE8E0','#7EC8A0','#6E6860'],
+      borderWidth:0, hoverOffset:4
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    cutout:'72%', plugins:{legend:{display:false}}
+  }
+});
+
+new Chart(document.getElementById('sectorC'), {
+  type:'bar',
+  data:{
+    labels:['MG Road','Golf Crs Ext','Dwarka Expy','Sec 57–65','Palam Vihar','New Gurgaon','Sohna Road'],
+    datasets:[{
+      data:[18000,14200,11500,10800,9600,8400,7200],
+      backgroundColor:'rgba(196,163,94,0.18)',
+      borderColor:'rgba(196,163,94,0.55)',
+      borderWidth:1, borderRadius:0
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:20}},
+      y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/1000).toFixed(0)+'K'}}
+    }
+  }
+});
+
+// ── ROI CALCULATOR ────────────────────────────────────────────────────
+let roiChart = null;
+function inr(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+
+function calcROI(){
+  const invest = +document.getElementById('sInvest').value;
+  const hold   = +document.getElementById('sHold').value;
+  const appr   = +document.getElementById('sAppr').value / 100;
+  const yield_ = +document.getElementById('sYield').value / 100;
+
+  document.getElementById('pInvest').textContent = inr(invest);
+  document.getElementById('pHold').textContent   = hold + ' Year' + (hold>1?'s':'');
+  document.getElementById('pAppr').textContent   = (+document.getElementById('sAppr').value).toFixed(1) + '%';
+  document.getElementById('pYield').textContent  = (+document.getElementById('sYield').value).toFixed(1) + '%';
+
+  const exit   = invest * Math.pow(1+appr, hold);
+  const rental = invest * yield_ * hold;
+  const gain   = exit - invest;
+  const net    = gain + rental;
+  const roi    = (net / invest * 100);
+  const cagr   = (Math.pow(exit/invest, 1/hold) - 1) * 100;
+
+  document.getElementById('rROI').textContent   = (roi>=0?'+':'') + roi.toFixed(1) + '%';
+  document.getElementById('rSub').textContent   = 'TOTAL ROI OVER ' + hold + ' YEAR' + (hold>1?'S':'');
+  document.getElementById('rExit').textContent  = inr(exit);
+  document.getElementById('rRental').textContent= inr(rental);
+  document.getElementById('rGain').textContent  = inr(gain);
+  document.getElementById('rNet').textContent   = inr(net);
+  document.getElementById('rCAGR').textContent  = cagr.toFixed(1) + '%';
+
+  const yrs  = Array.from({length:hold},(_,i)=>'Yr '+(i+1));
+  const vals = yrs.map((_,i)=>Math.round(invest*Math.pow(1+appr,i+1)));
+  if(roiChart) roiChart.destroy();
+  roiChart = new Chart(document.getElementById('roiC'), {
+    type:'bar',
+    data:{
+      labels:yrs,
+      datasets:[{
+        data:vals,
+        backgroundColor:vals.map((_,i)=>i===vals.length-1?'rgba(126,200,160,0.45)':'rgba(196,163,94,0.18)'),
+        borderColor:vals.map((_,i)=>i===vals.length-1?'#7EC8A0':'rgba(196,163,94,0.5)'),
+        borderWidth:1, borderRadius:0
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{display:false}},
+        y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/100000).toFixed(0)+'L'}}
+      }
+    }
+  });
+}
+calcROI();
+
+// ── AI CONCIERGE ──────────────────────────────────────────────────────
+const SYS = `You are Lumetha Intelligence, a private real estate concierge for the Lumetha Realty AI platform. You specialise exclusively in Gurgaon and NCR India property markets.
+
+Expertise:
+- All Gurgaon micro-markets: Golf Course Extension, Dwarka Expressway, New Gurgaon, Sohna Road, MG Road, all sectors
+- Price trends, appreciation forecasts, historical data, future projections
+- ROI analysis, rental yields, investment scoring, risk assessment
+- Infrastructure: Delhi Metro Phase 4, KMP Expressway, DMIC corridor, Dwarka Expressway opening impact
+- Builders: DLF, Godrej, M3M, Emaar, Sobha, Signature Global, BPTP, Mahindra Lifespaces
+- RERA compliance, legal due diligence, investment risk
+- Commercial vs residential investment strategies
+
+Tone: Refined, authoritative, concise. Like a private wealth advisor at a luxury firm. Use ₹ for prices. Be specific with numbers. Provide clear, structured insights. Maximum 220 words unless the query requires depth.`;
+
+async function callAI(msg){
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514', max_tokens:1000,
+      system:SYS,
+      messages:[{role:'user',content:msg}]
+    })
+  });
+  const d = await r.json();
+  return d.content?.map(b=>b.text||'').join('')||'I was unable to retrieve a response. Please try again.';
+}
+
+function addMsg(role,text){
+  const c = document.getElementById('msgs');
+  const d = document.createElement('div');
+  d.className = 'cmsg '+role;
+  const t = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const safe = text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  d.innerHTML = `<div class="cmsg-bub">${safe}</div>
+    <div class="cmsg-meta">${role==='ai'?'LUMETHA INTELLIGENCE':'YOU'} · ${t}</div>`;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+function showTyping(){
+  const c = document.getElementById('msgs');
+  const d = document.createElement('div');
+  d.id='typing'; d.className='typing-ind';
+  d.innerHTML='<div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>';
+  c.appendChild(d); c.scrollTop=c.scrollHeight;
+}
+function hideTyping(){ document.getElementById('typing')?.remove(); }
+async function send(){
+  const inp = document.getElementById('chatIn');
+  const btn = document.getElementById('sendBtn');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  addMsg('you',txt); inp.value=''; btn.disabled=true; showTyping();
+  try{
+    const rep = await callAI(txt);
+    hideTyping(); addMsg('ai',rep);
+  }catch(e){
+    hideTyping(); addMsg('ai','Connection error. Please check your network and try again.');
+  }
+  btn.disabled=false;
+}
+function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
+function useSug(el){ document.getElementById('chatIn').value=el.textContent; send(); }
+
+// ── IFRAME LOADER ──────────────────────────────────────────────────────
+function frameLoaded(){
+  setTimeout(()=>{
+    const loader = document.getElementById('frameLoader');
+    if(loader) loader.classList.add('hidden');
+    document.getElementById('frameStatus').textContent = 'Connected · Live';
+  }, 800);
+}
+
+// Fallback: if iframe takes too long, show partial loaded state
+setTimeout(()=>{
+  const loader = document.getElementById('frameLoader');
+  const status = document.getElementById('frameStatus');
+  if(loader && !loader.classList.contains('hidden')){
+    // Update text but keep showing — iframe may still be loading
+    const loaderText = loader.querySelector('.loader-text');
+    if(loaderText) loaderText.textContent = 'Loading Analyser…';
+    if(status) status.textContent = 'Initialising…';
+  }
+}, 3000);
+
+// ── EXPAND TOGGLE ─────────────────────────────────────────────────────
+let expanded = false;
+function toggleExpand(){
+  const wrap = document.getElementById('frameWrap');
+  const btn  = document.getElementById('expandBtn');
+  expanded = !expanded;
+  wrap.classList.toggle('expanded', expanded);
+  btn.innerHTML = expanded
+    ? `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:10px;height:10px;opacity:.6"><path d="M4 1V4H1M8 4V1H11M11 8H8V11M1 8H4V11" stroke="currentColor" stroke-width="1.2"/></svg> Compress`
+    : `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:10px;height:10px;opacity:.6"><path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/></svg> Expand`;
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── LAZY LOAD IFRAME on scroll into view ──────────────────────────────
+const analyserSection = document.getElementById('analyser');
+const iframeObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const frame = document.getElementById('analyserFrame');
+      // src already set in HTML; this handles future lazy-src approach if needed
+      iframeObs.disconnect();
+    }
+  });
+},{threshold:0.05});
+if(analyserSection) iframeObs.observe(analyserSection);
+</script>
+</body>
+</html>
