@@ -79,6 +79,7 @@ nav {
   text-transform:uppercase; transition:color .3s;
 }
 .nav-links a:hover { color:var(--cream2); }
+.nav-links a.active { color:var(--gold-lt); }
 .nav-right { display:flex; align-items:center; gap:24px; }
 .nav-badge {
   font-family:var(--fmono); font-size:10px; color:var(--gold);
@@ -95,31 +96,12 @@ nav {
 }
 .nav-btn:hover { background:var(--gold-lt); }
 
-/* ── DATA FRESHNESS BANNER ── */
-.data-banner {
-  position:fixed; top:72px; left:0; right:0; z-index:190;
-  background:var(--srf); border-bottom:1px solid var(--line);
-  padding:6px 64px;
-  display:flex; align-items:center; justify-content:space-between;
-  font-family:var(--fmono); font-size:9px; color:var(--muted);
-  letter-spacing:1.5px; text-transform:uppercase;
-  transition:opacity .4s;
-}
-.data-banner.loading { opacity:.5; }
-.banner-left { display:flex; align-items:center; gap:10px; }
-.banner-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); }
-.banner-dot.live { background:#4CAF6E; animation:breathe 2.5s ease-in-out infinite; }
-@keyframes breathe {
-  0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(76,175,110,.4); }
-  50%{ opacity:.6; box-shadow:0 0 0 5px rgba(76,175,110,0); }
-}
-
 /* ── HERO ── */
 .hero {
   min-height:100vh;
   display:grid; grid-template-columns:1fr 1fr;
   align-items:center;
-  padding:160px 64px 80px;
+  padding:120px 64px 80px;
   position:relative; z-index:1;
   border-bottom:1px solid var(--line);
 }
@@ -181,6 +163,10 @@ nav {
 .live-dot {
   width:5px; height:5px; border-radius:50%; background:#4CAF6E;
   animation:breathe 2.5s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(76,175,110,.4); }
+  50%{ opacity:.6; box-shadow:0 0 0 5px rgba(76,175,110,0); }
 }
 .score-display { text-align:center; padding:16px 0 28px; }
 .score-number {
@@ -352,6 +338,7 @@ section { position:relative; z-index:1; }
 .tdot:nth-child(2){ animation-delay:.18s; }
 .tdot:nth-child(3){ animation-delay:.36s; }
 @keyframes tdot{ 0%,100%{ opacity:.3; transform:translateY(0); } 50%{ opacity:1; transform:translateY(-4px); } }
+
 .conc-suggestions {
   display:flex; flex-wrap:wrap; gap:8px;
   padding:0 28px 16px;
@@ -364,6 +351,7 @@ section { position:relative; z-index:1; }
   text-align:left;
 }
 .sug:hover { border-color:var(--line2); color:var(--gold-lt); background:var(--gold-bg); }
+
 .conc-input-row {
   padding:20px 28px; border-top:1px solid var(--line);
   display:flex; gap:12px; align-items:flex-end;
@@ -431,13 +419,28 @@ section { position:relative; z-index:1; }
 }
 .sc:hover { background:var(--srf2); }
 .sc:hover::after { transform:scaleX(1); }
-.sc-rank { font-family:var(--fmono); font-size:9px; color:var(--dimmed); letter-spacing:3px; margin-bottom:20px; text-transform:uppercase; }
-.sc-name { font-family:var(--fhead); font-size:22px; font-weight:400; color:var(--white); margin-bottom:4px; line-height:1.2; }
-.sc-type { font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:2.5px; text-transform:uppercase; margin-bottom:24px; }
+.sc-rank {
+  font-family:var(--fmono); font-size:9px; color:var(--dimmed);
+  letter-spacing:3px; margin-bottom:20px; text-transform:uppercase;
+}
+.sc-name {
+  font-family:var(--fhead); font-size:22px; font-weight:400;
+  color:var(--white); margin-bottom:4px; line-height:1.2;
+}
+.sc-type {
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:2.5px; text-transform:uppercase; margin-bottom:24px;
+}
 .sc-score-row { display:flex; align-items:baseline; gap:6px; margin-bottom:4px; }
-.sc-score { font-family:var(--fhead); font-size:52px; font-weight:300; line-height:1; color:var(--gold-lt); }
+.sc-score {
+  font-family:var(--fhead); font-size:52px; font-weight:300;
+  line-height:1; color:var(--gold-lt);
+}
 .sc-score-max { font-family:var(--fmono); font-size:14px; color:var(--muted); }
-.sc-score-lbl { font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:24px; }
+.sc-score-lbl {
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase; margin-bottom:24px;
+}
 .sc-divider { height:1px; background:var(--line); margin-bottom:20px; }
 .sc-metrics { display:flex; flex-direction:column; gap:10px; }
 .sm { display:flex; justify-content:space-between; align-items:center; }
@@ -445,45 +448,139 @@ section { position:relative; z-index:1; }
 .smv { font-family:var(--fmono); font-size:12px; font-weight:500; }
 
 /* ── PROPERTY ANALYSER ── */
-.analyser-bg { background:var(--void); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-.analyser-layout { display:grid; grid-template-columns:1fr 2.2fr; gap:64px; align-items:start; }
+.analyser-bg {
+  background:var(--void);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.analyser-layout {
+  display:grid;
+  grid-template-columns:1fr 2.2fr;
+  gap:64px;
+  align-items:start;
+}
 .analyser-left { position:sticky; top:100px; }
 .analyser-features { display:flex; flex-direction:column; gap:1px; margin-top:40px; }
-.af { display:flex; gap:16px; align-items:flex-start; padding:18px 0; border-bottom:1px solid var(--line); }
+.af {
+  display:flex; gap:16px; align-items:flex-start;
+  padding:18px 0; border-bottom:1px solid var(--line);
+}
 .af:last-child { border:none; }
-.af-icon { width:32px; height:32px; background:var(--gold-bg); border:1px solid var(--line); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:var(--fhead); font-size:13px; color:var(--gold-lt); }
-.af-body h4 { font-family:var(--fbody); font-size:13px; font-weight:500; color:var(--cream); margin-bottom:3px; }
+.af-icon {
+  width:32px; height:32px; background:var(--gold-bg);
+  border:1px solid var(--line); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--fhead); font-size:13px; color:var(--gold-lt);
+}
+.af-body h4 {
+  font-family:var(--fbody); font-size:13px; font-weight:500;
+  color:var(--cream); margin-bottom:3px;
+}
 .af-body p { font-size:12px; color:var(--muted); line-height:1.6; }
-.analyser-shell { background:var(--srf2); border:1px solid var(--line); display:flex; flex-direction:column; overflow:hidden; }
-.analyser-bar { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; background:var(--srf); border-bottom:1px solid var(--line); flex-shrink:0; }
+
+.analyser-shell {
+  background:var(--srf2);
+  border:1px solid var(--line);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+.analyser-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 24px;
+  background:var(--srf);
+  border-bottom:1px solid var(--line);
+  flex-shrink:0;
+}
 .analyser-bar-left { display:flex; align-items:center; gap:14px; }
 .a-dots { display:flex; gap:6px; }
 .a-dot { width:9px; height:9px; border-radius:50%; }
 .a-dot-r { background:rgba(209,107,107,0.5); }
 .a-dot-y { background:rgba(196,163,94,0.5); }
 .a-dot-g { background:rgba(76,175,110,0.5); }
-.analyser-url { font-family:var(--fmono); font-size:10px; color:var(--dimmed); letter-spacing:1px; padding:4px 14px; background:var(--srf3); border:1px solid var(--line); }
+.analyser-url {
+  font-family:var(--fmono); font-size:10px; color:var(--dimmed);
+  letter-spacing:1px; padding:4px 14px;
+  background:var(--srf3); border:1px solid var(--line);
+}
 .analyser-bar-right { display:flex; align-items:center; gap:16px; }
-.analyser-badge { font-family:var(--fmono); font-size:9px; color:var(--gold); letter-spacing:2px; padding:4px 10px; border:1px solid var(--line2); text-transform:uppercase; }
-.analyser-open-btn { display:inline-flex; align-items:center; gap:6px; font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; padding:5px 12px; border:1px solid var(--line); background:transparent; cursor:pointer; text-decoration:none; transition:all .25s; }
+.analyser-badge {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:2px; padding:4px 10px;
+  border:1px solid var(--line2); text-transform:uppercase;
+}
+.analyser-open-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase;
+  padding:5px 12px; border:1px solid var(--line);
+  background:transparent; cursor:pointer; text-decoration:none;
+  transition:all .25s;
+}
 .analyser-open-btn:hover { border-color:var(--line2); color:var(--gold-lt); }
 .analyser-open-btn svg { width:10px; height:10px; opacity:.6; }
-.analyser-expand-btn { background:transparent; border:1px solid var(--line); color:var(--muted); font-family:var(--fmono); font-size:9px; letter-spacing:2px; text-transform:uppercase; padding:5px 12px; cursor:pointer; transition:all .25s; display:flex; align-items:center; gap:6px; }
-.analyser-expand-btn:hover { border-color:var(--line2); color:var(--gold-lt); }
-.analyser-frame-wrap { position:relative; width:100%; height:820px; background:var(--srf3); }
-.analyser-frame-wrap.expanded { height:1100px; }
-.frame-loader { position:absolute; inset:0; z-index:5; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; background:var(--srf3); transition:opacity .6s ease; }
+
+.analyser-frame-wrap {
+  position:relative;
+  width:100%;
+  height:820px;
+  background:var(--srf3);
+}
+.frame-loader {
+  position:absolute; inset:0; z-index:5;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:20px;
+  background:var(--srf3);
+  transition:opacity .6s ease;
+}
 .frame-loader.hidden { opacity:0; pointer-events:none; }
-.loader-mark { width:56px; height:56px; border:1px solid var(--line2); display:flex; align-items:center; justify-content:center; font-family:var(--fhead); font-size:24px; font-weight:400; color:var(--gold-lt); animation:pulse-mark 2s ease-in-out infinite; }
-@keyframes pulse-mark { 0%,100%{ box-shadow:0 0 0 0 rgba(196,163,94,0.2); } 50%{ box-shadow:0 0 0 12px rgba(196,163,94,0); } }
-.loader-bar-wrap { width:200px; height:1px; background:var(--line); position:relative; overflow:hidden; }
-.loader-bar-fill { height:100%; background:var(--gold); animation:load-fill 2.5s ease-in-out infinite; }
-@keyframes load-fill { 0%{ width:0; opacity:1; } 80%{ width:100%; opacity:1; } 100%{ width:100%; opacity:0; } }
-.loader-text { font-family:var(--fmono); font-size:10px; color:var(--muted); letter-spacing:3px; text-transform:uppercase; }
-.analyser-iframe { width:100%; height:100%; border:none; display:block; filter:brightness(0.96) contrast(1.02); }
-.analyser-foot { display:flex; align-items:center; justify-content:space-between; padding:12px 24px; border-top:1px solid var(--line); background:var(--srf); flex-shrink:0; }
-.analyser-foot-label { font-family:var(--fmono); font-size:9px; color:var(--dimmed); letter-spacing:2px; text-transform:uppercase; }
-.analyser-foot-status { display:flex; align-items:center; gap:6px; font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:1px; }
+.loader-mark {
+  width:56px; height:56px;
+  border:1px solid var(--line2);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--fhead); font-size:24px; font-weight:400; color:var(--gold-lt);
+  animation:pulse-mark 2s ease-in-out infinite;
+}
+@keyframes pulse-mark {
+  0%,100%{ box-shadow:0 0 0 0 rgba(196,163,94,0.2); }
+  50%{ box-shadow:0 0 0 12px rgba(196,163,94,0); }
+}
+.loader-bar-wrap {
+  width:200px; height:1px; background:var(--line);
+  position:relative; overflow:hidden;
+}
+.loader-bar-fill {
+  height:100%; background:var(--gold);
+  animation:load-fill 2.5s ease-in-out infinite;
+}
+@keyframes load-fill {
+  0%{ width:0; opacity:1; }
+  80%{ width:100%; opacity:1; }
+  100%{ width:100%; opacity:0; }
+}
+.loader-text {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:3px; text-transform:uppercase;
+}
+.analyser-iframe {
+  width:100%; height:100%;
+  border:none; display:block;
+  filter:brightness(0.96) contrast(1.02);
+}
+
+.analyser-foot {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 24px;
+  border-top:1px solid var(--line);
+  background:var(--srf); flex-shrink:0;
+}
+.analyser-foot-label {
+  font-family:var(--fmono); font-size:9px; color:var(--dimmed);
+  letter-spacing:2px; text-transform:uppercase;
+}
+.analyser-foot-status {
+  display:flex; align-items:center; gap:6px;
+  font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:1px;
+}
 
 /* ── ROI ── */
 .roi-bg { background:var(--srf); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
@@ -491,18 +588,49 @@ section { position:relative; z-index:1; }
 .param-group { display:flex; flex-direction:column; gap:32px; }
 .param { display:flex; flex-direction:column; gap:10px; }
 .param-head { display:flex; justify-content:space-between; align-items:baseline; }
-.param-label { font-family:var(--fmono); font-size:10px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
-.param-val { font-family:var(--fhead); font-size:20px; font-weight:400; color:var(--gold-lt); }
-input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:1px; background:var(--line2); outline:none; cursor:pointer; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:14px; height:14px; background:var(--gold); border-radius:50%; border:2px solid var(--void); }
-input[type=range]::-moz-range-thumb { width:14px; height:14px; background:var(--gold); border-radius:50%; border:2px solid var(--void); }
-.result-panel { background:var(--srf2); border:1px solid var(--line); padding:40px; }
-.rp-label { font-family:var(--fmono); font-size:9px; color:var(--gold); letter-spacing:4px; text-transform:uppercase; margin-bottom:36px; padding-bottom:20px; border-bottom:1px solid var(--line); }
-.rp-roi { font-family:var(--fhead); font-size:72px; font-weight:300; color:var(--white); line-height:1; margin-bottom:6px; letter-spacing:-2px; }
+.param-label {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase;
+}
+.param-val {
+  font-family:var(--fhead); font-size:20px; font-weight:400; color:var(--gold-lt);
+}
+input[type=range] {
+  -webkit-appearance:none; appearance:none; width:100%;
+  height:1px; background:var(--line2); outline:none; cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; appearance:none;
+  width:14px; height:14px; background:var(--gold);
+  border-radius:50%; border:2px solid var(--void);
+}
+input[type=range]::-moz-range-thumb {
+  width:14px; height:14px; background:var(--gold);
+  border-radius:50%; border:2px solid var(--void);
+}
+.result-panel {
+  background:var(--srf2); border:1px solid var(--line);
+  padding:40px;
+}
+.rp-label {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:4px; text-transform:uppercase; margin-bottom:36px;
+  padding-bottom:20px; border-bottom:1px solid var(--line);
+}
+.rp-roi {
+  font-family:var(--fhead); font-size:72px; font-weight:300;
+  color:var(--white); line-height:1; margin-bottom:6px; letter-spacing:-2px;
+}
 .rp-roi.positive { color:#7EC8A0; }
-.rp-roi-sub { font-family:var(--fmono); font-size:10px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:36px; }
+.rp-roi-sub {
+  font-family:var(--fmono); font-size:10px; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase; margin-bottom:36px;
+}
 .rp-rows { display:flex; flex-direction:column; gap:0; }
-.rp-row { display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid var(--line); }
+.rp-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:16px 0; border-bottom:1px solid var(--line);
+}
 .rp-row:last-child { border:none; padding-bottom:0; }
 .rp-k { font-family:var(--fbody); font-size:14px; color:var(--muted); font-weight:300; }
 .rp-v { font-family:var(--fhead); font-size:20px; font-weight:400; color:var(--white); }
@@ -511,14 +639,24 @@ input[type=range]::-moz-range-thumb { width:14px; height:14px; background:var(--
 /* ── RISK ── */
 .risk-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); margin-top:0; }
 .risk-cell { background:var(--srf); padding:28px; }
-.rc-label { font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:3px; text-transform:uppercase; margin-bottom:20px; }
+.rc-label {
+  font-family:var(--fmono); font-size:9px; color:var(--muted);
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:20px;
+}
 .rc-score-row { display:flex; align-items:baseline; gap:4px; margin-bottom:14px; }
-.rc-score { font-family:var(--fhead); font-size:44px; font-weight:300; line-height:1; }
-.rc-score.l { color:#7EC8A0; } .rc-score.m { color:var(--gold-lt); } .rc-score.h { color:#D16B6B; }
+.rc-score {
+  font-family:var(--fhead); font-size:44px; font-weight:300; line-height:1;
+}
+.rc-score.l { color:#7EC8A0; }
+.rc-score.m { color:var(--gold-lt); }
+.rc-score.h { color:#D16B6B; }
 .rc-max { font-family:var(--fmono); font-size:14px; color:var(--dimmed); }
 .rc-bar { height:1px; background:rgba(255,255,255,0.06); margin-bottom:14px; position:relative; }
 .rc-fill { height:1px; position:absolute; top:0; left:0; }
-.rc-tag { display:inline-block; padding:4px 10px; font-family:var(--fmono); font-size:9px; letter-spacing:2px; text-transform:uppercase; }
+.rc-tag {
+  display:inline-block; padding:4px 10px;
+  font-family:var(--fmono); font-size:9px; letter-spacing:2px; text-transform:uppercase;
+}
 .rc-tag.l { background:rgba(126,200,160,.08); color:#7EC8A0; }
 .rc-tag.m { background:rgba(196,163,94,.08); color:var(--gold-lt); }
 .rc-tag.h { background:rgba(209,107,107,.08); color:#D16B6B; }
@@ -526,34 +664,87 @@ input[type=range]::-moz-range-thumb { width:14px; height:14px; background:var(--
 /* ── ECOSYSTEM ── */
 .eco-bg { background:var(--void); border-top:1px solid var(--line); }
 .eco-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
-.eco-card { background:var(--srf); border:1px solid var(--line); padding:40px 36px; position:relative; overflow:hidden; transition:border-color .35s, background .35s; }
+.eco-card {
+  background:var(--srf); border:1px solid var(--line);
+  padding:40px 36px;
+  position:relative; overflow:hidden;
+  transition:border-color .35s, background .35s;
+}
 .eco-card:hover { border-color:var(--line2); background:var(--srf2); }
-.eco-ghost { position:absolute; right:-10px; bottom:-20px; font-family:var(--fhead); font-size:120px; font-weight:300; color:rgba(196,163,94,0.04); line-height:1; pointer-events:none; }
-.eco-phase { font-family:var(--fmono); font-size:9px; color:var(--gold); letter-spacing:3px; text-transform:uppercase; margin-bottom:28px; display:flex; align-items:center; gap:10px; }
+.eco-ghost {
+  position:absolute; right:-10px; bottom:-20px;
+  font-family:var(--fhead); font-size:120px; font-weight:300;
+  color:rgba(196,163,94,0.04); line-height:1; pointer-events:none;
+}
+.eco-phase {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:28px;
+  display:flex; align-items:center; gap:10px;
+}
 .eco-phase::before { content:''; width:20px; height:1px; background:var(--gold); opacity:.5; }
-.eco-name { font-family:var(--fhead); font-size:28px; font-weight:400; color:var(--white); margin-bottom:16px; line-height:1.1; }
-.eco-desc { font-size:14px; font-weight:300; color:var(--muted); line-height:1.8; margin-bottom:28px; }
+.eco-name {
+  font-family:var(--fhead); font-size:28px; font-weight:400;
+  color:var(--white); margin-bottom:16px; line-height:1.1;
+}
+.eco-desc {
+  font-size:14px; font-weight:300; color:var(--muted);
+  line-height:1.8; margin-bottom:28px;
+}
 .eco-tags { display:flex; flex-wrap:wrap; gap:8px; }
-.etag { padding:5px 12px; border:1px solid var(--line); font-family:var(--fmono); font-size:9px; color:var(--dimmed); letter-spacing:1.5px; text-transform:uppercase; }
+.etag {
+  padding:5px 12px; border:1px solid var(--line);
+  font-family:var(--fmono); font-size:9px; color:var(--dimmed);
+  letter-spacing:1.5px; text-transform:uppercase;
+}
 
-.data-note { background:var(--gold-bg); border:1px solid var(--line2); padding:14px 20px; margin-bottom:32px; display:flex; align-items:center; gap:12px; }
+/* data note banner */
+.data-note {
+  background:var(--gold-bg); border:1px solid var(--line2);
+  padding:14px 20px; margin-bottom:32px;
+  display:flex; align-items:center; gap:12px;
+}
 .data-note-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
 .data-note p { font-family:var(--fmono); font-size:10px; color:var(--muted); letter-spacing:1px; }
 .data-note strong { color:var(--gold-lt); }
 
 /* ── FOOTER ── */
-footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 64px 40px; position:relative; z-index:1; }
+footer {
+  background:var(--ink); border-top:1px solid var(--line);
+  padding:72px 64px 40px; position:relative; z-index:1;
+}
 .footer-grid { display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:48px; margin-bottom:64px; }
-.footer-logo { font-family:var(--fhead); font-size:24px; font-weight:400; letter-spacing:5px; color:var(--white); text-transform:uppercase; margin-bottom:16px; display:block; }
+.footer-logo {
+  font-family:var(--fhead); font-size:24px; font-weight:400;
+  letter-spacing:5px; color:var(--white); text-transform:uppercase;
+  margin-bottom:16px; display:block;
+}
 .footer-logo em { color:var(--gold-lt); font-style:normal; }
-.footer-brand p { font-size:14px; font-weight:300; color:var(--muted); line-height:1.8; max-width:280px; }
-.footer-col h5 { font-family:var(--fmono); font-size:9px; color:var(--gold); letter-spacing:3px; text-transform:uppercase; margin-bottom:24px; }
-.footer-col a { display:block; font-size:14px; font-weight:300; color:var(--muted); text-decoration:none; margin-bottom:12px; transition:color .25s; letter-spacing:.3px; }
+.footer-brand p {
+  font-size:14px; font-weight:300; color:var(--muted);
+  line-height:1.8; max-width:280px;
+}
+.footer-col h5 {
+  font-family:var(--fmono); font-size:9px; color:var(--gold);
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:24px;
+}
+.footer-col a {
+  display:block; font-size:14px; font-weight:300; color:var(--muted);
+  text-decoration:none; margin-bottom:12px; transition:color .25s;
+  letter-spacing:.3px;
+}
 .footer-col a:hover { color:var(--cream2); }
-.footer-bottom { border-top:1px solid var(--line); padding-top:28px; display:flex; justify-content:space-between; align-items:center; }
-.footer-copy { font-family:var(--fmono); font-size:10px; color:var(--dimmed); letter-spacing:1.5px; }
+.footer-bottom {
+  border-top:1px solid var(--line); padding-top:28px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.footer-copy {
+  font-family:var(--fmono); font-size:10px; color:var(--dimmed); letter-spacing:1.5px;
+}
 .footer-links { display:flex; gap:28px; }
-.footer-links a { font-family:var(--fmono); font-size:10px; color:var(--dimmed); text-decoration:none; letter-spacing:1.5px; transition:color .25s; }
+.footer-links a {
+  font-family:var(--fmono); font-size:10px; color:var(--dimmed);
+  text-decoration:none; letter-spacing:1.5px; transition:color .25s;
+}
 .footer-links a:hover { color:var(--muted); }
 
 /* REVEAL ANIMATIONS */
@@ -563,11 +754,21 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
 .reveal-delay-2 { transition-delay:.2s; }
 .reveal-delay-3 { transition-delay:.3s; }
 
+.analyser-expand-btn {
+  background:transparent; border:1px solid var(--line);
+  color:var(--muted); font-family:var(--fmono); font-size:9px;
+  letter-spacing:2px; text-transform:uppercase;
+  padding:5px 12px; cursor:pointer; transition:all .25s;
+  display:flex; align-items:center; gap:6px;
+}
+.analyser-expand-btn:hover { border-color:var(--line2); color:var(--gold-lt); }
+.analyser-frame-wrap.expanded { height:1100px; }
+
 @media(max-width:1100px){
   nav { padding:0 28px; }
   .nav-links { display:none; }
   .hero, .ai-layout, .roi-layout, .chart-row, .analyser-layout { grid-template-columns:1fr; }
-  .hero { padding:140px 28px 80px; }
+  .hero { padding:120px 28px 80px; }
   .hero-left { padding-right:0; }
   .sec-inner { padding:72px 28px; }
   .analyser-left { position:static; }
@@ -576,20 +777,10 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
   .footer-grid { grid-template-columns:1fr 1fr; }
   footer { padding:48px 28px 28px; }
   .risk-row { margin:0 28px 72px; }
-  .data-banner { padding:6px 28px; }
 }
 </style>
 </head>
 <body>
-
-<!-- DATA FRESHNESS BANNER -->
-<div class="data-banner loading" id="dataBanner">
-  <div class="banner-left">
-    <div class="banner-dot" id="bannerDot"></div>
-    <span id="bannerText">Connecting to live dataset…</span>
-  </div>
-  <span id="bannerTime"></span>
-</div>
 
 <!-- NAV -->
 <nav>
@@ -616,7 +807,7 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
     <div class="hero-left">
       <div class="kicker"><span class="kicker-line"></span>Lumetha Realty Intelligence</div>
       <h1>Invest<br>with<br><em>precision.</em></h1>
-      <p class="hero-body">AI-powered real estate intelligence built exclusively for Gurgaon's most discerning investors. Price forecasting, ROI modelling, and risk analysis — synthesised across <span id="heroListingCount">—</span> live listings.</p>
+      <p class="hero-body">AI-powered real estate intelligence built exclusively for Gurgaon's most discerning investors. Price forecasting, ROI modelling, and risk analysis — synthesised across 560 live listings.</p>
       <div class="hero-actions">
         <a href="#analyser" class="btn-gold">Property Analyser</a>
         <a href="#dashboard" class="btn-ghost">View Markets</a>
@@ -625,45 +816,51 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
     <div class="hero-right">
       <div class="hero-panel">
         <div class="panel-header">
-          <span class="panel-label">Top Investment Score · Live</span>
+          <span class="panel-label">Intelligence Score · Live</span>
           <span class="live-indicator"><span class="live-dot"></span>Active</span>
         </div>
         <div class="score-display">
-          <div class="score-number" id="heroScore">—<span class="score-denom">/100</span></div>
-          <div class="score-loc" id="heroLocalityName">Loading…</div>
+          <!-- Udyog Vihar is top-ranked by investment score at 53.7 -->
+          <div class="score-number">53.7<span class="score-denom">/100</span></div>
+          <div class="score-loc">Udyog Vihar, Sector 18–20</div>
           <div class="score-subloc">Top Investment Score · Gurgaon</div>
         </div>
         <div class="score-metrics">
           <div class="sm-row">
             <span class="sm-key">Appr. Score</span>
-            <div class="sm-bar"><div class="sm-fill" id="heroApprBar" style="width:0%;background:var(--gold);"></div></div>
-            <span class="sm-val" id="heroApprVal" style="color:var(--gold-lt);">—</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:48%;background:var(--gold);"></div></div>
+            <span class="sm-val" style="color:var(--gold-lt);">48</span>
           </div>
           <div class="sm-row">
             <span class="sm-key">ROI Adj.</span>
-            <div class="sm-bar"><div class="sm-fill" id="heroRoiBar" style="width:0%;background:var(--cream2);"></div></div>
-            <span class="sm-val" id="heroRoiVal" style="color:var(--cream2);">—</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:27.7%;background:var(--cream2);"></div></div>
+            <span class="sm-val" style="color:var(--cream2);">27.7</span>
           </div>
           <div class="sm-row">
             <span class="sm-key">Infra Impact</span>
-            <div class="sm-bar"><div class="sm-fill" id="heroInfraBar" style="width:0%;background:var(--muted);"></div></div>
-            <span class="sm-val" id="heroInfraVal" style="color:var(--muted);">—</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:35%;background:var(--muted);"></div></div>
+            <span class="sm-val" style="color:var(--muted);">35</span>
+          </div>
+          <div class="sm-row">
+            <span class="sm-key">Grade</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:60%;background:#7EC8A0;"></div></div>
+            <span class="sm-val" style="color:#7EC8A0;">B</span>
           </div>
         </div>
       </div>
       <div class="hero-stats-row">
         <div class="hstat">
-          <div class="hstat-val">₹<span id="heroAvgPsf">—</span></div>
+          <div class="hstat-val">₹<span>12,726</span></div>
           <div class="hstat-key">Avg. price / sqft</div>
-          <div class="hstat-chg pos"><span id="heroTotalListings">—</span> live listings</div>
+          <div class="hstat-chg pos">560 live listings</div>
         </div>
         <div class="hstat">
-          <div class="hstat-val"><span id="heroAvgScore">—</span></div>
+          <div class="hstat-val"><span>44.3</span></div>
           <div class="hstat-key">Avg. appr. potential</div>
           <div class="hstat-chg pos">Score / 100</div>
         </div>
         <div class="hstat">
-          <div class="hstat-val"><span id="heroAvgRoi">—</span>%</div>
+          <div class="hstat-val"><span>25.6%</span></div>
           <div class="hstat-key">Avg. risk-adj. ROI</div>
           <div class="hstat-chg pos">Dataset median</div>
         </div>
@@ -672,11 +869,33 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
   </div>
 </section>
 
-<!-- TICKER -->
+<!-- TICKER — real locality data from CSV -->
 <div class="ticker">
   <div class="ticker-wrap" id="tickerEl">
-    <!-- populated by JS -->
-    <span class="tick"><span class="tn">Loading market data…</span><span class="tv">—</span></span>
+    <span class="tick"><span class="tn">Sector 43 (Golf Course Rd)</span><span class="tv">₹24,296/sqft</span><span class="tc pos">▲ Premium</span></span>
+    <span class="tick"><span class="tn">Sector 77 (Dwarka Expy)</span><span class="tv">₹24,156/sqft</span><span class="tc pos">▲ High Growth</span></span>
+    <span class="tick"><span class="tn">Sector 49 (Golf Course Ext)</span><span class="tv">₹21,872/sqft</span><span class="tc pos">▲ Stable</span></span>
+    <span class="tick"><span class="tn">Golf Course Road</span><span class="tv">₹21,315/sqft</span><span class="tc pos">▲ Established</span></span>
+    <span class="tick"><span class="tn">Sector 103 (Dwarka Expy)</span><span class="tv">₹21,116/sqft</span><span class="tc pos">▲ ROI: 23.9%</span></span>
+    <span class="tick"><span class="tn">Sector 65 (Golf Course Ext)</span><span class="tv">₹20,365/sqft</span><span class="tc" style="color:var(--muted);">— Hold</span></span>
+    <span class="tick"><span class="tn">Sector 113 (Dwarka Expy)</span><span class="tv">₹19,169/sqft</span><span class="tc pos">▲ Appr: 44.9</span></span>
+    <span class="tick"><span class="tn">DLF Phase 5</span><span class="tv">₹17,908/sqft</span><span class="tc pos">▲ Tier 1</span></span>
+    <span class="tick"><span class="tn">Cyber City</span><span class="tv">₹17,881/sqft</span><span class="tc pos">▲ Commercial</span></span>
+    <span class="tick"><span class="tn">MG Road</span><span class="tv">₹13,881/sqft</span><span class="tc pos">▲ Score: 48.6</span></span>
+    <span class="tick"><span class="tn">Sector 89 (Dwarka Expy)</span><span class="tv">₹13,443/sqft</span><span class="tc pos">▲ Appr: 53.2</span></span>
+    <span class="tick"><span class="tn">Ardee City</span><span class="tv">₹8,876/sqft</span><span class="tc pos">▲ Score: 53.6</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="tick"><span class="tn">Sector 43 (Golf Course Rd)</span><span class="tv">₹24,296/sqft</span><span class="tc pos">▲ Premium</span></span>
+    <span class="tick"><span class="tn">Sector 77 (Dwarka Expy)</span><span class="tv">₹24,156/sqft</span><span class="tc pos">▲ High Growth</span></span>
+    <span class="tick"><span class="tn">Sector 49 (Golf Course Ext)</span><span class="tv">₹21,872/sqft</span><span class="tc pos">▲ Stable</span></span>
+    <span class="tick"><span class="tn">Golf Course Road</span><span class="tv">₹21,315/sqft</span><span class="tc pos">▲ Established</span></span>
+    <span class="tick"><span class="tn">Sector 103 (Dwarka Expy)</span><span class="tv">₹21,116/sqft</span><span class="tc pos">▲ ROI: 23.9%</span></span>
+    <span class="tick"><span class="tn">Sector 65 (Golf Course Ext)</span><span class="tv">₹20,365/sqft</span><span class="tc" style="color:var(--muted);">— Hold</span></span>
+    <span class="tick"><span class="tn">DLF Phase 5</span><span class="tv">₹17,908/sqft</span><span class="tc pos">▲ Tier 1</span></span>
+    <span class="tick"><span class="tn">Cyber City</span><span class="tv">₹17,881/sqft</span><span class="tc pos">▲ Commercial</span></span>
+    <span class="tick"><span class="tn">MG Road</span><span class="tv">₹13,881/sqft</span><span class="tc pos">▲ Score: 48.6</span></span>
+    <span class="tick"><span class="tn">Sector 89 (Dwarka Expy)</span><span class="tv">₹13,443/sqft</span><span class="tc pos">▲ Appr: 53.2</span></span>
+    <span class="tick"><span class="tn">Ardee City</span><span class="tv">₹8,876/sqft</span><span class="tc pos">▲ Score: 53.6</span></span>
   </div>
 </div>
 
@@ -685,15 +904,39 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
   <div class="sec-inner reveal">
     <div class="sec-kicker">AI Concierge</div>
     <div class="sec-title">Private Intelligence.<br><em>Instant answers.</em></div>
-    <p class="sec-body">Ask anything about the Gurgaon market. Our intelligence engine synthesises price trends, infrastructure data, builder performance, and investment patterns — trained on <span id="aiListingCount">—</span> scored listings across 30+ micro-markets.</p>
+    <p class="sec-body">Ask anything about the Gurgaon market. Our intelligence engine synthesises price trends, infrastructure data, builder performance, and investment patterns — trained on 560 scored listings across 30+ micro-markets.</p>
 
     <div class="ai-layout">
       <div>
         <div class="capability-list">
-          <div class="cap"><span class="cap-num">01</span><div class="cap-body"><h4>Price Forecasting</h4><p>ML-based appreciation modelling across all Gurgaon micro-markets. Full market coverage from affordable to ultra-premium.</p></div></div>
-          <div class="cap"><span class="cap-num">02</span><div class="cap-body"><h4>Infrastructure Impact</h4><p>Quantified impact scores for metro extension, highway proximity, IT-SEZ influence, and urban development pipelines — each listing scored individually.</p></div></div>
-          <div class="cap"><span class="cap-num">03</span><div class="cap-body"><h4>ROI & Risk Scoring</h4><p>Multi-factor investment scoring: builder tier, livability index, metro accessibility, healthcare, and employment proximity.</p></div></div>
-          <div class="cap"><span class="cap-num">04</span><div class="cap-body"><h4>Sector Intelligence</h4><p id="sectorIntelText">Buy vs Hold signals across live listings. Average payback horizon updated from dataset.</p></div></div>
+          <div class="cap">
+            <span class="cap-num">01</span>
+            <div class="cap-body">
+              <h4>Price Forecasting</h4>
+              <p>ML-based appreciation modelling across all Gurgaon micro-markets. Dataset spans ₹3,931–₹62,789 per sqft — full market coverage from affordable to ultra-premium.</p>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="cap-num">02</span>
+            <div class="cap-body">
+              <h4>Infrastructure Impact</h4>
+              <p>Quantified impact scores for metro extension, highway proximity, IT-SEZ influence, and urban development pipelines — each listing scored individually.</p>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="cap-num">03</span>
+            <div class="cap-body">
+              <h4>ROI & Risk Scoring</h4>
+              <p>Multi-factor investment scoring: builder tier (Tier 1 / Tier 2 / Individual), livability index, metro accessibility, healthcare, and employment proximity.</p>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="cap-num">04</span>
+            <div class="cap-body">
+              <h4>Sector Intelligence</h4>
+              <p>Buy vs Hold signals across 560 listings — 239 rated Buy (Grade B), 321 rated Hold (Grade C). Average payback horizon: 29.5 years.</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -704,7 +947,7 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
             <div class="conc-mark">L</div>
             <div>
               <div class="conc-name">Lumetha Intelligence</div>
-              <div class="conc-sub" id="concSub">Loading dataset…</div>
+              <div class="conc-sub">560 Listings · Gurgaon Market · Live Analysis</div>
             </div>
           </div>
         </div>
@@ -712,12 +955,16 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
           <button class="sug" onclick="useSug(this)">Best Buy-rated localities?</button>
           <button class="sug" onclick="useSug(this)">Dwarka Expressway appreciation outlook</button>
           <button class="sug" onclick="useSug(this)">Top risk-adjusted ROI corridors</button>
-          <button class="sug" onclick="useSug(this)">Compare top 2 localities by score</button>
+          <button class="sug" onclick="useSug(this)">Ardee City vs Sohna Road comparison</button>
         </div>
         <div class="conc-msgs" id="msgs">
           <div class="cmsg ai">
-            <div class="cmsg-bub" id="concWelcome">Good morning. I'm your Lumetha intelligence concierge. Loading live dataset…</div>
-            <div class="cmsg-meta">LUMETHA INTELLIGENCE · INITIALISING</div>
+            <div class="cmsg-bub">Good morning. I'm your Lumetha intelligence concierge, with deep knowledge of the Gurgaon property market across 560 scored listings.
+
+I can analyse investment scores, appreciate projections, risk-adjusted ROI, and compare micro-markets across any budget — from ₹39L in Palam Vihar to ₹6.3Cr in Golf Course Road.
+
+How may I assist you today?</div>
+            <div class="cmsg-meta">LUMETHA INTELLIGENCE · 560 LISTINGS LOADED</div>
           </div>
         </div>
         <div class="conc-input-row">
@@ -735,34 +982,76 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
     <div class="sec-kicker">Property Analyser</div>
     <div class="sec-title">Deep-dive<br><em>any property.</em></div>
     <p class="sec-body">Run full AI-powered analysis on any listing — valuation, neighbourhood scoring, price history, growth potential, and rental yield — all in a single tool.</p>
+
     <div class="analyser-layout">
       <div class="analyser-left">
         <div class="analyser-features">
-          <div class="af"><div class="af-icon">₹</div><div class="af-body"><h4>Instant Valuation</h4><p>AI-assessed fair market value vs. listing price. Know if you're getting a deal or overpaying.</p></div></div>
-          <div class="af"><div class="af-icon">↗</div><div class="af-body"><h4>Price History & Trends</h4><p>Historical price trajectory for the locality, with forward appreciation projections.</p></div></div>
-          <div class="af"><div class="af-icon">⊙</div><div class="af-body"><h4>Neighbourhood Score</h4><p>Infrastructure, connectivity, social amenities, and future development proximity — all scored.</p></div></div>
-          <div class="af"><div class="af-icon">%</div><div class="af-body"><h4>Rental Yield Forecast</h4><p>Projected rental income based on current demand, comparable leases, and micro-market depth.</p></div></div>
-          <div class="af"><div class="af-icon">⚑</div><div class="af-body"><h4>Risk Flags</h4><p>Builder tier, RERA compliance, legal encumbrances, and delivery risk — all flagged per listing.</p></div></div>
+          <div class="af">
+            <div class="af-icon">₹</div>
+            <div class="af-body">
+              <h4>Instant Valuation</h4>
+              <p>AI-assessed fair market value vs. listing price. Know if you're getting a deal or overpaying.</p>
+            </div>
+          </div>
+          <div class="af">
+            <div class="af-icon">↗</div>
+            <div class="af-body">
+              <h4>Price History & Trends</h4>
+              <p>Historical price trajectory for the locality, with forward appreciation projections.</p>
+            </div>
+          </div>
+          <div class="af">
+            <div class="af-icon">⊙</div>
+            <div class="af-body">
+              <h4>Neighbourhood Score</h4>
+              <p>Infrastructure, connectivity, social amenities, and future development proximity — all scored.</p>
+            </div>
+          </div>
+          <div class="af">
+            <div class="af-icon">%</div>
+            <div class="af-body">
+              <h4>Rental Yield Forecast</h4>
+              <p>Projected rental income based on current demand, comparable leases, and micro-market depth.</p>
+            </div>
+          </div>
+          <div class="af">
+            <div class="af-icon">⚑</div>
+            <div class="af-body">
+              <h4>Risk Flags</h4>
+              <p>Builder tier, RERA compliance, legal encumbrances, and delivery risk — all flagged per listing.</p>
+            </div>
+          </div>
         </div>
         <div style="margin-top:36px;padding:24px;background:var(--gold-bg);border:1px solid var(--line);">
           <div style="font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Powered by</div>
           <div style="font-family:var(--fhead);font-size:22px;font-weight:400;color:var(--white);margin-bottom:8px;">Lumetha AI Engine</div>
-          <p style="font-size:13px;font-weight:300;color:var(--muted);line-height:1.7;" id="engineDesc">Trained on Gurgaon listings across 30+ micro-markets, covering 5 property types and 3 builder tiers.</p>
+          <p style="font-size:13px;font-weight:300;color:var(--muted);line-height:1.7;">Trained on 560 Gurgaon listings across 30+ micro-markets, covering 5 property types and 3 builder tiers.</p>
         </div>
       </div>
+
       <div class="analyser-shell reveal reveal-delay-1">
         <div class="analyser-bar">
           <div class="analyser-bar-left">
-            <div class="a-dots"><div class="a-dot a-dot-r"></div><div class="a-dot a-dot-y"></div><div class="a-dot a-dot-g"></div></div>
+            <div class="a-dots">
+              <div class="a-dot a-dot-r"></div>
+              <div class="a-dot a-dot-y"></div>
+              <div class="a-dot a-dot-g"></div>
+            </div>
             <div class="analyser-url">realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app</div>
           </div>
           <div class="analyser-bar-right">
             <span class="analyser-badge">Live · AI Powered</span>
             <button class="analyser-expand-btn" onclick="toggleExpand()" id="expandBtn">
-              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/></svg>Expand
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              Expand
             </button>
             <a href="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app" target="_blank" class="analyser-open-btn">
-              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1H1V11H11V7M11 1H7M11 1V5M6 6L11 1" stroke="currentColor" stroke-width="1.2"/></svg>Open Full
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 1H1V11H11V7M11 1H7M11 1V5M6 6L11 1" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              Open Full
             </a>
           </div>
         </div>
@@ -772,14 +1061,22 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
             <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
             <div class="loader-text">Initialising Analyser</div>
           </div>
-          <iframe id="analyserFrame" class="analyser-iframe"
+          <iframe
+            id="analyserFrame"
+            class="analyser-iframe"
             src="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app/?embed=true&embed_options=dark_theme,hide_loading_screen,hide_footer"
-            title="Lumetha Property Analyser" allow="clipboard-read; clipboard-write"
-            loading="lazy" onload="frameLoaded()"></iframe>
+            title="Lumetha Property Analyser"
+            allow="clipboard-read; clipboard-write"
+            loading="lazy"
+            onload="frameLoaded()"
+          ></iframe>
         </div>
         <div class="analyser-foot">
           <span class="analyser-foot-label">Lumetha Property Analyser · Gurgaon & NCR</span>
-          <div class="analyser-foot-status"><span class="live-dot" style="width:4px;height:4px;"></span><span id="frameStatus">Connecting…</span></div>
+          <div class="analyser-foot-status">
+            <span class="live-dot" style="width:4px;height:4px;"></span>
+            <span id="frameStatus">Connecting…</span>
+          </div>
         </div>
       </div>
     </div>
@@ -791,52 +1088,169 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
   <div class="sec-inner reveal">
     <div class="sec-kicker">Market Intelligence</div>
     <div class="sec-title">Gurgaon<br><em>at a glance.</em></div>
-    <p class="sec-body">Analytics derived from live scored listings across Gurgaon. Price distributions, transaction profiles, and growth patterns across all tracked micro-markets.</p>
+    <p class="sec-body">Analytics derived from 560 live scored listings across Gurgaon. Price distributions, transaction profiles, and growth patterns across all tracked micro-markets.</p>
 
+    <!-- Data source note -->
     <div class="data-note">
       <div class="data-note-dot"></div>
-      <p id="dataNoteText"><strong>Dataset loading…</strong></p>
+      <p><strong>Dataset: 560 listings</strong> · Gurgaon, 2024–25 · 30+ micro-markets · Avg investment score: 48.8 · 42.7% rated Buy · Median price: ₹11,255/sqft</p>
     </div>
 
     <div class="kpi-row reveal">
-      <div class="kpi"><div class="kpi-label">Average Price / Sqft</div><div class="kpi-val gold" id="kpiAvgPsf">—</div><div class="kpi-chg pos" id="kpiMedianPsf">Median: loading…</div></div>
-      <div class="kpi"><div class="kpi-label">Listings Scored</div><div class="kpi-val" id="kpiListings">—</div><div class="kpi-chg pos">30+ micro-markets</div></div>
-      <div class="kpi"><div class="kpi-label">Avg. Risk-Adj. ROI</div><div class="kpi-val gold" id="kpiRoi">—</div><div class="kpi-chg pos" id="kpiPayback">Avg. payback: loading…</div></div>
-      <div class="kpi"><div class="kpi-label">Buy-Rated Listings</div><div class="kpi-val" id="kpiBuy">—</div><div class="kpi-chg" id="kpiBuyPct" style="color:var(--muted);">loading…</div></div>
+      <div class="kpi">
+        <div class="kpi-label">Average Price / Sqft</div>
+        <div class="kpi-val gold">₹12,726</div>
+        <div class="kpi-chg pos">Median: ₹11,255/sqft</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Listings Scored</div>
+        <div class="kpi-val">560</div>
+        <div class="kpi-chg pos">30+ micro-markets</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Avg. Risk-Adj. ROI</div>
+        <div class="kpi-val gold">25.6%</div>
+        <div class="kpi-chg pos">Avg. payback: 29.5 yrs</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Buy-Rated Listings</div>
+        <div class="kpi-val">239</div>
+        <div class="kpi-chg" style="color:var(--muted);">42.7% of dataset</div>
+      </div>
     </div>
 
     <div class="chart-row reveal">
       <div class="chart-panel">
         <div class="cp-title">Price Distribution — Key Corridors</div>
-        <div class="cp-sub">₹ PER SQFT · LIVE DATASET AVERAGES</div>
-        <div style="position:relative;height:240px;"><canvas id="priceC"></canvas></div>
+        <div class="cp-sub">₹ PER SQFT · ACTUAL DATASET AVERAGES · 2024–25</div>
+        <div style="position:relative;height:240px;">
+          <canvas id="priceC"></canvas>
+        </div>
       </div>
       <div class="chart-panel">
         <div class="cp-title">Listing Budget Bands</div>
-        <div class="cp-sub">BY PRICE RANGE · LIVE DATASET</div>
-        <div id="budgetLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;"></div>
-        <div style="position:relative;height:188px;"><canvas id="typeC"></canvas></div>
+        <div class="cp-sub">BY PRICE RANGE · 560 LISTINGS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#C4A35E;display:inline-block;"></span>₹1–2CR 50%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#EDE8E0;display:inline-block;"></span>₹2–5CR 31%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#7EC8A0;display:inline-block;"></span>UNDER ₹1CR 16%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#6E6860;display:inline-block;"></span>ABOVE ₹5CR 3%</span>
+        </div>
+        <div style="position:relative;height:188px;">
+          <canvas id="typeC"></canvas>
+        </div>
       </div>
     </div>
 
     <div class="chart-panel reveal">
       <div class="cp-title">Investment Score vs Price/Sqft — Top Localities</div>
-      <div class="cp-sub">INVESTMENT SCORE (0–100) · LIVE DATA · ALL LOCALITIES WITH ≥2 LISTINGS</div>
-      <div style="position:relative;height:220px;"><canvas id="sectorC"></canvas></div>
+      <div class="cp-sub">INVESTMENT SCORE (0–100) · DATASET DERIVED · ALL LOCALITIES WITH ≥3 LISTINGS</div>
+      <div style="position:relative;height:220px;">
+        <canvas id="sectorC"></canvas>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SECTOR SCORING -->
+<!-- SECTOR SCORING — updated from CSV top localities by investment score -->
 <section id="sectors" class="sectors-bg">
   <div class="sec-inner reveal">
     <div class="sec-kicker">Investment Scoring</div>
     <div class="sec-title">Ranked<br><em>by intelligence.</em></div>
-    <p class="sec-body">Every Gurgaon micro-market scored across twelve parameters: price trajectory, infrastructure proximity, builder quality, demand depth, rental potential, and risk profile. Ranked by composite investment score from live data.</p>
+    <p class="sec-body">Every Gurgaon micro-market scored across twelve parameters: price trajectory, infrastructure proximity, builder quality, demand depth, rental potential, and risk profile. Ranked by composite investment score from 560 live listings.</p>
   </div>
-  <div class="sectors-grid" id="sectorsGrid">
-    <!-- populated by JS -->
-    <div class="sc reveal" style="opacity:1;transform:none;"><div style="font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:2px;">Loading sector data…</div></div>
+
+  <div class="sectors-grid">
+    <!-- Rank 1: Udyog Vihar — score 53.7, ₹11,140/sqft, appr 48.0, roi 27.7 -->
+    <div class="sc reveal">
+      <div class="sc-rank">RANK 01</div>
+      <div class="sc-name">Udyog Vihar</div>
+      <div class="sc-type">Employment-Linked Residential</div>
+      <div class="sc-score-row"><span class="sc-score">53.7</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹11,140/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">48.0 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">27.7%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
+      </div>
+    </div>
+    <!-- Rank 2: Ardee City — score 53.6, ₹8,876/sqft, appr 54.5, roi 30.4 -->
+    <div class="sc reveal reveal-delay-1">
+      <div class="sc-rank">RANK 02</div>
+      <div class="sc-name">Ardee City</div>
+      <div class="sc-type">Mid-Segment Residential</div>
+      <div class="sc-score-row"><span class="sc-score">53.6</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹8,876/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">54.5 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">30.4%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
+      </div>
+    </div>
+    <!-- Rank 3: South City — score 53.4, ₹9,057/sqft, appr 52.9, roi 29.7 -->
+    <div class="sc reveal reveal-delay-2">
+      <div class="sc-rank">RANK 03</div>
+      <div class="sc-name">South City</div>
+      <div class="sc-type">Established Residential</div>
+      <div class="sc-score-row"><span class="sc-score">53.4</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹9,057/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">52.9 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">29.7%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
+      </div>
+    </div>
+    <!-- Rank 4: Sector 57 — score 52.8, ₹10,604/sqft, appr 45.8, roi 26.7 -->
+    <div class="sc reveal">
+      <div class="sc-rank">RANK 04</div>
+      <div class="sc-name">Sector 57</div>
+      <div class="sc-type">Premium Residential</div>
+      <div class="sc-score-row"><span class="sc-score">52.8</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹10,604/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">45.8 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">26.7%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
+      </div>
+    </div>
+    <!-- Rank 5: Nirvana Country — score 51.5, ₹10,054/sqft, appr 47.4, roi 27.2 -->
+    <div class="sc reveal reveal-delay-1">
+      <div class="sc-rank">RANK 05</div>
+      <div class="sc-name">Nirvana Country</div>
+      <div class="sc-type">Gated Community</div>
+      <div class="sc-score-row"><span class="sc-score">51.5</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹10,054/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">47.4 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">27.2%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
+      </div>
+    </div>
+    <!-- Rank 6: Sohna Road — score 50.0, ₹9,935/sqft, appr 50.9, roi 28.4 -->
+    <div class="sc reveal reveal-delay-2">
+      <div class="sc-rank">RANK 06</div>
+      <div class="sc-name">Sohna Road</div>
+      <div class="sc-type">High-Growth Corridor</div>
+      <div class="sc-score-row"><span class="sc-score">50.0</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹9,935/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">50.9 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">28.4%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:var(--gold-lt);">Hold</span></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -845,43 +1259,108 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
   <div class="sec-inner reveal">
     <div class="sec-kicker">Return Engine</div>
     <div class="sec-title">Model your<br><em>returns.</em></div>
-    <p class="sec-body" id="roiDesc">Adjust the parameters below to simulate your investment scenario. Defaults seeded from live dataset averages.</p>
+    <p class="sec-body">Adjust the parameters below to simulate your investment scenario. Defaults seeded from dataset averages: ₹12,726/sqft, 25.6% risk-adjusted ROI, 29.5 year payback horizon.</p>
+
     <div class="roi-layout">
       <div class="param-group">
-        <div class="param"><div class="param-head"><span class="param-label">Investment Amount</span><span class="param-val" id="pInvest">₹1,00,00,000</span></div><input type="range" min="5000000" max="100000000" step="500000" value="10000000" id="sInvest" oninput="calcROI()"></div>
-        <div class="param"><div class="param-head"><span class="param-label">Holding Period</span><span class="param-val" id="pHold">5 Years</span></div><input type="range" min="1" max="20" step="1" value="5" id="sHold" oninput="calcROI()"></div>
-        <div class="param"><div class="param-head"><span class="param-label">Annual Appreciation</span><span class="param-val" id="pAppr">8.0%</span></div><input type="range" min="3" max="25" step="0.5" value="8" id="sAppr" oninput="calcROI()"></div>
-        <div class="param"><div class="param-head"><span class="param-label">Rental Yield</span><span class="param-val" id="pYield">3.4%</span></div><input type="range" min="1" max="10" step="0.1" value="3.4" id="sYield" oninput="calcROI()"></div>
+        <div class="param">
+          <div class="param-head">
+            <span class="param-label">Investment Amount</span>
+            <span class="param-val" id="pInvest">₹1,00,00,000</span>
+          </div>
+          <input type="range" min="5000000" max="100000000" step="500000" value="10000000" id="sInvest" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head">
+            <span class="param-label">Holding Period</span>
+            <span class="param-val" id="pHold">5 Years</span>
+          </div>
+          <input type="range" min="1" max="20" step="1" value="5" id="sHold" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head">
+            <span class="param-label">Annual Appreciation</span>
+            <span class="param-val" id="pAppr">8.0%</span>
+          </div>
+          <!-- Default 8% based on dataset avg appreciation potential ~44 / 100 scale -->
+          <input type="range" min="3" max="25" step="0.5" value="8" id="sAppr" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head">
+            <span class="param-label">Rental Yield</span>
+            <span class="param-val" id="pYield">3.4%</span>
+          </div>
+          <!-- 3.4% based on dataset avg payback years of ~29.5 -->
+          <input type="range" min="1" max="10" step="0.1" value="3.4" id="sYield" oninput="calcROI()">
+        </div>
       </div>
+
       <div class="result-panel">
         <div class="rp-label">Projected Returns</div>
         <div class="rp-roi positive" id="rROI">+56.5%</div>
         <div class="rp-roi-sub" id="rSub">TOTAL ROI OVER 5 YEARS</div>
         <div class="rp-rows">
-          <div class="rp-row"><span class="rp-k">Exit Value</span><span class="rp-v" id="rExit" style="color:var(--gold-lt);">—</span></div>
-          <div class="rp-row"><span class="rp-k">Total Rental Income</span><span class="rp-v" id="rRental" style="color:#7EC8A0;">—</span></div>
-          <div class="rp-row"><span class="rp-k">Capital Gain</span><span class="rp-v" id="rGain">—</span></div>
-          <div class="rp-row"><span class="rp-k">Net Profit</span><span class="rp-v" id="rNet" style="color:#7EC8A0;font-size:24px;">—</span></div>
-          <div class="rp-row"><span class="rp-k">CAGR</span><span class="rp-v" id="rCAGR">—</span></div>
+          <div class="rp-row">
+            <span class="rp-k">Exit Value</span>
+            <span class="rp-v" id="rExit" style="color:var(--gold-lt);">₹1,46,93,281</span>
+          </div>
+          <div class="rp-row">
+            <span class="rp-k">Total Rental Income</span>
+            <span class="rp-v" id="rRental" style="color:#7EC8A0;">₹17,00,000</span>
+          </div>
+          <div class="rp-row">
+            <span class="rp-k">Capital Gain</span>
+            <span class="rp-v" id="rGain">₹46,93,281</span>
+          </div>
+          <div class="rp-row">
+            <span class="rp-k">Net Profit</span>
+            <span class="rp-v" id="rNet" style="color:#7EC8A0;font-size:24px;">₹63,93,281</span>
+          </div>
+          <div class="rp-row">
+            <span class="rp-k">CAGR</span>
+            <span class="rp-v" id="rCAGR">8.0%</span>
+          </div>
         </div>
-        <div class="roi-chart-box"><canvas id="roiC"></canvas></div>
+        <div class="roi-chart-box">
+          <canvas id="roiC"></canvas>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- RISK -->
+<!-- RISK — updated from dataset scores -->
 <section style="background:var(--ink);border-top:1px solid var(--line);">
   <div class="sec-inner reveal" style="padding-bottom:0;">
     <div class="sec-kicker">Risk Intelligence</div>
     <div class="sec-title">Know your<br><em>exposure.</em></div>
-    <p class="sec-body" id="riskDesc">Multi-dimensional risk scoring derived from live listings. Updated automatically when dataset changes.</p>
+    <p class="sec-body">Multi-dimensional risk scoring derived from 560 listings. Infrastructure impact average: 35/100. Livability index average: 36.9/100. Builder tier distribution: 35% Tier 1, 57% Tier 2, 8% Individual.</p>
   </div>
   <div class="risk-row reveal" style="margin:0 64px 100px;">
-    <div class="risk-cell"><div class="rc-label">Infra Impact Score</div><div class="rc-score-row"><span class="rc-score m" id="riskInfra">—</span><span class="rc-max">/100</span></div><div class="rc-bar"><div class="rc-fill" id="riskInfraBar" style="width:0%;background:var(--gold);"></div></div><span class="rc-tag m">Dataset Avg.</span></div>
-    <div class="risk-cell"><div class="rc-label">Livability Index</div><div class="rc-score-row"><span class="rc-score m" id="riskLivability">—</span><span class="rc-max">/100</span></div><div class="rc-bar"><div class="rc-fill" id="riskLivabilityBar" style="width:0%;background:var(--gold);"></div></div><span class="rc-tag m">Dataset Avg.</span></div>
-    <div class="risk-cell"><div class="rc-label">Tier 1 Builder Share</div><div class="rc-score-row"><span class="rc-score l" id="riskTier1">—</span><span class="rc-max">%</span></div><div class="rc-bar"><div class="rc-fill" id="riskTier1Bar" style="width:0%;background:#7EC8A0;"></div></div><span class="rc-tag l" id="riskTier1Label">Listings</span></div>
-    <div class="risk-cell"><div class="rc-label">Buy-Grade Listings</div><div class="rc-score-row"><span class="rc-score l" id="riskBuyPct">—</span><span class="rc-max">%</span></div><div class="rc-bar"><div class="rc-fill" id="riskBuyBar" style="width:0%;background:#7EC8A0;"></div></div><span class="rc-tag l" id="riskBuyLabel">of total</span></div>
+    <div class="risk-cell">
+      <div class="rc-label">Infra Impact Score</div>
+      <div class="rc-score-row"><span class="rc-score m">35</span><span class="rc-max">/100</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:35%;background:var(--gold);"></div></div>
+      <span class="rc-tag m">Dataset Avg.</span>
+    </div>
+    <div class="risk-cell">
+      <div class="rc-label">Livability Index</div>
+      <div class="rc-score-row"><span class="rc-score m">36.9</span><span class="rc-max">/100</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:36.9%;background:var(--gold);"></div></div>
+      <span class="rc-tag m">Dataset Avg.</span>
+    </div>
+    <div class="risk-cell">
+      <div class="rc-label">Tier 1 Builder Share</div>
+      <div class="rc-score-row"><span class="rc-score l">35</span><span class="rc-max">%</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:35%;background:#7EC8A0;"></div></div>
+      <span class="rc-tag l">197 Listings</span>
+    </div>
+    <div class="risk-cell">
+      <div class="rc-label">Buy-Grade Listings</div>
+      <div class="rc-score-row"><span class="rc-score l">42.7</span><span class="rc-max">%</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:42.7%;background:#7EC8A0;"></div></div>
+      <span class="rc-tag l">239 of 560</span>
+    </div>
   </div>
 </section>
 
@@ -891,10 +1370,44 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
     <div class="sec-kicker">The Platform</div>
     <div class="sec-title">One ecosystem.<br><em>Three futures.</em></div>
     <p class="sec-body">Lumetha is built as a unified AI platform — sharing intelligence infrastructure, user systems, and data engines across every product.</p>
+
     <div class="eco-grid">
-      <div class="eco-card reveal"><div class="eco-ghost">I</div><div class="eco-phase">Stage One · Now</div><div class="eco-name">LifeQuest AI</div><p class="eco-desc">A gamified life simulator where real habits drive virtual progression. Productivity becomes gameplay. AI becomes your personal mentor.</p><div class="eco-tags"><span class="etag">Habit Engine</span><span class="etag">XP System</span><span class="etag">AI Coach</span><span class="etag">City Builder</span></div></div>
-      <div class="eco-card reveal reveal-delay-1" style="border-color:var(--line2);"><div class="eco-ghost">II</div><div class="eco-phase" style="color:var(--gold);">Stage Two · Active</div><div class="eco-name">Lumetha Realty AI</div><p class="eco-desc">India's most sophisticated real estate intelligence platform. Scored listings, investment grades, ROI modelling, and sector scoring for Gurgaon's market.</p><div class="eco-tags"><span class="etag">Price AI</span><span class="etag">ROI Engine</span><span class="etag" id="ecoListingTag">— Listings</span><span class="etag">Risk Scoring</span></div></div>
-      <div class="eco-card reveal reveal-delay-2"><div class="eco-ghost">III</div><div class="eco-phase">Stage Three · Vision</div><div class="eco-name">Construction Tycoon</div><p class="eco-desc">India's first large-scale AI-driven real estate simulation. Buy land, develop projects, navigate market cycles, and build a property empire.</p><div class="eco-tags"><span class="etag">AI Economy</span><span class="etag">Land Trading</span><span class="etag">Market Cycles</span><span class="etag">Multiplayer</span></div></div>
+      <div class="eco-card reveal">
+        <div class="eco-ghost">I</div>
+        <div class="eco-phase">Stage One · Now</div>
+        <div class="eco-name">LifeQuest AI</div>
+        <p class="eco-desc">A gamified life simulator where real habits drive virtual progression. Productivity becomes gameplay. AI becomes your personal mentor.</p>
+        <div class="eco-tags">
+          <span class="etag">Habit Engine</span>
+          <span class="etag">XP System</span>
+          <span class="etag">AI Coach</span>
+          <span class="etag">City Builder</span>
+        </div>
+      </div>
+      <div class="eco-card reveal reveal-delay-1" style="border-color:var(--line2);">
+        <div class="eco-ghost">II</div>
+        <div class="eco-phase" style="color:var(--gold);">Stage Two · Active</div>
+        <div class="eco-name">Lumetha Realty AI</div>
+        <p class="eco-desc">India's most sophisticated real estate intelligence platform. 560 scored listings, investment grades, ROI modelling, and sector scoring for Gurgaon's market.</p>
+        <div class="eco-tags">
+          <span class="etag">Price AI</span>
+          <span class="etag">ROI Engine</span>
+          <span class="etag">560 Listings</span>
+          <span class="etag">Risk Scoring</span>
+        </div>
+      </div>
+      <div class="eco-card reveal reveal-delay-2">
+        <div class="eco-ghost">III</div>
+        <div class="eco-phase">Stage Three · Vision</div>
+        <div class="eco-name">Construction Tycoon</div>
+        <p class="eco-desc">India's first large-scale AI-driven real estate simulation. Buy land, develop projects, navigate market cycles, and build a property empire.</p>
+        <div class="eco-tags">
+          <span class="etag">AI Economy</span>
+          <span class="etag">Land Trading</span>
+          <span class="etag">Market Cycles</span>
+          <span class="etag">Multiplayer</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -904,439 +1417,273 @@ footer { background:var(--ink); border-top:1px solid var(--line); padding:72px 6
   <div class="footer-grid">
     <div class="footer-brand">
       <span class="footer-logo">LUME<em>THA</em></span>
-      <p>AI-powered real estate intelligence for Gurgaon's most discerning investors. Precision forecasting. Private insight. Institutional-grade analysis across live listings.</p>
+      <p>AI-powered real estate intelligence for Gurgaon's most discerning investors. Precision forecasting. Private insight. Institutional-grade analysis across 560 live listings.</p>
     </div>
-    <div class="footer-col"><h5>Platform</h5><a href="#intelligence">AI Concierge</a><a href="#analyser">Property Analyser</a><a href="#dashboard">Market Dashboard</a><a href="#sectors">Sector Scores</a><a href="#roi">Return Engine</a></div>
-    <div class="footer-col"><h5>Products</h5><a href="#">LifeQuest AI</a><a href="#">Realty Intelligence</a><a href="#">Construction Tycoon</a><a href="#">Lumetha Cloud</a></div>
-    <div class="footer-col"><h5>Company</h5><a href="#">About Lumetha</a><a href="#">Lumetha Labs</a><a href="#">Research</a><a href="#">Contact</a></div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <a href="#intelligence">AI Concierge</a>
+      <a href="#analyser">Property Analyser</a>
+      <a href="#dashboard">Market Dashboard</a>
+      <a href="#sectors">Sector Scores</a>
+      <a href="#roi">Return Engine</a>
+    </div>
+    <div class="footer-col">
+      <h5>Products</h5>
+      <a href="#">LifeQuest AI</a>
+      <a href="#">Realty Intelligence</a>
+      <a href="#">Construction Tycoon</a>
+      <a href="#">Lumetha Cloud</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="#">About Lumetha</a>
+      <a href="#">Lumetha Labs</a>
+      <a href="#">Research</a>
+      <a href="#">Contact</a>
+    </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy" id="footerCopy">© 2025 Lumetha AI. All rights reserved. · Gurugram, India</span>
-    <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Disclaimer</a></div>
+    <span class="footer-copy">© 2025 Lumetha AI. All rights reserved. · Gurugram, India · 560 Listings · Dataset v2.0</span>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Disclaimer</a>
+    </div>
   </div>
 </footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════════════════════════
-// CONFIG — update RAW_DATA_URL if you rename the file or branch
-// ═══════════════════════════════════════════════════════════════════════════════
-const RAW_DATA_URL =
-  'https://raw.githubusercontent.com/AbhishekBits97/realestate_ai/main/data/website_data.json';
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// GLOBAL STATE
-// ═══════════════════════════════════════════════════════════════════════════════
-let SITE_DATA = null;   // populated after fetch
-let priceChart = null, typeChart = null, sectorChart = null, roiChart = null;
-const gridColor = 'rgba(196,163,94,0.06)';
+// ── CHARTS ──────────────────────────────────────────────────────────
 Chart.defaults.color = '#6E6860';
 Chart.defaults.font.family = "'DM Mono', monospace";
 Chart.defaults.font.size = 10;
+const gridColor = 'rgba(196,163,94,0.06)';
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// FETCH LIVE DATA
-// ═══════════════════════════════════════════════════════════════════════════════
-async function fetchData() {
-  try {
-    const res  = await fetch(RAW_DATA_URL + '?t=' + Date.now());
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    SITE_DATA = await res.json();
-    applyData(SITE_DATA);
-    setBannerLive(SITE_DATA.meta);
-  } catch (err) {
-    console.warn('Live data unavailable, using fallback.', err);
-    setBannerError();
-    // Charts still render with placeholder axes — no crash
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// APPLY DATA TO PAGE
-// ═══════════════════════════════════════════════════════════════════════════════
-function applyData(d) {
-  const k  = d.kpis;
-  const locs = d.localities || [];
-  const top  = locs[0] || {};
-
-  // ── Formatting helpers ──────────────────────────────────────────────────────
-  const inrK = v => v ? '₹' + Number(v).toLocaleString('en-IN') : '—';
-  const pct  = v => v != null ? v + '%' : '—';
-  const num  = v => v != null ? v : '—';
-
-  // ── Banner / hero listing count ─────────────────────────────────────────────
-  const n = k.total_listings || '—';
-  setText('heroListingCount', n);
-  setText('heroTotalListings', n);
-  setText('aiListingCount', n);
-  setText('ecoListingTag', n + ' Listings');
-  setText('engineDesc', `Trained on ${n} Gurgaon listings across 30+ micro-markets, covering 5 property types and 3 builder tiers.`);
-
-  // ── Hero panel — top locality ───────────────────────────────────────────────
-  if (top.locality) {
-    setText('heroLocalityName', top.locality);
-    const sc = top.investment_score || 0;
-    setText('heroScore', sc);
-    // appreciation bar
-    const ap = top.appreciation_score || 0;
-    setBar('heroApprBar', ap, 100); setText('heroApprVal', ap);
-    // ROI bar (roi is e.g. 27.7 meaning 27.7%)
-    const roi = top.roi || 0;
-    setBar('heroRoiBar', roi, 50); setText('heroRoiVal', roi);
-    // infra
-    const inf = top.infra_impact || 0;
-    setBar('heroInfraBar', inf, 100); setText('heroInfraVal', inf);
-  }
-
-  // ── Hero stats row ──────────────────────────────────────────────────────────
-  setText('heroAvgPsf',   k.avg_price_sqft ? Number(k.avg_price_sqft).toLocaleString('en-IN') : '—');
-  setText('heroAvgScore', num(k.avg_investment_score));
-  setText('heroAvgRoi',   num(k.avg_roi));
-
-  // ── KPI row ─────────────────────────────────────────────────────────────────
-  setText('kpiAvgPsf',    k.avg_price_sqft ? '₹' + Number(k.avg_price_sqft).toLocaleString('en-IN') : '—');
-  setText('kpiMedianPsf', k.median_price_sqft ? 'Median: ₹' + Number(k.median_price_sqft).toLocaleString('en-IN') + '/sqft' : '');
-  setText('kpiListings',  num(k.total_listings));
-  setText('kpiRoi',       k.avg_roi ? k.avg_roi + '%' : '—');
-  setText('kpiPayback',   k.avg_payback_years ? 'Avg. payback: ' + k.avg_payback_years + ' yrs' : '');
-  setText('kpiBuy',       num(k.buy_count));
-  setText('kpiBuyPct',    k.buy_pct ? k.buy_pct + '% of dataset' : '');
-
-  // ── Data note ───────────────────────────────────────────────────────────────
-  const dn = document.getElementById('dataNoteText');
-  if (dn) dn.innerHTML = `<strong>Dataset: ${n} listings</strong> · Gurgaon, 2024–25 · 30+ micro-markets · Avg investment score: ${num(k.avg_investment_score)} · ${k.buy_pct || '—'}% rated Buy · Median price: ₹${k.median_price_sqft ? Number(k.median_price_sqft).toLocaleString('en-IN') : '—'}/sqft`;
-
-  // ── Concierge sub-header ────────────────────────────────────────────────────
-  setText('concSub', `${n} Listings · Gurgaon Market · Live Analysis`);
-
-  // ── Sector intelligence blurb ───────────────────────────────────────────────
-  setText('sectorIntelText', `Buy vs Hold signals across ${n} listings — ${num(k.buy_count)} rated Buy, ${k.total_listings && k.buy_count ? k.total_listings - k.buy_count : '—'} rated Hold. Average payback horizon: ${num(k.avg_payback_years)} years.`);
-
-  // ── ROI section desc ────────────────────────────────────────────────────────
-  setText('roiDesc', `Adjust the parameters below to simulate your investment scenario. Defaults seeded from dataset averages: ₹${k.avg_price_sqft ? Number(k.avg_price_sqft).toLocaleString('en-IN') : '—'}/sqft, ${k.avg_roi || '—'}% risk-adjusted ROI, ${k.avg_payback_years || '—'} year payback horizon.`);
-
-  // ── Risk panel ──────────────────────────────────────────────────────────────
-  const infra = k.avg_infra_impact;
-  const liv   = k.avg_livability;
-  const tc    = k.builder_tier_counts || {};
-  // find tier 1 count — keys may be "Tier 1", "tier_1", "1", etc.
-  const t1Count = Object.entries(tc).find(([k]) => /tier.?1|^1$/i.test(k))?.[1] || 0;
-  const t1Pct   = k.total_listings ? Math.round(t1Count / k.total_listings * 100) : 0;
-
-  setText('riskInfra',     infra != null ? infra : '—');
-  setBar('riskInfraBar',   infra || 0, 100);
-  setText('riskLivability', liv != null ? liv : '—');
-  setBar('riskLivabilityBar', liv || 0, 100);
-  setText('riskTier1',      t1Pct || '—');
-  setBar('riskTier1Bar',    t1Pct, 100);
-  setText('riskTier1Label', t1Count + ' Listings');
-  setText('riskBuyPct',     num(k.buy_pct));
-  setBar('riskBuyBar',      k.buy_pct || 0, 100);
-  setText('riskBuyLabel',   (k.buy_count || '—') + ' of ' + n);
-
-  // ── Risk section desc ────────────────────────────────────────────────────────
-  setText('riskDesc', `Multi-dimensional risk scoring derived from ${n} listings. Infrastructure impact average: ${num(infra)}/100. Livability index average: ${num(liv)}/100. Builder tier distribution: ${t1Pct}% Tier 1.`);
-
-  // ── Footer ──────────────────────────────────────────────────────────────────
-  setText('footerCopy', `© 2025 Lumetha AI. All rights reserved. · Gurugram, India · ${n} Listings · Dataset v2.0`);
-
-  // ── Charts ──────────────────────────────────────────────────────────────────
-  buildPriceChart(locs);
-  buildBudgetChart(k.budget_bands || {}, k.total_listings || 1);
-  buildSectorChart(locs);
-
-  // ── Sector cards ────────────────────────────────────────────────────────────
-  buildSectorCards(d.sector_cards || locs.slice(0, 6));
-
-  // ── Ticker ──────────────────────────────────────────────────────────────────
-  buildTicker(d.ticker || locs.slice(0, 15));
-
-  // ── Update concierge system prompt ─────────────────────────────────────────
-  updateSysPrompt(d);
-
-  // ── Seed ROI calculator defaults ────────────────────────────────────────────
-  if (k.avg_payback_years) {
-    const impliedYield = k.avg_payback_years ? +(100 / k.avg_payback_years).toFixed(1) : 3.4;
-    document.getElementById('sYield').value = impliedYield;
-  }
-  if (k.avg_roi) {
-    const impliedAppr = Math.min(+(k.avg_roi * 0.35).toFixed(1), 20);
-    document.getElementById('sAppr').value = impliedAppr;
-  }
-  calcROI();
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// DOM HELPERS
-// ═══════════════════════════════════════════════════════════════════════════════
-function setText(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = val;
-}
-function setBar(id, val, max) {
-  const el = document.getElementById(id);
-  if (el) el.style.width = Math.min(100, (val / max) * 100).toFixed(1) + '%';
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// BANNER
-// ═══════════════════════════════════════════════════════════════════════════════
-function setBannerLive(meta) {
-  const b = document.getElementById('dataBanner');
-  const dot = document.getElementById('bannerDot');
-  b.classList.remove('loading');
-  dot.classList.add('live');
-  const t = meta.generated_at ? new Date(meta.generated_at).toLocaleString('en-IN', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
-  setText('bannerText', `Live dataset · ${meta.total_rows || '—'} listings`);
-  setText('bannerTime', t ? 'Updated ' + t : '');
-}
-function setBannerError() {
-  const b = document.getElementById('dataBanner');
-  b.classList.remove('loading');
-  setText('bannerText', 'Live data unavailable — showing cached values');
-  setText('bannerTime', '');
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// TICKER
-// ═══════════════════════════════════════════════════════════════════════════════
-function buildTicker(items) {
-  if (!items || !items.length) return;
-  const half = items.map(t => {
-    const sc = t.investment_score ? ` · Score: ${t.investment_score}` : '';
-    return `<span class="tick"><span class="tn">${t.locality}</span><span class="tv">₹${Number(t.price_per_sqft||0).toLocaleString('en-IN')}/sqft</span><span class="tc pos">▲${sc}</span></span>`;
-  }).join('');
-  document.getElementById('tickerEl').innerHTML = half + half; // duplicate for seamless loop
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// CHARTS
-// ═══════════════════════════════════════════════════════════════════════════════
-function buildPriceChart(locs) {
-  const top12 = [...locs].sort((a,b) => (b.price_per_sqft||0) - (a.price_per_sqft||0)).slice(0, 12);
-  const labels = top12.map(l => l.locality);
-  const data   = top12.map(l => l.price_per_sqft || 0);
-  if (priceChart) priceChart.destroy();
-  priceChart = new Chart(document.getElementById('priceC'), {
-    type:'bar',
-    data:{ labels, datasets:[{ data, backgroundColor:'rgba(196,163,94,0.18)', borderColor:'rgba(196,163,94,0.55)', borderWidth:1, borderRadius:0 }] },
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:30, font:{size:9}}},
-               y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/1000).toFixed(0)+'K'}} } }
-  });
-}
-
-function buildBudgetChart(bands, total) {
-  const labels = ['Under ₹1Cr', '₹1–2Cr', '₹2–5Cr', 'Above ₹5Cr'];
-  const counts = [bands.under_1cr||0, bands['1cr_to_2cr']||0, bands['2cr_to_5cr']||0, bands.above_5cr||0];
-  const colors = ['#7EC8A0','#C4A35E','#EDE8E0','#6E6860'];
-  // legend
-  const leg = document.getElementById('budgetLegend');
-  if (leg) leg.innerHTML = labels.map((l,i) => {
-    const pct = total ? Math.round(counts[i]/total*100) : 0;
-    return `<span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:${colors[i]};display:inline-block;"></span>${l} ${pct}%</span>`;
-  }).join('');
-  if (typeChart) typeChart.destroy();
-  typeChart = new Chart(document.getElementById('typeC'), {
-    type:'doughnut',
-    data:{ labels, datasets:[{ data:counts, backgroundColor:colors, borderWidth:0, hoverOffset:4 }] },
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'72%', plugins:{legend:{display:false}} }
-  });
-}
-
-function buildSectorChart(locs) {
-  const top10 = locs.slice(0, 10);
-  const labels = top10.map(l => l.locality);
-  const scores = top10.map(l => l.investment_score || 0);
-  const psf    = top10.map(l => l.price_per_sqft ? +(l.price_per_sqft/1000).toFixed(2) : 0);
-  if (sectorChart) sectorChart.destroy();
-  sectorChart = new Chart(document.getElementById('sectorC'), {
-    type:'bar',
-    data:{ labels, datasets:[
-      { label:'Investment Score', data:scores, backgroundColor:'rgba(126,200,160,0.18)', borderColor:'rgba(126,200,160,0.55)', borderWidth:1, yAxisID:'y' },
-      { label:'Price/sqft (₹K)', data:psf, backgroundColor:'rgba(196,163,94,0.13)', borderColor:'rgba(196,163,94,0.4)', borderWidth:1, type:'line', tension:0.4, pointRadius:3, pointBackgroundColor:'#C4A35E', yAxisID:'y1' }
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ display:true, labels:{color:'#6E6860', font:{size:10}, boxWidth:10} } },
-      scales:{
-        x:{ grid:{display:false}, ticks:{autoSkip:false, maxRotation:25, font:{size:9}} },
-        y:{ grid:{color:gridColor}, title:{display:true, text:'Inv. Score', color:'#6E6860', font:{size:9}} },
-        y1:{ position:'right', grid:{display:false}, ticks:{callback:v=>'₹'+v+'K'}, title:{display:true, text:'₹/sqft (K)', color:'#6E6860', font:{size:9}} }
-      }
+// Price distribution — real dataset averages
+new Chart(document.getElementById('priceC'), {
+  type:'bar',
+  data:{
+    labels:['Golf Course Rd','DLF Phase 5','Cyber City','MG Road','Sector 56','Udyog Vihar','Nirvana Country','Sohna Road','South City','Ardee City','Palam Vihar'],
+    datasets:[{
+      data:[21315,17908,17881,13881,11889,11140,10054,9935,9057,8876,8251],
+      backgroundColor:'rgba(196,163,94,0.18)',
+      borderColor:'rgba(196,163,94,0.55)',
+      borderWidth:1, borderRadius:0
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:30, font:{size:9}}},
+      y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/1000).toFixed(0)+'K'}}
     }
-  });
-}
+  }
+});
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// SECTOR CARDS
-// ═══════════════════════════════════════════════════════════════════════════════
-const GRADE_COLORS = {
-  buy: '#7EC8A0', hold: 'var(--gold-lt)', sell: '#D16B6B'
-};
-function gradeColor(g) {
-  if (!g) return 'var(--muted)';
-  const s = g.toLowerCase();
-  if (s.includes('buy') || s === 'a' || s === 'a+' || s === 'b+') return GRADE_COLORS.buy;
-  if (s.includes('hold') || s === 'b' || s === 'c') return GRADE_COLORS.hold;
-  return GRADE_COLORS.sell;
-}
-function buildSectorCards(cards) {
-  if (!cards || !cards.length) return;
-  const grid = document.getElementById('sectorsGrid');
-  grid.innerHTML = cards.slice(0, 6).map((c, i) => {
-    const color = gradeColor(c.grade);
-    const delayClass = i % 3 === 1 ? 'reveal-delay-1' : i % 3 === 2 ? 'reveal-delay-2' : '';
-    return `
-    <div class="sc reveal ${delayClass}">
-      <div class="sc-rank">RANK ${String(i+1).padStart(2,'0')}</div>
-      <div class="sc-name">${c.locality}</div>
-      <div class="sc-type">${c.listing_count} Listings</div>
-      <div class="sc-score-row"><span class="sc-score">${c.investment_score != null ? c.investment_score : '—'}</span><span class="sc-score-max">/100</span></div>
-      <div class="sc-score-lbl">Investment Score</div>
-      <div class="sc-divider"></div>
-      <div class="sc-metrics">
-        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹${c.price_per_sqft ? Number(c.price_per_sqft).toLocaleString('en-IN') : '—'}/sqft</span></div>
-        ${c.appreciation_score != null ? `<div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">${c.appreciation_score} / 100</span></div>` : ''}
-        ${c.roi != null ? `<div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">${c.roi}%</span></div>` : ''}
-        ${c.grade ? `<div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:${color};">${c.grade}</span></div>` : ''}
-      </div>
-    </div>`;
-  }).join('');
-  // re-observe for reveal
-  document.querySelectorAll('.sc.reveal').forEach(el => obs.observe(el));
-}
+// Budget band distribution — real from data
+new Chart(document.getElementById('typeC'), {
+  type:'doughnut',
+  data:{
+    labels:['₹1–2Cr','₹2–5Cr','Under ₹1Cr','Above ₹5Cr'],
+    datasets:[{
+      data:[281,173,87,19],
+      backgroundColor:['#C4A35E','#EDE8E0','#7EC8A0','#6E6860'],
+      borderWidth:0, hoverOffset:4
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    cutout:'72%', plugins:{legend:{display:false}}
+  }
+});
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// ROI CALCULATOR
-// ═══════════════════════════════════════════════════════════════════════════════
-function inr(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
-function calcROI() {
+// Investment score chart — top localities
+new Chart(document.getElementById('sectorC'), {
+  type:'bar',
+  data:{
+    labels:['Udyog Vihar','Ardee City','South City','Sector 57','Nirvana Country','Sector 56','Sohna Road','Palam Vihar','MG Road','Sector 48'],
+    datasets:[{
+      label:'Investment Score',
+      data:[53.7,53.6,53.4,52.8,51.5,50.6,50.0,49.3,48.6,47.3],
+      backgroundColor:'rgba(126,200,160,0.18)',
+      borderColor:'rgba(126,200,160,0.55)',
+      borderWidth:1, borderRadius:0,
+      yAxisID:'y'
+    },{
+      label:'Price/sqft (₹K)',
+      data:[11.14,8.88,9.06,10.60,10.05,11.89,9.94,8.25,13.88,12.16],
+      backgroundColor:'rgba(196,163,94,0.13)',
+      borderColor:'rgba(196,163,94,0.4)',
+      borderWidth:1, borderRadius:0,
+      yAxisID:'y1',
+      type:'line',
+      tension:0.4,
+      pointRadius:3,
+      pointBackgroundColor:'#C4A35E'
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{
+        display:true,
+        labels:{color:'#6E6860', font:{size:10}, boxWidth:10}
+      }
+    },
+    scales:{
+      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:25, font:{size:9}}},
+      y:{grid:{color:gridColor}, ticks:{callback:v=>v.toFixed(0)}, title:{display:true,text:'Inv. Score',color:'#6E6860',font:{size:9}}},
+      y1:{position:'right', grid:{display:false}, ticks:{callback:v=>'₹'+v+'K'}, title:{display:true,text:'₹/sqft (K)',color:'#6E6860',font:{size:9}}}
+    }
+  }
+});
+
+// ── ROI CALCULATOR ───────────────────────────────────────────────────
+let roiChart = null;
+function inr(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+
+function calcROI(){
   const invest = +document.getElementById('sInvest').value;
   const hold   = +document.getElementById('sHold').value;
   const appr   = +document.getElementById('sAppr').value / 100;
   const yield_ = +document.getElementById('sYield').value / 100;
-  setText('pInvest', inr(invest));
-  setText('pHold',   hold + ' Year' + (hold>1?'s':''));
-  setText('pAppr',   (+document.getElementById('sAppr').value).toFixed(1) + '%');
-  setText('pYield',  (+document.getElementById('sYield').value).toFixed(1) + '%');
+
+  document.getElementById('pInvest').textContent = inr(invest);
+  document.getElementById('pHold').textContent   = hold + ' Year' + (hold>1?'s':'');
+  document.getElementById('pAppr').textContent   = (+document.getElementById('sAppr').value).toFixed(1) + '%';
+  document.getElementById('pYield').textContent  = (+document.getElementById('sYield').value).toFixed(1) + '%';
+
   const exit   = invest * Math.pow(1+appr, hold);
   const rental = invest * yield_ * hold;
   const gain   = exit - invest;
   const net    = gain + rental;
-  const roi    = net / invest * 100;
+  const roi    = (net / invest * 100);
   const cagr   = (Math.pow(exit/invest, 1/hold) - 1) * 100;
-  setText('rROI',   (roi>=0?'+':'') + roi.toFixed(1) + '%');
-  setText('rSub',   'TOTAL ROI OVER ' + hold + ' YEAR' + (hold>1?'S':''));
-  setText('rExit',  inr(exit));
-  setText('rRental',inr(rental));
-  setText('rGain',  inr(gain));
-  setText('rNet',   inr(net));
-  setText('rCAGR',  cagr.toFixed(1) + '%');
-  const yrs  = Array.from({length:hold}, (_,i) => 'Yr '+(i+1));
-  const vals = yrs.map((_,i) => Math.round(invest*Math.pow(1+appr,i+1)));
-  if (roiChart) roiChart.destroy();
+
+  document.getElementById('rROI').textContent   = (roi>=0?'+':'') + roi.toFixed(1) + '%';
+  document.getElementById('rSub').textContent   = 'TOTAL ROI OVER ' + hold + ' YEAR' + (hold>1?'S':'');
+  document.getElementById('rExit').textContent  = inr(exit);
+  document.getElementById('rRental').textContent= inr(rental);
+  document.getElementById('rGain').textContent  = inr(gain);
+  document.getElementById('rNet').textContent   = inr(net);
+  document.getElementById('rCAGR').textContent  = cagr.toFixed(1) + '%';
+
+  const yrs  = Array.from({length:hold},(_,i)=>'Yr '+(i+1));
+  const vals = yrs.map((_,i)=>Math.round(invest*Math.pow(1+appr,i+1)));
+  if(roiChart) roiChart.destroy();
   roiChart = new Chart(document.getElementById('roiC'), {
     type:'bar',
-    data:{ labels:yrs, datasets:[{ data:vals,
-      backgroundColor:vals.map((_,i)=>i===vals.length-1?'rgba(126,200,160,0.45)':'rgba(196,163,94,0.18)'),
-      borderColor:vals.map((_,i)=>i===vals.length-1?'#7EC8A0':'rgba(196,163,94,0.5)'),
-      borderWidth:1, borderRadius:0 }] },
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ x:{grid:{display:false}}, y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/100000).toFixed(0)+'L'}} } }
+    data:{
+      labels:yrs,
+      datasets:[{
+        data:vals,
+        backgroundColor:vals.map((_,i)=>i===vals.length-1?'rgba(126,200,160,0.45)':'rgba(196,163,94,0.18)'),
+        borderColor:vals.map((_,i)=>i===vals.length-1?'#7EC8A0':'rgba(196,163,94,0.5)'),
+        borderWidth:1, borderRadius:0
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{display:false}},
+        y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/100000).toFixed(0)+'L'}}
+      }
+    }
   });
 }
 calcROI();
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// AI CONCIERGE
-// ═══════════════════════════════════════════════════════════════════════════════
-let DYNAMIC_SYS = `You are Lumetha Intelligence, a private real estate concierge for the Lumetha Realty AI platform.
-You specialise exclusively in Gurgaon and NCR India property markets.
-Dataset is loading — provide helpful responses based on your general Gurgaon knowledge.
-Tone: Refined, authoritative, concise. Like a private wealth advisor. Use ₹ for prices. Maximum 220 words unless depth is required.`;
+// ── AI CONCIERGE ─────────────────────────────────────────────────────
+const SYS = `You are Lumetha Intelligence, a private real estate concierge for the Lumetha Realty AI platform. You specialise exclusively in Gurgaon and NCR India property markets.
 
-function updateSysPrompt(d) {
-  const k    = d.kpis;
-  const locs = d.localities || [];
-  const top5 = locs.slice(0, 5).map(l => `${l.locality} (score: ${l.investment_score}, ₹${l.price_per_sqft}/sqft)`).join('; ');
-  const topAppr = [...locs].sort((a,b)=>(b.appreciation_score||0)-(a.appreciation_score||0)).slice(0,3).map(l=>`${l.locality} (${l.appreciation_score})`).join(', ');
-
-  DYNAMIC_SYS = `You are Lumetha Intelligence, a private real estate concierge for the Lumetha Realty AI platform. You specialise exclusively in Gurgaon and NCR India property markets.
-
-You have access to a live dataset of ${k.total_listings} scored listings across 30+ Gurgaon micro-markets. Key live data:
-- Average price/sqft: ₹${Number(k.avg_price_sqft||0).toLocaleString('en-IN')} (median ₹${Number(k.median_price_sqft||0).toLocaleString('en-IN')})
-- Top investment score localities: ${top5}
-- Top appreciation potential: ${topAppr}
-- ${k.buy_pct}% Buy-rated (${k.buy_count} listings), ${100-(k.buy_pct||0)}% Hold-rated
-- Average risk-adjusted ROI: ${k.avg_roi}%, avg payback: ${k.avg_payback_years} years
-- Builder tiers: ${JSON.stringify(k.builder_tier_counts||{})}
+You have access to a dataset of 560 scored listings across 30+ Gurgaon micro-markets. Key data points:
+- Average price/sqft: ₹12,726 (median ₹11,255)
+- Top investment score localities: Udyog Vihar (53.7), Ardee City (53.6), South City (53.4), Sector 57 (52.8), Nirvana Country (51.5)
+- Top appreciation potential: Sector 92 Dwarka Expy (69.6), Palam Vihar (59.6), Ardee City (54.5), Sector 89 Dwarka Expy (53.2)
+- Highest priced: Sector 43 Golf Course Rd (₹24,296/sqft), Sector 77 Dwarka Expy (₹24,156/sqft), Golf Course Road (₹21,315/sqft)
+- 42.7% Buy-rated (239 listings), 57.3% Hold-rated (321 listings)
+- Average risk-adjusted ROI: 25.6%, avg payback: 29.5 years
+- Budget distribution: 50% listings ₹1–2Cr, 31% ₹2–5Cr, 16% under ₹1Cr, 3% above ₹5Cr
+- Builder tiers: 35% Tier 1 (197 listings), 57% Tier 2 (317 listings), 8% Individual (46 listings)
+- Property types: 53% apartments, 21% builder floors, 10% villas, 9% penthouses, 7% studios
 
 Expertise: All Gurgaon micro-markets, price trends, ROI analysis, infrastructure impact, RERA compliance, builder performance.
+
 Tone: Refined, authoritative, concise. Like a private wealth advisor. Use ₹ for prices. Be specific with numbers from the dataset. Maximum 220 words unless depth is required.`;
 
-  // Update welcome message
-  const wc = document.getElementById('concWelcome');
-  if (wc) wc.textContent = `Good morning. I'm your Lumetha intelligence concierge, with deep knowledge of the Gurgaon property market across ${k.total_listings} scored listings.\n\nI can analyse investment scores, appreciation projections, risk-adjusted ROI, and compare micro-markets across any budget.\n\nHow may I assist you today?`;
-}
-
-async function callAI(msg) {
+async function callAI(msg){
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:1000, system:DYNAMIC_SYS, messages:[{role:'user', content:msg}] })
+    body:JSON.stringify({
+      model:'claude-sonnet-4-6', max_tokens:1000,
+      system:SYS,
+      messages:[{role:'user',content:msg}]
+    })
   });
-  const data = await r.json();
-  return data.content?.map(b => b.text||'').join('') || 'Unable to retrieve a response. Please try again.';
+  const d = await r.json();
+  return d.content?.map(b=>b.text||'').join('')||'I was unable to retrieve a response. Please try again.';
 }
-function addMsg(role, text) {
+
+function addMsg(role,text){
   const c = document.getElementById('msgs');
-  const div = document.createElement('div');
-  div.className = 'cmsg ' + role;
+  const d = document.createElement('div');
+  d.className = 'cmsg '+role;
   const t = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
   const safe = text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-  div.innerHTML = `<div class="cmsg-bub">${safe}</div><div class="cmsg-meta">${role==='ai'?'LUMETHA INTELLIGENCE':'YOU'} · ${t}</div>`;
-  c.appendChild(div); c.scrollTop = c.scrollHeight;
+  d.innerHTML = `<div class="cmsg-bub">${safe}</div>
+    <div class="cmsg-meta">${role==='ai'?'LUMETHA INTELLIGENCE':'YOU'} · ${t}</div>`;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
 }
-function showTyping() {
+function showTyping(){
   const c = document.getElementById('msgs');
-  const div = document.createElement('div');
-  div.id='typing'; div.className='typing-ind';
-  div.innerHTML='<div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>';
-  c.appendChild(div); c.scrollTop = c.scrollHeight;
+  const d = document.createElement('div');
+  d.id='typing'; d.className='typing-ind';
+  d.innerHTML='<div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>';
+  c.appendChild(d); c.scrollTop=c.scrollHeight;
 }
-function hideTyping() { document.getElementById('typing')?.remove(); }
-async function send() {
+function hideTyping(){ document.getElementById('typing')?.remove(); }
+async function send(){
   const inp = document.getElementById('chatIn');
   const btn = document.getElementById('sendBtn');
   const txt = inp.value.trim();
-  if (!txt) return;
-  addMsg('you', txt); inp.value=''; btn.disabled=true; showTyping();
-  try { const rep = await callAI(txt); hideTyping(); addMsg('ai', rep); }
-  catch(e) { hideTyping(); addMsg('ai', 'Connection error. Please check your network and try again.'); }
-  btn.disabled = false;
+  if(!txt) return;
+  addMsg('you',txt); inp.value=''; btn.disabled=true; showTyping();
+  try{
+    const rep = await callAI(txt);
+    hideTyping(); addMsg('ai',rep);
+  }catch(e){
+    hideTyping(); addMsg('ai','Connection error. Please check your network and try again.');
+  }
+  btn.disabled=false;
 }
-function onKey(e) { if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } }
-function useSug(el) { document.getElementById('chatIn').value = el.textContent; send(); }
+function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
+function useSug(el){ document.getElementById('chatIn').value=el.textContent; send(); }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// IFRAME
-// ═══════════════════════════════════════════════════════════════════════════════
-function frameLoaded() {
-  setTimeout(() => {
-    document.getElementById('frameLoader')?.classList.add('hidden');
-    setText('frameStatus', 'Connected · Live');
+// ── IFRAME LOADER ─────────────────────────────────────────────────────
+function frameLoaded(){
+  setTimeout(()=>{
+    const loader = document.getElementById('frameLoader');
+    if(loader) loader.classList.add('hidden');
+    document.getElementById('frameStatus').textContent = 'Connected · Live';
   }, 800);
 }
-setTimeout(() => {
+setTimeout(()=>{
   const loader = document.getElementById('frameLoader');
-  if (loader && !loader.classList.contains('hidden')) {
-    const lt = loader.querySelector('.loader-text');
-    if (lt) lt.textContent = 'Loading Analyser…';
-    setText('frameStatus', 'Initialising…');
+  const status = document.getElementById('frameStatus');
+  if(loader && !loader.classList.contains('hidden')){
+    const loaderText = loader.querySelector('.loader-text');
+    if(loaderText) loaderText.textContent = 'Loading Analyser…';
+    if(status) status.textContent = 'Initialising…';
   }
 }, 3000);
 
+// ── EXPAND TOGGLE ──────────────────────────────────────────────────────
 let expanded = false;
-function toggleExpand() {
+function toggleExpand(){
   const wrap = document.getElementById('frameWrap');
   const btn  = document.getElementById('expandBtn');
   expanded = !expanded;
@@ -1346,18 +1693,11 @@ function toggleExpand() {
     : `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:10px;height:10px;opacity:.6"><path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/></svg> Expand`;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// SCROLL REVEAL
-// ═══════════════════════════════════════════════════════════════════════════════
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
-}, {threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// BOOT
-// ═══════════════════════════════════════════════════════════════════════════════
-fetchData();
+// ── SCROLL REVEAL ──────────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
