@@ -1,0 +1,43 @@
+name: Build website_data.json
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "build_data_json.py"
+      - ".github/workflows/build_data_json.yml"
+  workflow_dispatch:   # allow manual trigger from GitHub UI
+
+permissions:
+  contents: write      # needed to commit data/website_data.json back
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pandas numpy pyarrow fastparquet
+
+      - name: Run build script
+        run: python build_data_json.py
+
+      - name: Commit & push website_data.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/website_data.json
+          # Only commit if the file actually changed
+          git diff --cached --quiet || git commit -m "chore: auto-update website_data.json [skip ci]"
+          git push
