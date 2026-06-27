@@ -208,7 +208,8 @@ nav {
 .hstat-val span { color:var(--gold-lt); }
 .hstat-key { font-family:var(--fmono); font-size:9px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
 .hstat-chg { font-family:var(--fmono); font-size:9px; margin-top:4px; }
-.pos { color:#4CAF6E; } .neg { color:#D16B6B; }
+.pos { color:#4CAF6E; }
+.neg { color:#D16B6B; }
 
 /* ── TICKER ── */
 .ticker {
@@ -217,7 +218,7 @@ nav {
 }
 .ticker-wrap {
   display:flex; white-space:nowrap;
-  animation:scroll-ticker 35s linear infinite;
+  animation:scroll-ticker 40s linear infinite;
 }
 .ticker-wrap:hover { animation-play-state:paused; }
 @keyframes scroll-ticker { from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
@@ -446,7 +447,7 @@ section { position:relative; z-index:1; }
 .smk { font-family:var(--fbody); font-size:13px; color:var(--muted); font-weight:300; }
 .smv { font-family:var(--fmono); font-size:12px; font-weight:500; }
 
-/* ── PROPERTY ANALYSER (NEW SECTION) ── */
+/* ── PROPERTY ANALYSER ── */
 .analyser-bg {
   background:var(--void);
   border-top:1px solid var(--line);
@@ -477,7 +478,6 @@ section { position:relative; z-index:1; }
 }
 .af-body p { font-size:12px; color:var(--muted); line-height:1.6; }
 
-/* Analyser frame shell */
 .analyser-shell {
   background:var(--srf2);
   border:1px solid var(--line);
@@ -493,9 +493,7 @@ section { position:relative; z-index:1; }
 }
 .analyser-bar-left { display:flex; align-items:center; gap:14px; }
 .a-dots { display:flex; gap:6px; }
-.a-dot {
-  width:9px; height:9px; border-radius:50%;
-}
+.a-dot { width:9px; height:9px; border-radius:50%; }
 .a-dot-r { background:rgba(209,107,107,0.5); }
 .a-dot-y { background:rgba(196,163,94,0.5); }
 .a-dot-g { background:rgba(76,175,110,0.5); }
@@ -521,7 +519,6 @@ section { position:relative; z-index:1; }
 .analyser-open-btn:hover { border-color:var(--line2); color:var(--gold-lt); }
 .analyser-open-btn svg { width:10px; height:10px; opacity:.6; }
 
-/* iframe wrapper with loader */
 .analyser-frame-wrap {
   position:relative;
   width:100%;
@@ -568,10 +565,8 @@ section { position:relative; z-index:1; }
   width:100%; height:100%;
   border:none; display:block;
   filter:brightness(0.96) contrast(1.02);
-  /* Dark-mode overlay via hue-rotate trick */
 }
 
-/* Analyser footer bar */
 .analyser-foot {
   display:flex; align-items:center; justify-content:space-between;
   padding:12px 24px;
@@ -702,6 +697,16 @@ input[type=range]::-moz-range-thumb {
   letter-spacing:1.5px; text-transform:uppercase;
 }
 
+/* data note banner */
+.data-note {
+  background:var(--gold-bg); border:1px solid var(--line2);
+  padding:14px 20px; margin-bottom:32px;
+  display:flex; align-items:center; gap:12px;
+}
+.data-note-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+.data-note p { font-family:var(--fmono); font-size:10px; color:var(--muted); letter-spacing:1px; }
+.data-note strong { color:var(--gold-lt); }
+
 /* ── FOOTER ── */
 footer {
   background:var(--ink); border-top:1px solid var(--line);
@@ -749,7 +754,6 @@ footer {
 .reveal-delay-2 { transition-delay:.2s; }
 .reveal-delay-3 { transition-delay:.3s; }
 
-/* Expand toggle */
 .analyser-expand-btn {
   background:transparent; border:1px solid var(--line);
   color:var(--muted); font-family:var(--fmono); font-size:9px;
@@ -803,7 +807,7 @@ footer {
     <div class="hero-left">
       <div class="kicker"><span class="kicker-line"></span>Lumetha Realty Intelligence</div>
       <h1>Invest<br>with<br><em>precision.</em></h1>
-      <p class="hero-body">AI-powered real estate intelligence built exclusively for Gurgaon's most discerning investors. Price forecasting, ROI modelling, and risk analysis — synthesised in real time.</p>
+      <p class="hero-body">AI-powered real estate intelligence built exclusively for Gurgaon's most discerning investors. Price forecasting, ROI modelling, and risk analysis — synthesised across 560 live listings.</p>
       <div class="hero-actions">
         <a href="#analyser" class="btn-gold">Property Analyser</a>
         <a href="#dashboard" class="btn-ghost">View Markets</a>
@@ -816,75 +820,82 @@ footer {
           <span class="live-indicator"><span class="live-dot"></span>Active</span>
         </div>
         <div class="score-display">
-          <div class="score-number">87<span class="score-denom">/100</span></div>
-          <div class="score-loc">Golf Course Extension, Sector 66</div>
-          <div class="score-subloc">Premium Residential · Gurgaon</div>
+          <!-- Udyog Vihar is top-ranked by investment score at 53.7 -->
+          <div class="score-number">53.7<span class="score-denom">/100</span></div>
+          <div class="score-loc">Udyog Vihar, Sector 18–20</div>
+          <div class="score-subloc">Top Investment Score · Gurgaon</div>
         </div>
         <div class="score-metrics">
           <div class="sm-row">
-            <span class="sm-key">Price Trend</span>
-            <div class="sm-bar"><div class="sm-fill" style="width:92%;background:var(--gold);"></div></div>
-            <span class="sm-val" style="color:var(--gold-lt);">92</span>
+            <span class="sm-key">Appr. Score</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:48%;background:var(--gold);"></div></div>
+            <span class="sm-val" style="color:var(--gold-lt);">48</span>
           </div>
           <div class="sm-row">
-            <span class="sm-key">ROI Model</span>
-            <div class="sm-bar"><div class="sm-fill" style="width:85%;background:var(--cream2);"></div></div>
-            <span class="sm-val" style="color:var(--cream2);">85</span>
+            <span class="sm-key">ROI Adj.</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:27.7%;background:var(--cream2);"></div></div>
+            <span class="sm-val" style="color:var(--cream2);">27.7</span>
           </div>
           <div class="sm-row">
-            <span class="sm-key">Infrastructure</span>
-            <div class="sm-bar"><div class="sm-fill" style="width:78%;background:var(--muted);"></div></div>
-            <span class="sm-val" style="color:var(--muted);">78</span>
+            <span class="sm-key">Infra Impact</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:35%;background:var(--muted);"></div></div>
+            <span class="sm-val" style="color:var(--muted);">35</span>
           </div>
           <div class="sm-row">
-            <span class="sm-key">Risk</span>
-            <div class="sm-bar"><div class="sm-fill" style="width:22%;background:#7EC8A0;"></div></div>
-            <span class="sm-val" style="color:#7EC8A0;">Low</span>
+            <span class="sm-key">Grade</span>
+            <div class="sm-bar"><div class="sm-fill" style="width:60%;background:#7EC8A0;"></div></div>
+            <span class="sm-val" style="color:#7EC8A0;">B</span>
           </div>
         </div>
       </div>
       <div class="hero-stats-row">
         <div class="hstat">
-          <div class="hstat-val">₹<span>12,400</span></div>
+          <div class="hstat-val">₹<span>12,726</span></div>
           <div class="hstat-key">Avg. price / sqft</div>
-          <div class="hstat-chg pos">▲ 8.3% YoY</div>
+          <div class="hstat-chg pos">560 live listings</div>
         </div>
         <div class="hstat">
-          <div class="hstat-val"><span>+23%</span></div>
-          <div class="hstat-key">3Y appreciation</div>
-          <div class="hstat-chg pos">Gurgaon avg.</div>
+          <div class="hstat-val"><span>44.3</span></div>
+          <div class="hstat-key">Avg. appr. potential</div>
+          <div class="hstat-chg pos">Score / 100</div>
         </div>
         <div class="hstat">
-          <div class="hstat-val"><span>4.2%</span></div>
-          <div class="hstat-key">Rental yield</div>
-          <div class="hstat-chg pos">▲ 0.4pp YoY</div>
+          <div class="hstat-val"><span>25.6%</span></div>
+          <div class="hstat-key">Avg. risk-adj. ROI</div>
+          <div class="hstat-chg pos">Dataset median</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TICKER -->
+<!-- TICKER — real locality data from CSV -->
 <div class="ticker">
   <div class="ticker-wrap" id="tickerEl">
-    <span class="tick"><span class="tn">DLF Camellias</span><span class="tv">₹68,000/sqft</span><span class="tc pos">▲ 3.2%</span></span>
-    <span class="tick"><span class="tn">Golf Course Ext.</span><span class="tv">₹14,200/sqft</span><span class="tc pos">▲ 1.8%</span></span>
-    <span class="tick"><span class="tn">New Gurgaon</span><span class="tv">₹8,400/sqft</span><span class="tc pos">▲ 4.1%</span></span>
-    <span class="tick"><span class="tn">Sohna Road</span><span class="tv">₹7,200/sqft</span><span class="tc pos">▲ 2.4%</span></span>
-    <span class="tick"><span class="tn">Dwarka Expy</span><span class="tv">₹11,500/sqft</span><span class="tc pos">▲ 5.6%</span></span>
-    <span class="tick"><span class="tn">MG Road</span><span class="tv">₹18,000/sqft</span><span class="tc neg">▼ 0.3%</span></span>
-    <span class="tick"><span class="tn">Sector 57–65</span><span class="tv">₹10,800/sqft</span><span class="tc pos">▲ 1.1%</span></span>
-    <span class="tick"><span class="tn">Palam Vihar</span><span class="tv">₹9,600/sqft</span><span class="tc pos">▲ 0.9%</span></span>
-    <span class="tick"><span class="tn">Manesar</span><span class="tv">₹5,800/sqft</span><span class="tc pos">▲ 3.8%</span></span>
-    <span class="tick"><span class="tn">DLF Camellias</span><span class="tv">₹68,000/sqft</span><span class="tc pos">▲ 3.2%</span></span>
-    <span class="tick"><span class="tn">Golf Course Ext.</span><span class="tv">₹14,200/sqft</span><span class="tc pos">▲ 1.8%</span></span>
-    <span class="tick"><span class="tn">New Gurgaon</span><span class="tv">₹8,400/sqft</span><span class="tc pos">▲ 4.1%</span></span>
-    <span class="tick"><span class="tn">Sohna Road</span><span class="tv">₹7,200/sqft</span><span class="tc pos">▲ 2.4%</span></span>
-    <span class="tick"><span class="tn">Dwarka Expy</span><span class="tv">₹11,500/sqft</span><span class="tc pos">▲ 5.6%</span></span>
-    <span class="tick"><span class="tn">MG Road</span><span class="tv">₹18,000/sqft</span><span class="tc neg">▼ 0.3%</span></span>
-    <span class="tick"><span class="tn">Sector 57–65</span><span class="tv">₹10,800/sqft</span><span class="tc pos">▲ 1.1%</span></span>
-    <span class="tick"><span class="tn">Palam Vihar</span><span class="tv">₹9,600/sqft</span><span class="tc pos">▲ 0.9%</span></span>
-    <span class="tick"><span class="tn">Manesar</span><span class="tv">₹5,800/sqft</span><span class="tc pos">▲ 3.8%</span></span>
+    <span class="tick"><span class="tn">Sector 43 (Golf Course Rd)</span><span class="tv">₹24,296/sqft</span><span class="tc pos">▲ Premium</span></span>
+    <span class="tick"><span class="tn">Sector 77 (Dwarka Expy)</span><span class="tv">₹24,156/sqft</span><span class="tc pos">▲ High Growth</span></span>
+    <span class="tick"><span class="tn">Sector 49 (Golf Course Ext)</span><span class="tv">₹21,872/sqft</span><span class="tc pos">▲ Stable</span></span>
+    <span class="tick"><span class="tn">Golf Course Road</span><span class="tv">₹21,315/sqft</span><span class="tc pos">▲ Established</span></span>
+    <span class="tick"><span class="tn">Sector 103 (Dwarka Expy)</span><span class="tv">₹21,116/sqft</span><span class="tc pos">▲ ROI: 23.9%</span></span>
+    <span class="tick"><span class="tn">Sector 65 (Golf Course Ext)</span><span class="tv">₹20,365/sqft</span><span class="tc" style="color:var(--muted);">— Hold</span></span>
+    <span class="tick"><span class="tn">Sector 113 (Dwarka Expy)</span><span class="tv">₹19,169/sqft</span><span class="tc pos">▲ Appr: 44.9</span></span>
+    <span class="tick"><span class="tn">DLF Phase 5</span><span class="tv">₹17,908/sqft</span><span class="tc pos">▲ Tier 1</span></span>
+    <span class="tick"><span class="tn">Cyber City</span><span class="tv">₹17,881/sqft</span><span class="tc pos">▲ Commercial</span></span>
+    <span class="tick"><span class="tn">MG Road</span><span class="tv">₹13,881/sqft</span><span class="tc pos">▲ Score: 48.6</span></span>
+    <span class="tick"><span class="tn">Sector 89 (Dwarka Expy)</span><span class="tv">₹13,443/sqft</span><span class="tc pos">▲ Appr: 53.2</span></span>
+    <span class="tick"><span class="tn">Ardee City</span><span class="tv">₹8,876/sqft</span><span class="tc pos">▲ Score: 53.6</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="tick"><span class="tn">Sector 43 (Golf Course Rd)</span><span class="tv">₹24,296/sqft</span><span class="tc pos">▲ Premium</span></span>
+    <span class="tick"><span class="tn">Sector 77 (Dwarka Expy)</span><span class="tv">₹24,156/sqft</span><span class="tc pos">▲ High Growth</span></span>
+    <span class="tick"><span class="tn">Sector 49 (Golf Course Ext)</span><span class="tv">₹21,872/sqft</span><span class="tc pos">▲ Stable</span></span>
+    <span class="tick"><span class="tn">Golf Course Road</span><span class="tv">₹21,315/sqft</span><span class="tc pos">▲ Established</span></span>
+    <span class="tick"><span class="tn">Sector 103 (Dwarka Expy)</span><span class="tv">₹21,116/sqft</span><span class="tc pos">▲ ROI: 23.9%</span></span>
+    <span class="tick"><span class="tn">Sector 65 (Golf Course Ext)</span><span class="tv">₹20,365/sqft</span><span class="tc" style="color:var(--muted);">— Hold</span></span>
+    <span class="tick"><span class="tn">DLF Phase 5</span><span class="tv">₹17,908/sqft</span><span class="tc pos">▲ Tier 1</span></span>
+    <span class="tick"><span class="tn">Cyber City</span><span class="tv">₹17,881/sqft</span><span class="tc pos">▲ Commercial</span></span>
+    <span class="tick"><span class="tn">MG Road</span><span class="tv">₹13,881/sqft</span><span class="tc pos">▲ Score: 48.6</span></span>
+    <span class="tick"><span class="tn">Sector 89 (Dwarka Expy)</span><span class="tv">₹13,443/sqft</span><span class="tc pos">▲ Appr: 53.2</span></span>
+    <span class="tick"><span class="tn">Ardee City</span><span class="tv">₹8,876/sqft</span><span class="tc pos">▲ Score: 53.6</span></span>
   </div>
 </div>
 
@@ -893,7 +904,7 @@ footer {
   <div class="sec-inner reveal">
     <div class="sec-kicker">AI Concierge</div>
     <div class="sec-title">Private Intelligence.<br><em>Instant answers.</em></div>
-    <p class="sec-body">Ask anything about the Gurgaon market. Our intelligence engine synthesises price trends, infrastructure data, builder performance, and investment patterns on demand.</p>
+    <p class="sec-body">Ask anything about the Gurgaon market. Our intelligence engine synthesises price trends, infrastructure data, builder performance, and investment patterns — trained on 560 scored listings across 30+ micro-markets.</p>
 
     <div class="ai-layout">
       <div>
@@ -902,28 +913,28 @@ footer {
             <span class="cap-num">01</span>
             <div class="cap-body">
               <h4>Price Forecasting</h4>
-              <p>ML-based appreciation modelling across all Gurgaon micro-markets, with 1–10 year horizon projections and confidence intervals.</p>
+              <p>ML-based appreciation modelling across all Gurgaon micro-markets. Dataset spans ₹3,931–₹62,789 per sqft — full market coverage from affordable to ultra-premium.</p>
             </div>
           </div>
           <div class="cap">
             <span class="cap-num">02</span>
             <div class="cap-body">
               <h4>Infrastructure Impact</h4>
-              <p>Quantifies how metro expansion, expressways, and DMIC corridors shift valuations sector by sector — before the market prices them in.</p>
+              <p>Quantified impact scores for metro extension, highway proximity, IT-SEZ influence, and urban development pipelines — each listing scored individually.</p>
             </div>
           </div>
           <div class="cap">
             <span class="cap-num">03</span>
             <div class="cap-body">
               <h4>ROI & Risk Scoring</h4>
-              <p>Multi-factor scoring: price volatility, builder delivery history, area growth stability, absorption rates, and liquidity depth.</p>
+              <p>Multi-factor investment scoring: builder tier (Tier 1 / Tier 2 / Individual), livability index, metro accessibility, healthcare, and employment proximity.</p>
             </div>
           </div>
           <div class="cap">
             <span class="cap-num">04</span>
             <div class="cap-body">
               <h4>Sector Intelligence</h4>
-              <p>Deep comparative analysis across every Gurgaon sector — rental yields, demand-supply dynamics, and institutional capital flows.</p>
+              <p>Buy vs Hold signals across 560 listings — 239 rated Buy (Grade B), 321 rated Hold (Grade C). Average payback horizon: 29.5 years.</p>
             </div>
           </div>
         </div>
@@ -936,24 +947,24 @@ footer {
             <div class="conc-mark">L</div>
             <div>
               <div class="conc-name">Lumetha Intelligence</div>
-              <div class="conc-sub">Gurgaon Market · Live Analysis</div>
+              <div class="conc-sub">560 Listings · Gurgaon Market · Live Analysis</div>
             </div>
           </div>
         </div>
         <div class="conc-suggestions">
-          <button class="sug" onclick="useSug(this)">Best sectors under ₹1.5Cr?</button>
-          <button class="sug" onclick="useSug(this)">Dwarka Expressway 2027 outlook</button>
-          <button class="sug" onclick="useSug(this)">Top rental yield corridors</button>
-          <button class="sug" onclick="useSug(this)">New Gurgaon vs Sohna Road</button>
+          <button class="sug" onclick="useSug(this)">Best Buy-rated localities?</button>
+          <button class="sug" onclick="useSug(this)">Dwarka Expressway appreciation outlook</button>
+          <button class="sug" onclick="useSug(this)">Top risk-adjusted ROI corridors</button>
+          <button class="sug" onclick="useSug(this)">Ardee City vs Sohna Road comparison</button>
         </div>
         <div class="conc-msgs" id="msgs">
           <div class="cmsg ai">
-            <div class="cmsg-bub">Good morning. I'm your Lumetha intelligence concierge, with deep knowledge of the Gurgaon and NCR property market.
+            <div class="cmsg-bub">Good morning. I'm your Lumetha intelligence concierge, with deep knowledge of the Gurgaon property market across 560 scored listings.
 
-I can analyse specific sectors, project appreciation, model ROI scenarios, and compare investment opportunities across any budget.
+I can analyse investment scores, appreciate projections, risk-adjusted ROI, and compare micro-markets across any budget — from ₹39L in Palam Vihar to ₹6.3Cr in Golf Course Road.
 
 How may I assist you today?</div>
-            <div class="cmsg-meta">LUMETHA INTELLIGENCE · READY</div>
+            <div class="cmsg-meta">LUMETHA INTELLIGENCE · 560 LISTINGS LOADED</div>
           </div>
         </div>
         <div class="conc-input-row">
@@ -965,9 +976,7 @@ How may I assist you today?</div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     PROPERTY ANALYSER — NEW INTEGRATED SECTION
-     ══════════════════════════════════════════ -->
+<!-- PROPERTY ANALYSER -->
 <section id="analyser" class="analyser-bg">
   <div class="sec-inner reveal">
     <div class="sec-kicker">Property Analyser</div>
@@ -975,8 +984,6 @@ How may I assist you today?</div>
     <p class="sec-body">Run full AI-powered analysis on any listing — valuation, neighbourhood scoring, price history, growth potential, and rental yield — all in a single tool.</p>
 
     <div class="analyser-layout">
-
-      <!-- LEFT: Feature list -->
       <div class="analyser-left">
         <div class="analyser-features">
           <div class="af">
@@ -1011,23 +1018,18 @@ How may I assist you today?</div>
             <div class="af-icon">⚑</div>
             <div class="af-body">
               <h4>Risk Flags</h4>
-              <p>Builder track record, RERA compliance status, legal encumbrances, and delivery risk assessment.</p>
+              <p>Builder tier, RERA compliance, legal encumbrances, and delivery risk — all flagged per listing.</p>
             </div>
           </div>
         </div>
-
-        <!-- CTA below feature list -->
         <div style="margin-top:36px;padding:24px;background:var(--gold-bg);border:1px solid var(--line);">
           <div style="font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Powered by</div>
           <div style="font-family:var(--fhead);font-size:22px;font-weight:400;color:var(--white);margin-bottom:8px;">Lumetha AI Engine</div>
-          <p style="font-size:13px;font-weight:300;color:var(--muted);line-height:1.7;">Trained on Gurgaon transaction data, RERA filings, builder performance records, and infrastructure timelines.</p>
+          <p style="font-size:13px;font-weight:300;color:var(--muted);line-height:1.7;">Trained on 560 Gurgaon listings across 30+ micro-markets, covering 5 property types and 3 builder tiers.</p>
         </div>
       </div>
 
-      <!-- RIGHT: Embedded Streamlit App -->
       <div class="analyser-shell reveal reveal-delay-1">
-
-        <!-- Browser-style top bar -->
         <div class="analyser-bar">
           <div class="analyser-bar-left">
             <div class="a-dots">
@@ -1053,8 +1055,6 @@ How may I assist you today?</div>
             </a>
           </div>
         </div>
-
-        <!-- iframe with loader overlay -->
         <div class="analyser-frame-wrap" id="frameWrap">
           <div class="frame-loader" id="frameLoader">
             <div class="loader-mark">L</div>
@@ -1071,8 +1071,6 @@ How may I assist you today?</div>
             onload="frameLoaded()"
           ></iframe>
         </div>
-
-        <!-- Footer status bar -->
         <div class="analyser-foot">
           <span class="analyser-foot-label">Lumetha Property Analyser · Gurgaon & NCR</span>
           <div class="analyser-foot-status">
@@ -1090,47 +1088,53 @@ How may I assist you today?</div>
   <div class="sec-inner reveal">
     <div class="sec-kicker">Market Intelligence</div>
     <div class="sec-title">Gurgaon<br><em>at a glance.</em></div>
-    <p class="sec-body">Real-time analytics across Gurgaon's major corridors. Price trends, transaction volumes, and growth patterns across all micro-markets.</p>
+    <p class="sec-body">Analytics derived from 560 live scored listings across Gurgaon. Price distributions, transaction profiles, and growth patterns across all tracked micro-markets.</p>
+
+    <!-- Data source note -->
+    <div class="data-note">
+      <div class="data-note-dot"></div>
+      <p><strong>Dataset: 560 listings</strong> · Gurgaon, 2024–25 · 30+ micro-markets · Avg investment score: 48.8 · 42.7% rated Buy · Median price: ₹11,255/sqft</p>
+    </div>
 
     <div class="kpi-row reveal">
       <div class="kpi">
         <div class="kpi-label">Average Price / Sqft</div>
-        <div class="kpi-val gold">₹12,400</div>
-        <div class="kpi-chg pos">▲ 8.3% year on year</div>
+        <div class="kpi-val gold">₹12,726</div>
+        <div class="kpi-chg pos">Median: ₹11,255/sqft</div>
       </div>
       <div class="kpi">
-        <div class="kpi-label">Transactions · 2024</div>
-        <div class="kpi-val">24,800</div>
-        <div class="kpi-chg pos">▲ 14.2% vs 2023</div>
+        <div class="kpi-label">Listings Scored</div>
+        <div class="kpi-val">560</div>
+        <div class="kpi-chg pos">30+ micro-markets</div>
       </div>
       <div class="kpi">
-        <div class="kpi-label">Average Rental Yield</div>
-        <div class="kpi-val gold">4.2%</div>
-        <div class="kpi-chg pos">▲ 0.4pp year on year</div>
+        <div class="kpi-label">Avg. Risk-Adj. ROI</div>
+        <div class="kpi-val gold">25.6%</div>
+        <div class="kpi-chg pos">Avg. payback: 29.5 yrs</div>
       </div>
       <div class="kpi">
-        <div class="kpi-label">New Launches · 2024</div>
-        <div class="kpi-val">18,600</div>
-        <div class="kpi-chg" style="color:var(--muted);">Units launched</div>
+        <div class="kpi-label">Buy-Rated Listings</div>
+        <div class="kpi-val">239</div>
+        <div class="kpi-chg" style="color:var(--muted);">42.7% of dataset</div>
       </div>
     </div>
 
     <div class="chart-row reveal">
       <div class="chart-panel">
-        <div class="cp-title">Price Appreciation — Historical Trend</div>
-        <div class="cp-sub">₹ PER SQFT · GURGAON WEIGHTED AVERAGE · 2018–2024</div>
+        <div class="cp-title">Price Distribution — Key Corridors</div>
+        <div class="cp-sub">₹ PER SQFT · ACTUAL DATASET AVERAGES · 2024–25</div>
         <div style="position:relative;height:240px;">
           <canvas id="priceC"></canvas>
         </div>
       </div>
       <div class="chart-panel">
-        <div class="cp-title">Market Composition</div>
-        <div class="cp-sub">BY TRANSACTION VOLUME · 2024</div>
+        <div class="cp-title">Listing Budget Bands</div>
+        <div class="cp-sub">BY PRICE RANGE · 560 LISTINGS</div>
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
-          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#C4A35E;display:inline-block;"></span>RESIDENTIAL 62%</span>
-          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#EDE8E0;display:inline-block;"></span>COMMERCIAL 21%</span>
-          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#7EC8A0;display:inline-block;"></span>PLOTS 12%</span>
-          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#6E6860;display:inline-block;"></span>OTHER 5%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#C4A35E;display:inline-block;"></span>₹1–2CR 50%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#EDE8E0;display:inline-block;"></span>₹2–5CR 31%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#7EC8A0;display:inline-block;"></span>UNDER ₹1CR 16%</span>
+          <span style="display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;"><span style="width:8px;height:8px;border-radius:50%;background:#6E6860;display:inline-block;"></span>ABOVE ₹5CR 3%</span>
         </div>
         <div style="position:relative;height:188px;">
           <canvas id="typeC"></canvas>
@@ -1139,8 +1143,8 @@ How may I assist you today?</div>
     </div>
 
     <div class="chart-panel reveal">
-      <div class="cp-title">Sector-Wise Price Comparison</div>
-      <div class="cp-sub">₹ PER SQFT · MAJOR GURGAON CORRIDORS · 2024</div>
+      <div class="cp-title">Investment Score vs Price/Sqft — Top Localities</div>
+      <div class="cp-sub">INVESTMENT SCORE (0–100) · DATASET DERIVED · ALL LOCALITIES WITH ≥3 LISTINGS</div>
       <div style="position:relative;height:220px;">
         <canvas id="sectorC"></canvas>
       </div>
@@ -1148,97 +1152,103 @@ How may I assist you today?</div>
   </div>
 </section>
 
-<!-- SECTOR SCORING -->
+<!-- SECTOR SCORING — updated from CSV top localities by investment score -->
 <section id="sectors" class="sectors-bg">
   <div class="sec-inner reveal">
     <div class="sec-kicker">Investment Scoring</div>
     <div class="sec-title">Ranked<br><em>by intelligence.</em></div>
-    <p class="sec-body">Every Gurgaon micro-market scored across twelve parameters: price trajectory, infrastructure proximity, builder quality, demand depth, rental potential, and risk profile.</p>
+    <p class="sec-body">Every Gurgaon micro-market scored across twelve parameters: price trajectory, infrastructure proximity, builder quality, demand depth, rental potential, and risk profile. Ranked by composite investment score from 560 live listings.</p>
   </div>
 
   <div class="sectors-grid">
+    <!-- Rank 1: Udyog Vihar — score 53.7, ₹11,140/sqft, appr 48.0, roi 27.7 -->
     <div class="sc reveal">
       <div class="sc-rank">RANK 01</div>
-      <div class="sc-name">Golf Course Extension</div>
-      <div class="sc-type">Premium Residential</div>
-      <div class="sc-score-row"><span class="sc-score">87</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-name">Udyog Vihar</div>
+      <div class="sc-type">Employment-Linked Residential</div>
+      <div class="sc-score-row"><span class="sc-score">53.7</span><span class="sc-score-max">/100</span></div>
       <div class="sc-score-lbl">Investment Score</div>
       <div class="sc-divider"></div>
       <div class="sc-metrics">
-        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹14,200/sqft</span></div>
-        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+28%</span></div>
-        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">3.8%</span></div>
-        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:#7EC8A0;">Low</span></div>
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹11,140/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">48.0 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">27.7%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
       </div>
     </div>
+    <!-- Rank 2: Ardee City — score 53.6, ₹8,876/sqft, appr 54.5, roi 30.4 -->
     <div class="sc reveal reveal-delay-1">
       <div class="sc-rank">RANK 02</div>
-      <div class="sc-name">Dwarka Expressway</div>
-      <div class="sc-type">High Growth Corridor</div>
-      <div class="sc-score-row"><span class="sc-score">84</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-name">Ardee City</div>
+      <div class="sc-type">Mid-Segment Residential</div>
+      <div class="sc-score-row"><span class="sc-score">53.6</span><span class="sc-score-max">/100</span></div>
       <div class="sc-score-lbl">Investment Score</div>
       <div class="sc-divider"></div>
       <div class="sc-metrics">
-        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹11,500/sqft</span></div>
-        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+34%</span></div>
-        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">4.4%</span></div>
-        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:var(--gold-lt);">Medium</span></div>
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹8,876/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">54.5 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">30.4%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
       </div>
     </div>
+    <!-- Rank 3: South City — score 53.4, ₹9,057/sqft, appr 52.9, roi 29.7 -->
     <div class="sc reveal reveal-delay-2">
       <div class="sc-rank">RANK 03</div>
-      <div class="sc-name">New Gurgaon</div>
-      <div class="sc-type">Emerging Micro-Market</div>
-      <div class="sc-score-row"><span class="sc-score">81</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-name">South City</div>
+      <div class="sc-type">Established Residential</div>
+      <div class="sc-score-row"><span class="sc-score">53.4</span><span class="sc-score-max">/100</span></div>
       <div class="sc-score-lbl">Investment Score</div>
       <div class="sc-divider"></div>
       <div class="sc-metrics">
-        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹8,400/sqft</span></div>
-        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+41%</span></div>
-        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">5.1%</span></div>
-        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:var(--gold-lt);">Medium</span></div>
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹9,057/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">52.9 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">29.7%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
       </div>
     </div>
+    <!-- Rank 4: Sector 57 — score 52.8, ₹10,604/sqft, appr 45.8, roi 26.7 -->
     <div class="sc reveal">
       <div class="sc-rank">RANK 04</div>
-      <div class="sc-name">Sohna Road</div>
-      <div class="sc-type">Mid-Segment Residential</div>
-      <div class="sc-score-row"><span class="sc-score">74</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-name">Sector 57</div>
+      <div class="sc-type">Premium Residential</div>
+      <div class="sc-score-row"><span class="sc-score">52.8</span><span class="sc-score-max">/100</span></div>
       <div class="sc-score-lbl">Investment Score</div>
       <div class="sc-divider"></div>
       <div class="sc-metrics">
-        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹7,200/sqft</span></div>
-        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+19%</span></div>
-        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">4.8%</span></div>
-        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:#7EC8A0;">Low</span></div>
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹10,604/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">45.8 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">26.7%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
       </div>
     </div>
+    <!-- Rank 5: Nirvana Country — score 51.5, ₹10,054/sqft, appr 47.4, roi 27.2 -->
     <div class="sc reveal reveal-delay-1">
       <div class="sc-rank">RANK 05</div>
-      <div class="sc-name">Sector 57–65</div>
-      <div class="sc-type">Established Residential</div>
-      <div class="sc-score-row"><span class="sc-score">71</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-name">Nirvana Country</div>
+      <div class="sc-type">Gated Community</div>
+      <div class="sc-score-row"><span class="sc-score">51.5</span><span class="sc-score-max">/100</span></div>
       <div class="sc-score-lbl">Investment Score</div>
       <div class="sc-divider"></div>
       <div class="sc-metrics">
-        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹10,800/sqft</span></div>
-        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:#7EC8A0;">+15%</span></div>
-        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">4.1%</span></div>
-        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:#7EC8A0;">Low</span></div>
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹10,054/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">47.4 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">27.2%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:#7EC8A0;">Buy</span></div>
       </div>
     </div>
+    <!-- Rank 6: Sohna Road — score 50.0, ₹9,935/sqft, appr 50.9, roi 28.4 -->
     <div class="sc reveal reveal-delay-2">
       <div class="sc-rank">RANK 06</div>
-      <div class="sc-name">MG Road</div>
-      <div class="sc-type">Commercial Premium</div>
-      <div class="sc-score-row"><span class="sc-score">65</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-name">Sohna Road</div>
+      <div class="sc-type">High-Growth Corridor</div>
+      <div class="sc-score-row"><span class="sc-score">50.0</span><span class="sc-score-max">/100</span></div>
       <div class="sc-score-lbl">Investment Score</div>
       <div class="sc-divider"></div>
       <div class="sc-metrics">
-        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹18,000/sqft</span></div>
-        <div class="sm"><span class="smk">3Y Appreciation</span><span class="smv" style="color:var(--gold-lt);">+8%</span></div>
-        <div class="sm"><span class="smk">Rental Yield</span><span class="smv">6.2%</span></div>
-        <div class="sm"><span class="smk">Risk Profile</span><span class="smv" style="color:var(--gold-lt);">Medium</span></div>
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹9,935/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Potential</span><span class="smv" style="color:#7EC8A0;">50.9 / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">28.4%</span></div>
+        <div class="sm"><span class="smk">Recommendation</span><span class="smv" style="color:var(--gold-lt);">Hold</span></div>
       </div>
     </div>
   </div>
@@ -1249,7 +1259,7 @@ How may I assist you today?</div>
   <div class="sec-inner reveal">
     <div class="sec-kicker">Return Engine</div>
     <div class="sec-title">Model your<br><em>returns.</em></div>
-    <p class="sec-body">Adjust the parameters below to simulate your investment scenario. Exit value, rental income, capital gain, and CAGR — calculated live.</p>
+    <p class="sec-body">Adjust the parameters below to simulate your investment scenario. Defaults seeded from dataset averages: ₹12,726/sqft, 25.6% risk-adjusted ROI, 29.5 year payback horizon.</p>
 
     <div class="roi-layout">
       <div class="param-group">
@@ -1270,43 +1280,45 @@ How may I assist you today?</div>
         <div class="param">
           <div class="param-head">
             <span class="param-label">Annual Appreciation</span>
-            <span class="param-val" id="pAppr">10.0%</span>
+            <span class="param-val" id="pAppr">8.0%</span>
           </div>
-          <input type="range" min="3" max="25" step="0.5" value="10" id="sAppr" oninput="calcROI()">
+          <!-- Default 8% based on dataset avg appreciation potential ~44 / 100 scale -->
+          <input type="range" min="3" max="25" step="0.5" value="8" id="sAppr" oninput="calcROI()">
         </div>
         <div class="param">
           <div class="param-head">
             <span class="param-label">Rental Yield</span>
-            <span class="param-val" id="pYield">4.2%</span>
+            <span class="param-val" id="pYield">3.4%</span>
           </div>
-          <input type="range" min="1" max="10" step="0.1" value="4.2" id="sYield" oninput="calcROI()">
+          <!-- 3.4% based on dataset avg payback years of ~29.5 -->
+          <input type="range" min="1" max="10" step="0.1" value="3.4" id="sYield" oninput="calcROI()">
         </div>
       </div>
 
       <div class="result-panel">
         <div class="rp-label">Projected Returns</div>
-        <div class="rp-roi positive" id="rROI">+68.2%</div>
+        <div class="rp-roi positive" id="rROI">+56.5%</div>
         <div class="rp-roi-sub" id="rSub">TOTAL ROI OVER 5 YEARS</div>
         <div class="rp-rows">
           <div class="rp-row">
             <span class="rp-k">Exit Value</span>
-            <span class="rp-v" id="rExit" style="color:var(--gold-lt);">₹1,61,05,100</span>
+            <span class="rp-v" id="rExit" style="color:var(--gold-lt);">₹1,46,93,281</span>
           </div>
           <div class="rp-row">
             <span class="rp-k">Total Rental Income</span>
-            <span class="rp-v" id="rRental" style="color:#7EC8A0;">₹21,00,000</span>
+            <span class="rp-v" id="rRental" style="color:#7EC8A0;">₹17,00,000</span>
           </div>
           <div class="rp-row">
             <span class="rp-k">Capital Gain</span>
-            <span class="rp-v" id="rGain">₹61,05,100</span>
+            <span class="rp-v" id="rGain">₹46,93,281</span>
           </div>
           <div class="rp-row">
             <span class="rp-k">Net Profit</span>
-            <span class="rp-v" id="rNet" style="color:#7EC8A0;font-size:24px;">₹82,05,100</span>
+            <span class="rp-v" id="rNet" style="color:#7EC8A0;font-size:24px;">₹63,93,281</span>
           </div>
           <div class="rp-row">
             <span class="rp-k">CAGR</span>
-            <span class="rp-v" id="rCAGR">11.0%</span>
+            <span class="rp-v" id="rCAGR">8.0%</span>
           </div>
         </div>
         <div class="roi-chart-box">
@@ -1317,37 +1329,37 @@ How may I assist you today?</div>
   </div>
 </section>
 
-<!-- RISK -->
+<!-- RISK — updated from dataset scores -->
 <section style="background:var(--ink);border-top:1px solid var(--line);">
   <div class="sec-inner reveal" style="padding-bottom:0;">
     <div class="sec-kicker">Risk Intelligence</div>
     <div class="sec-title">Know your<br><em>exposure.</em></div>
-    <p class="sec-body">Multi-dimensional risk scoring across Gurgaon's key investment parameters. Lower scores indicate lower risk.</p>
+    <p class="sec-body">Multi-dimensional risk scoring derived from 560 listings. Infrastructure impact average: 35/100. Livability index average: 36.9/100. Builder tier distribution: 35% Tier 1, 57% Tier 2, 8% Individual.</p>
   </div>
   <div class="risk-row reveal" style="margin:0 64px 100px;">
     <div class="risk-cell">
-      <div class="rc-label">Price Volatility</div>
-      <div class="rc-score-row"><span class="rc-score l">24</span><span class="rc-max">/100</span></div>
-      <div class="rc-bar"><div class="rc-fill" style="width:24%;background:#7EC8A0;"></div></div>
-      <span class="rc-tag l">Low Risk</span>
+      <div class="rc-label">Infra Impact Score</div>
+      <div class="rc-score-row"><span class="rc-score m">35</span><span class="rc-max">/100</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:35%;background:var(--gold);"></div></div>
+      <span class="rc-tag m">Dataset Avg.</span>
     </div>
     <div class="risk-cell">
-      <div class="rc-label">Builder Default</div>
-      <div class="rc-score-row"><span class="rc-score m">41</span><span class="rc-max">/100</span></div>
-      <div class="rc-bar"><div class="rc-fill" style="width:41%;background:var(--gold);"></div></div>
-      <span class="rc-tag m">Medium Risk</span>
+      <div class="rc-label">Livability Index</div>
+      <div class="rc-score-row"><span class="rc-score m">36.9</span><span class="rc-max">/100</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:36.9%;background:var(--gold);"></div></div>
+      <span class="rc-tag m">Dataset Avg.</span>
     </div>
     <div class="risk-cell">
-      <div class="rc-label">Liquidity Risk</div>
-      <div class="rc-score-row"><span class="rc-score l">31</span><span class="rc-max">/100</span></div>
-      <div class="rc-bar"><div class="rc-fill" style="width:31%;background:#7EC8A0;"></div></div>
-      <span class="rc-tag l">Low Risk</span>
+      <div class="rc-label">Tier 1 Builder Share</div>
+      <div class="rc-score-row"><span class="rc-score l">35</span><span class="rc-max">%</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:35%;background:#7EC8A0;"></div></div>
+      <span class="rc-tag l">197 Listings</span>
     </div>
     <div class="risk-cell">
-      <div class="rc-label">Regulatory Risk</div>
-      <div class="rc-score-row"><span class="rc-score m">38</span><span class="rc-max">/100</span></div>
-      <div class="rc-bar"><div class="rc-fill" style="width:38%;background:var(--gold);"></div></div>
-      <span class="rc-tag m">Medium Risk</span>
+      <div class="rc-label">Buy-Grade Listings</div>
+      <div class="rc-score-row"><span class="rc-score l">42.7</span><span class="rc-max">%</span></div>
+      <div class="rc-bar"><div class="rc-fill" style="width:42.7%;background:#7EC8A0;"></div></div>
+      <span class="rc-tag l">239 of 560</span>
     </div>
   </div>
 </section>
@@ -1376,11 +1388,11 @@ How may I assist you today?</div>
         <div class="eco-ghost">II</div>
         <div class="eco-phase" style="color:var(--gold);">Stage Two · Active</div>
         <div class="eco-name">Lumetha Realty AI</div>
-        <p class="eco-desc">India's most sophisticated real estate intelligence platform. Price forecasting, ROI modelling, risk analysis, and sector scoring for Gurgaon's market.</p>
+        <p class="eco-desc">India's most sophisticated real estate intelligence platform. 560 scored listings, investment grades, ROI modelling, and sector scoring for Gurgaon's market.</p>
         <div class="eco-tags">
           <span class="etag">Price AI</span>
           <span class="etag">ROI Engine</span>
-          <span class="etag">Heatmaps</span>
+          <span class="etag">560 Listings</span>
           <span class="etag">Risk Scoring</span>
         </div>
       </div>
@@ -1405,7 +1417,7 @@ How may I assist you today?</div>
   <div class="footer-grid">
     <div class="footer-brand">
       <span class="footer-logo">LUME<em>THA</em></span>
-      <p>AI-powered real estate intelligence for Gurgaon's most discerning investors. Precision forecasting. Private insight. Institutional-grade analysis.</p>
+      <p>AI-powered real estate intelligence for Gurgaon's most discerning investors. Precision forecasting. Private insight. Institutional-grade analysis across 560 live listings.</p>
     </div>
     <div class="footer-col">
       <h5>Platform</h5>
@@ -1431,7 +1443,7 @@ How may I assist you today?</div>
     </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy">© 2025 Lumetha AI. All rights reserved. · Gurugram, India</span>
+    <span class="footer-copy">© 2025 Lumetha AI. All rights reserved. · Gurugram, India · 560 Listings · Dataset v2.0</span>
     <div class="footer-links">
       <a href="#">Privacy</a>
       <a href="#">Terms</a>
@@ -1441,39 +1453,41 @@ How may I assist you today?</div>
 </footer>
 
 <script>
-// ── CHARTS ────────────────────────────────────────────────────────────
+// ── CHARTS ──────────────────────────────────────────────────────────
 Chart.defaults.color = '#6E6860';
 Chart.defaults.font.family = "'DM Mono', monospace";
 Chart.defaults.font.size = 10;
 const gridColor = 'rgba(196,163,94,0.06)';
 
+// Price distribution — real dataset averages
 new Chart(document.getElementById('priceC'), {
-  type:'line',
+  type:'bar',
   data:{
-    labels:['2018','2019','2020','2021','2022','2023','2024'],
+    labels:['Golf Course Rd','DLF Phase 5','Cyber City','MG Road','Sector 56','Udyog Vihar','Nirvana Country','Sohna Road','South City','Ardee City','Palam Vihar'],
     datasets:[{
-      data:[6800,7200,6900,7800,9400,11200,12400],
-      borderColor:'#C4A35E', backgroundColor:'rgba(196,163,94,0.05)',
-      borderWidth:1.5, pointBackgroundColor:'#C4A35E',
-      pointRadius:3, pointHoverRadius:5, fill:true, tension:.4
+      data:[21315,17908,17881,13881,11889,11140,10054,9935,9057,8876,8251],
+      backgroundColor:'rgba(196,163,94,0.18)',
+      borderColor:'rgba(196,163,94,0.55)',
+      borderWidth:1, borderRadius:0
     }]
   },
   options:{
     responsive:true, maintainAspectRatio:false,
     plugins:{legend:{display:false}},
     scales:{
-      x:{grid:{color:gridColor}, ticks:{letterSpacing:1}},
+      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:30, font:{size:9}}},
       y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/1000).toFixed(0)+'K'}}
     }
   }
 });
 
+// Budget band distribution — real from data
 new Chart(document.getElementById('typeC'), {
   type:'doughnut',
   data:{
-    labels:['Residential','Commercial','Plots','Other'],
+    labels:['₹1–2Cr','₹2–5Cr','Under ₹1Cr','Above ₹5Cr'],
     datasets:[{
-      data:[62,21,12,5],
+      data:[281,173,87,19],
       backgroundColor:['#C4A35E','#EDE8E0','#7EC8A0','#6E6860'],
       borderWidth:0, hoverOffset:4
     }]
@@ -1484,28 +1498,48 @@ new Chart(document.getElementById('typeC'), {
   }
 });
 
+// Investment score chart — top localities
 new Chart(document.getElementById('sectorC'), {
   type:'bar',
   data:{
-    labels:['MG Road','Golf Crs Ext','Dwarka Expy','Sec 57–65','Palam Vihar','New Gurgaon','Sohna Road'],
+    labels:['Udyog Vihar','Ardee City','South City','Sector 57','Nirvana Country','Sector 56','Sohna Road','Palam Vihar','MG Road','Sector 48'],
     datasets:[{
-      data:[18000,14200,11500,10800,9600,8400,7200],
-      backgroundColor:'rgba(196,163,94,0.18)',
-      borderColor:'rgba(196,163,94,0.55)',
-      borderWidth:1, borderRadius:0
+      label:'Investment Score',
+      data:[53.7,53.6,53.4,52.8,51.5,50.6,50.0,49.3,48.6,47.3],
+      backgroundColor:'rgba(126,200,160,0.18)',
+      borderColor:'rgba(126,200,160,0.55)',
+      borderWidth:1, borderRadius:0,
+      yAxisID:'y'
+    },{
+      label:'Price/sqft (₹K)',
+      data:[11.14,8.88,9.06,10.60,10.05,11.89,9.94,8.25,13.88,12.16],
+      backgroundColor:'rgba(196,163,94,0.13)',
+      borderColor:'rgba(196,163,94,0.4)',
+      borderWidth:1, borderRadius:0,
+      yAxisID:'y1',
+      type:'line',
+      tension:0.4,
+      pointRadius:3,
+      pointBackgroundColor:'#C4A35E'
     }]
   },
   options:{
     responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
+    plugins:{
+      legend:{
+        display:true,
+        labels:{color:'#6E6860', font:{size:10}, boxWidth:10}
+      }
+    },
     scales:{
-      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:20}},
-      y:{grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/1000).toFixed(0)+'K'}}
+      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:25, font:{size:9}}},
+      y:{grid:{color:gridColor}, ticks:{callback:v=>v.toFixed(0)}, title:{display:true,text:'Inv. Score',color:'#6E6860',font:{size:9}}},
+      y1:{position:'right', grid:{display:false}, ticks:{callback:v=>'₹'+v+'K'}, title:{display:true,text:'₹/sqft (K)',color:'#6E6860',font:{size:9}}}
     }
   }
 });
 
-// ── ROI CALCULATOR ────────────────────────────────────────────────────
+// ── ROI CALCULATOR ───────────────────────────────────────────────────
 let roiChart = null;
 function inr(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
 
@@ -1561,26 +1595,30 @@ function calcROI(){
 }
 calcROI();
 
-// ── AI CONCIERGE ──────────────────────────────────────────────────────
+// ── AI CONCIERGE ─────────────────────────────────────────────────────
 const SYS = `You are Lumetha Intelligence, a private real estate concierge for the Lumetha Realty AI platform. You specialise exclusively in Gurgaon and NCR India property markets.
 
-Expertise:
-- All Gurgaon micro-markets: Golf Course Extension, Dwarka Expressway, New Gurgaon, Sohna Road, MG Road, all sectors
-- Price trends, appreciation forecasts, historical data, future projections
-- ROI analysis, rental yields, investment scoring, risk assessment
-- Infrastructure: Delhi Metro Phase 4, KMP Expressway, DMIC corridor, Dwarka Expressway opening impact
-- Builders: DLF, Godrej, M3M, Emaar, Sobha, Signature Global, BPTP, Mahindra Lifespaces
-- RERA compliance, legal due diligence, investment risk
-- Commercial vs residential investment strategies
+You have access to a dataset of 560 scored listings across 30+ Gurgaon micro-markets. Key data points:
+- Average price/sqft: ₹12,726 (median ₹11,255)
+- Top investment score localities: Udyog Vihar (53.7), Ardee City (53.6), South City (53.4), Sector 57 (52.8), Nirvana Country (51.5)
+- Top appreciation potential: Sector 92 Dwarka Expy (69.6), Palam Vihar (59.6), Ardee City (54.5), Sector 89 Dwarka Expy (53.2)
+- Highest priced: Sector 43 Golf Course Rd (₹24,296/sqft), Sector 77 Dwarka Expy (₹24,156/sqft), Golf Course Road (₹21,315/sqft)
+- 42.7% Buy-rated (239 listings), 57.3% Hold-rated (321 listings)
+- Average risk-adjusted ROI: 25.6%, avg payback: 29.5 years
+- Budget distribution: 50% listings ₹1–2Cr, 31% ₹2–5Cr, 16% under ₹1Cr, 3% above ₹5Cr
+- Builder tiers: 35% Tier 1 (197 listings), 57% Tier 2 (317 listings), 8% Individual (46 listings)
+- Property types: 53% apartments, 21% builder floors, 10% villas, 9% penthouses, 7% studios
 
-Tone: Refined, authoritative, concise. Like a private wealth advisor at a luxury firm. Use ₹ for prices. Be specific with numbers. Provide clear, structured insights. Maximum 220 words unless the query requires depth.`;
+Expertise: All Gurgaon micro-markets, price trends, ROI analysis, infrastructure impact, RERA compliance, builder performance.
+
+Tone: Refined, authoritative, concise. Like a private wealth advisor. Use ₹ for prices. Be specific with numbers from the dataset. Maximum 220 words unless depth is required.`;
 
 async function callAI(msg){
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
-      model:'claude-sonnet-4-20250514', max_tokens:1000,
+      model:'claude-sonnet-4-6', max_tokens:1000,
       system:SYS,
       messages:[{role:'user',content:msg}]
     })
@@ -1625,7 +1663,7 @@ async function send(){
 function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
 function useSug(el){ document.getElementById('chatIn').value=el.textContent; send(); }
 
-// ── IFRAME LOADER ──────────────────────────────────────────────────────
+// ── IFRAME LOADER ─────────────────────────────────────────────────────
 function frameLoaded(){
   setTimeout(()=>{
     const loader = document.getElementById('frameLoader');
@@ -1633,20 +1671,17 @@ function frameLoaded(){
     document.getElementById('frameStatus').textContent = 'Connected · Live';
   }, 800);
 }
-
-// Fallback: if iframe takes too long, show partial loaded state
 setTimeout(()=>{
   const loader = document.getElementById('frameLoader');
   const status = document.getElementById('frameStatus');
   if(loader && !loader.classList.contains('hidden')){
-    // Update text but keep showing — iframe may still be loading
     const loaderText = loader.querySelector('.loader-text');
     if(loaderText) loaderText.textContent = 'Loading Analyser…';
     if(status) status.textContent = 'Initialising…';
   }
 }, 3000);
 
-// ── EXPAND TOGGLE ─────────────────────────────────────────────────────
+// ── EXPAND TOGGLE ──────────────────────────────────────────────────────
 let expanded = false;
 function toggleExpand(){
   const wrap = document.getElementById('frameWrap');
@@ -1658,24 +1693,11 @@ function toggleExpand(){
     : `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:10px;height:10px;opacity:.6"><path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/></svg> Expand`;
 }
 
-// ── SCROLL REVEAL ─────────────────────────────────────────────────────
+// ── SCROLL REVEAL ──────────────────────────────────────────────────────
 const obs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
 },{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-
-// ── LAZY LOAD IFRAME on scroll into view ──────────────────────────────
-const analyserSection = document.getElementById('analyser');
-const iframeObs = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const frame = document.getElementById('analyserFrame');
-      // src already set in HTML; this handles future lazy-src approach if needed
-      iframeObs.disconnect();
-    }
-  });
-},{threshold:0.05});
-if(analyserSection) iframeObs.observe(analyserSection);
 </script>
 </body>
 </html>
