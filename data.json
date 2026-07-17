@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "total_listings": 560,
+    "generated_at": "2025-06-27",
+    "source": "listings_investment_scored.csv"
+  },
+  "kpis": {
+    "avg_price_sqft": 12726.0,
+    "median_price_sqft": 11255.0,
+    "avg_investment_score": 48.8,
+    "avg_roi_risk_adjusted": 25.6,
+    "avg_appreciation_potential": 44.3,
+    "avg_payback_years": 28.3,
+    "buy_count": 239,
+    "hold_count": 321,
+    "buy_pct": 42.7,
+    "total_listings": 560
+  },
+  "price_bands": {
+    "under_1cr": 87,
+    "1_2cr": 281,
+    "2_5cr": 173,
+    "above_5cr": 19
+  },
+  "bhk_distribution": {
+    "1": 53,
+    "2": 190,
+    "3": 201,
+    "4": 85,
+    "5": 31
+  },
+  "property_types": {
+    "builder_floor": 115,
+    "apartment": 297,
+    "studio": 37,
+    "villa": 58,
+    "penthouse": 53
+  },
+  "builder_tiers": {
+    "Tier 2": 317,
+    "Tier 1": 197,
+    "Individual": 46
+  },
+  "ticker": [
+    { "locality": "Sector 43 (Golf Course Rd)", "avg_price_sqft": 24296.0 },
+    { "locality": "Sector 77 (Dwarka Expy)", "avg_price_sqft": 24156.0 },
+    { "locality": "Sector 49 (Golf Course Ext)", "avg_price_sqft": 21872.0 },
+    { "locality": "Golf Course Road", "avg_price_sqft": 21315.0 },
+    { "locality": "Sector 103 (Dwarka Expy)", "avg_price_sqft": 21116.0 },
+    { "locality": "Sector 65 (Golf Course Ext)", "avg_price_sqft": 20365.0 },
+    { "locality": "Sector 113 (Dwarka Expy)", "avg_price_sqft": 19169.0 },
+    { "locality": "DLF Phase 5", "avg_price_sqft": 17908.0 },
+    { "locality": "Cyber City", "avg_price_sqft": 17881.0 },
+    { "locality": "MG Road", "avg_price_sqft": 13881.0 },
+    { "locality": "Sector 79 (New Gurgaon)", "avg_price_sqft": 13811.0 },
+    { "locality": "Sector 89 (Dwarka Expy)", "avg_price_sqft": 13443.0 }
+  ],
+  "sector_rankings": [
+    { "locality": "Udyog Vihar",                   "investment_score": 53.7, "avg_price_sqft": 11140.0, "appreciation": 48.0, "roi": 27.7, "listing_count": 34 },
+    { "locality": "Ardee City",                     "investment_score": 53.6, "avg_price_sqft": 8876.0,  "appreciation": 54.5, "roi": 30.4, "listing_count": 35 },
+    { "locality": "South City",                     "investment_score": 53.4, "avg_price_sqft": 9057.0,  "appreciation": 52.9, "roi": 29.7, "listing_count": 45 },
+    { "locality": "Sector 57",                      "investment_score": 52.8, "avg_price_sqft": 10604.0, "appreciation": 45.8, "roi": 26.7, "listing_count": 37 },
+    { "locality": "Nirvana Country",                "investment_score": 51.5, "avg_price_sqft": 10054.0, "appreciation": 47.4, "roi": 27.2, "listing_count": 37 },
+    { "locality": "Sector 56",                      "investment_score": 50.6, "avg_price_sqft": 11889.0, "appreciation": 46.1, "roi": 26.6, "listing_count": 30 },
+    { "locality": "Sohna Road",                     "investment_score": 50.0, "avg_price_sqft": 9935.0,  "appreciation": 50.9, "roi": 28.4, "listing_count": 25 },
+    { "locality": "Palam Vihar",                    "investment_score": 49.3, "avg_price_sqft": 8251.0,  "appreciation": 59.6, "roi": 31.8, "listing_count": 34 },
+    { "locality": "MG Road",                        "investment_score": 48.6, "avg_price_sqft": 13881.0, "appreciation": 35.0, "roi": 21.9, "listing_count": 38 },
+    { "locality": "Sector 43 (Golf Course Rd)",     "investment_score": 47.9, "avg_price_sqft": 24296.0, "appreciation": 15.3, "roi": 14.0, "listing_count": 6  }
+  ],
+  "price_chart": [
+    { "locality": "Sector 43 (Golf Course Rd)",   "avg_price_sqft": 24296.0 },
+    { "locality": "Sector 77 (Dwarka Expy)",       "avg_price_sqft": 24156.0 },
+    { "locality": "Sector 49 (Golf Course Ext)",   "avg_price_sqft": 21872.0 },
+    { "locality": "Golf Course Road",              "avg_price_sqft": 21315.0 },
+    { "locality": "Sector 103 (Dwarka Expy)",      "avg_price_sqft": 21116.0 },
+    { "locality": "Sector 65 (Golf Course Ext)",   "avg_price_sqft": 20365.0 },
+    { "locality": "Sector 113 (Dwarka Expy)",      "avg_price_sqft": 19169.0 },
+    { "locality": "DLF Phase 5",                   "avg_price_sqft": 17908.0 },
+    { "locality": "Cyber City",                    "avg_price_sqft": 17881.0 },
+    { "locality": "MG Road",                       "avg_price_sqft": 13881.0 },
+    { "locality": "Sector 79 (New Gurgaon)",       "avg_price_sqft": 13811.0 },
+    { "locality": "Sector 89 (Dwarka Expy)",       "avg_price_sqft": 13443.0 }
+  ]
+}

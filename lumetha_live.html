@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumetha — Private Real Estate Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Instrument+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --void:    #09080A;
+  --ink:     #0F0E10;
+  --srf:     #141316;
+  --srf2:    #1A191C;
+  --srf3:    #201F23;
+  --line:    rgba(196,163,94,0.12);
+  --line2:   rgba(196,163,94,0.24);
+  --gold:    #C4A35E;
+  --gold-lt: #E2C98A;
+  --gold-dk: #9A7C3E;
+  --gold-bg: rgba(196,163,94,0.06);
+  --gold-bg2:rgba(196,163,94,0.11);
+  --cream:   #EDE8E0;
+  --cream2:  #C8C0B4;
+  --muted:   #6E6860;
+  --dimmed:  #3A3830;
+  --white:   #F5F2EC;
+  --fhead:   'Cormorant Garamond', Georgia, serif;
+  --fbody:   'Instrument Sans', system-ui, sans-serif;
+  --fmono:   'DM Mono', 'Courier New', monospace;
+  --green:   #7EC8A0;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--void);color:var(--cream);font-family:var(--fbody);font-weight:400;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::selection{background:rgba(196,163,94,0.25);}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--ink);}
+::-webkit-scrollbar-thumb{background:var(--gold-dk);}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:180px;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;background:rgba(9,8,10,0.88);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--line);}
+.nav-left{display:flex;align-items:center;gap:48px;}
+.logo{font-family:var(--fhead);font-size:22px;font-weight:500;letter-spacing:6px;color:var(--white);text-decoration:none;text-transform:uppercase;}
+.logo em{color:var(--gold);font-style:normal;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{font-family:var(--fbody);font-size:12px;font-weight:400;color:var(--muted);text-decoration:none;letter-spacing:1.8px;text-transform:uppercase;transition:color .3s;}
+.nav-links a:hover{color:var(--cream2);}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-badge{font-family:var(--fmono);font-size:10px;color:var(--gold);letter-spacing:1.5px;padding:4px 12px;border:1px solid var(--line2);text-transform:uppercase;}
+.nav-btn{font-family:var(--fbody);font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--void);background:var(--gold);padding:10px 24px;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:background .25s;}
+.nav-btn:hover{background:var(--gold-lt);}
+
+/* ── DATA STATUS BAR ── */
+.data-status-bar{position:fixed;top:72px;left:0;right:0;z-index:190;height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;background:var(--srf);border-bottom:1px solid var(--line);font-family:var(--fmono);font-size:9px;letter-spacing:1.5px;}
+.dsb-left{display:flex;align-items:center;gap:16px;color:var(--dimmed);}
+.dsb-source{color:var(--muted);}
+.dsb-live{display:flex;align-items:center;gap:6px;color:var(--gold);}
+.dsb-dot{width:4px;height:4px;border-radius:50%;background:#4CAF6E;animation:breathe 2.5s ease-in-out infinite;}
+@keyframes breathe{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(76,175,110,.4);}50%{opacity:.6;box-shadow:0 0 0 5px rgba(76,175,110,0);}}
+.dsb-right{color:var(--dimmed);}
+/* skeleton shimmer */
+.skel{display:inline-block;background:linear-gradient(90deg,var(--srf2) 25%,var(--srf3) 50%,var(--srf2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:2px;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:120px 64px 80px;position:relative;z-index:1;border-bottom:1px solid var(--line);margin-top:28px;}
+.hero-left{padding-right:80px;}
+.kicker{display:inline-flex;align-items:center;gap:12px;font-family:var(--fmono);font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:40px;}
+.kicker-line{width:40px;height:1px;background:var(--gold);opacity:.5;}
+.hero h1{font-family:var(--fhead);font-size:clamp(52px,5.5vw,88px);font-weight:300;line-height:1.05;letter-spacing:-1px;color:var(--white);margin-bottom:32px;}
+.hero h1 em{font-style:italic;color:var(--gold-lt);display:block;}
+.hero-body{font-size:15px;font-weight:300;color:var(--cream2);line-height:1.8;max-width:420px;margin-bottom:48px;border-left:1px solid var(--line2);padding-left:20px;}
+.hero-actions{display:flex;gap:16px;align-items:center;}
+.btn-gold{display:inline-block;padding:14px 36px;background:var(--gold);color:var(--void);font-family:var(--fbody);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;}
+.btn-gold:hover{background:var(--gold-lt);transform:translateY(-1px);}
+.btn-ghost{display:inline-block;padding:14px 36px;background:transparent;color:var(--cream2);font-family:var(--fbody);font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid var(--line2);cursor:pointer;transition:all .3s;}
+.btn-ghost:hover{border-color:rgba(196,163,94,0.4);color:var(--gold-lt);}
+
+.hero-right{display:flex;flex-direction:column;gap:20px;}
+.hero-panel{background:var(--srf2);border:1px solid var(--line);padding:32px;}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line);}
+.panel-label{font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+.live-indicator{display:flex;align-items:center;gap:6px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#4CAF6E;animation:breathe 2.5s ease-in-out infinite;}
+.score-display{text-align:center;padding:16px 0 28px;}
+.score-number{font-family:var(--fhead);font-size:80px;font-weight:300;color:var(--gold-lt);line-height:1;letter-spacing:-2px;}
+.score-denom{font-size:28px;color:var(--muted);}
+.score-loc{font-family:var(--fbody);font-size:13px;font-weight:300;color:var(--cream2);letter-spacing:.5px;margin-top:8px;}
+.score-subloc{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.score-metrics{display:flex;flex-direction:column;gap:14px;}
+.sm-row{display:flex;align-items:center;gap:12px;}
+.sm-key{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:1px;width:80px;flex-shrink:0;text-transform:uppercase;}
+.sm-bar{flex:1;height:2px;background:rgba(255,255,255,0.05);position:relative;}
+.sm-fill{height:100%;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.sm-val{font-family:var(--fmono);font-size:10px;width:36px;text-align:right;flex-shrink:0;}
+.hero-stats-row{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:var(--srf);}
+.hstat{padding:24px;border-right:1px solid var(--line);}
+.hstat:last-child{border:none;}
+.hstat-val{font-family:var(--fhead);font-size:30px;font-weight:300;color:var(--white);line-height:1;margin-bottom:6px;}
+.hstat-val span{color:var(--gold-lt);}
+.hstat-key{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.hstat-chg{font-family:var(--fmono);font-size:9px;margin-top:4px;}
+.pos{color:#4CAF6E;} .neg{color:#D16B6B;}
+
+/* ── TICKER ── */
+.ticker{background:var(--srf);border-bottom:1px solid var(--line);padding:14px 0;overflow:hidden;position:relative;z-index:1;}
+.ticker-wrap{display:flex;white-space:nowrap;animation:scroll-ticker 45s linear infinite;}
+.ticker-wrap:hover{animation-play-state:paused;}
+@keyframes scroll-ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.tick{display:inline-flex;align-items:center;gap:10px;padding:0 36px;border-right:1px solid var(--line);font-family:var(--fmono);font-size:11px;}
+.tn{color:var(--muted);} .tv{color:var(--cream2);font-weight:500;} .tc{font-size:10px;}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:1;}
+.sec-inner{padding:100px 64px;}
+.sec-kicker{display:flex;align-items:center;gap:14px;font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:4px;text-transform:uppercase;margin-bottom:20px;}
+.sec-kicker::before{content:'';width:32px;height:1px;background:var(--gold);opacity:.5;}
+.sec-title{font-family:var(--fhead);font-size:clamp(36px,4vw,60px);font-weight:300;line-height:1.1;color:var(--white);margin-bottom:20px;}
+.sec-title em{font-style:italic;color:var(--gold-lt);}
+.sec-body{font-size:15px;font-weight:300;color:var(--cream2);max-width:500px;line-height:1.8;margin-bottom:64px;}
+
+/* ── AI CONCIERGE ── */
+.ai-wrap{background:var(--srf);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.ai-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:start;}
+.capability-list{display:flex;flex-direction:column;gap:1px;margin-top:40px;}
+.cap{display:flex;gap:20px;align-items:flex-start;padding:22px 0;border-bottom:1px solid var(--line);transition:padding .3s;}
+.cap:last-child{border:none;}
+.cap:hover{padding-left:6px;}
+.cap-num{font-family:var(--fmono);font-size:11px;color:var(--gold-dk);letter-spacing:1px;min-width:28px;margin-top:2px;}
+.cap-body h4{font-family:var(--fbody);font-size:14px;font-weight:500;color:var(--cream);margin-bottom:4px;}
+.cap-body p{font-size:13px;color:var(--muted);line-height:1.7;}
+.concierge{background:var(--srf2);border:1px solid var(--line);display:flex;flex-direction:column;height:600px;}
+.conc-top{padding:22px 28px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+.conc-brand{display:flex;align-items:center;gap:14px;}
+.conc-mark{width:38px;height:38px;background:var(--gold-bg);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--fhead);font-size:16px;font-weight:500;color:var(--gold-lt);}
+.conc-name{font-family:var(--fbody);font-size:13px;font-weight:500;color:var(--cream);letter-spacing:.5px;}
+.conc-sub{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:2px;display:flex;align-items:center;gap:6px;}
+.conc-sub::before{content:'';width:4px;height:4px;border-radius:50%;background:#4CAF6E;}
+.conc-msgs{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:20px;scrollbar-width:thin;scrollbar-color:var(--dimmed) transparent;}
+.cmsg{max-width:90%;animation:fadeup .35s ease;}
+@keyframes fadeup{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.cmsg.you{align-self:flex-end;} .cmsg.ai{align-self:flex-start;}
+.cmsg-bub{padding:14px 18px;font-size:14px;line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.cmsg.you .cmsg-bub{background:var(--gold-bg2);border:1px solid var(--line2);color:var(--cream);}
+.cmsg.ai .cmsg-bub{background:var(--srf3);border:1px solid var(--line);color:var(--cream);border-left:2px solid var(--gold-dk);}
+.cmsg-meta{font-family:var(--fmono);font-size:9px;color:var(--dimmed);margin-top:5px;padding:0 2px;letter-spacing:1px;}
+.cmsg.you .cmsg-meta{text-align:right;}
+.typing-ind{align-self:flex-start;display:flex;gap:5px;padding:14px 18px;background:var(--srf3);border:1px solid var(--line);border-left:2px solid var(--gold-dk);align-items:center;}
+.tdot{width:5px;height:5px;background:var(--gold);border-radius:50%;opacity:.5;animation:tdot .9s ease-in-out infinite;}
+.tdot:nth-child(2){animation-delay:.18s;} .tdot:nth-child(3){animation-delay:.36s;}
+@keyframes tdot{0%,100%{opacity:.3;transform:translateY(0);}50%{opacity:1;transform:translateY(-4px);}}
+.conc-suggestions{display:flex;flex-wrap:wrap;gap:8px;padding:0 28px 16px;}
+.sug{padding:6px 14px;background:transparent;border:1px solid var(--line);font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:1px;cursor:pointer;transition:all .25s;text-align:left;}
+.sug:hover{border-color:var(--line2);color:var(--gold-lt);background:var(--gold-bg);}
+.conc-input-row{padding:20px 28px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:flex-end;}
+.conc-input{flex:1;background:var(--srf3);border:1px solid var(--line);color:var(--cream);font-family:var(--fbody);font-size:14px;padding:11px 16px;outline:none;resize:none;height:44px;transition:border-color .25s;font-weight:300;}
+.conc-input:focus{border-color:var(--line2);}
+.conc-input::placeholder{color:var(--dimmed);font-weight:300;}
+.conc-send{padding:0 22px;height:44px;background:var(--gold);color:var(--void);font-family:var(--fbody);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;transition:all .25s;}
+.conc-send:hover{background:var(--gold-lt);}
+.conc-send:disabled{background:var(--srf3);color:var(--dimmed);cursor:not-allowed;}
+
+/* ── DASHBOARD ── */
+.dash-bg{background:var(--ink);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.data-note{background:var(--gold-bg);border:1px solid var(--line2);padding:14px 20px;margin-bottom:32px;display:flex;align-items:center;gap:12px;}
+.data-note-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:breathe 2s ease-in-out infinite;}
+.data-note p{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:1px;}
+.data-note strong{color:var(--gold-lt);}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);margin-bottom:40px;}
+.kpi{padding:32px 28px;border-right:1px solid var(--line);}
+.kpi:last-child{border:none;}
+.kpi-label{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+.kpi-val{font-family:var(--fhead);font-size:36px;font-weight:300;color:var(--white);line-height:1;margin-bottom:8px;}
+.kpi-val.gold{color:var(--gold-lt);}
+.kpi-chg{font-family:var(--fmono);font-size:10px;letter-spacing:1px;}
+.chart-row{display:grid;grid-template-columns:3fr 2fr;gap:24px;margin-bottom:24px;}
+.chart-panel{background:var(--srf);border:1px solid var(--line);padding:28px;}
+.cp-title{font-family:var(--fbody);font-size:13px;font-weight:500;color:var(--cream2);letter-spacing:1px;margin-bottom:4px;}
+.cp-sub{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-bottom:24px;}
+.legend-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+.leg{display:flex;align-items:center;gap:5px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;}
+.leg-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+/* ── SECTORS ── */
+.sectors-bg{background:var(--void);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.sectors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+.sc{background:var(--srf);padding:32px;transition:background .3s;cursor:default;position:relative;overflow:hidden;}
+.sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold-dk),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+.sc:hover{background:var(--srf2);}
+.sc:hover::after{transform:scaleX(1);}
+.sc-rank{font-family:var(--fmono);font-size:9px;color:var(--dimmed);letter-spacing:3px;margin-bottom:20px;text-transform:uppercase;}
+.sc-name{font-family:var(--fhead);font-size:22px;font-weight:400;color:var(--white);margin-bottom:4px;line-height:1.2;}
+.sc-type{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:24px;}
+.sc-score-row{display:flex;align-items:baseline;gap:6px;margin-bottom:4px;}
+.sc-score{font-family:var(--fhead);font-size:52px;font-weight:300;line-height:1;color:var(--gold-lt);}
+.sc-score-max{font-family:var(--fmono);font-size:14px;color:var(--muted);}
+.sc-score-lbl{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
+.sc-divider{height:1px;background:var(--line);margin-bottom:20px;}
+.sc-metrics{display:flex;flex-direction:column;gap:10px;}
+.sm{display:flex;justify-content:space-between;align-items:center;}
+.smk{font-family:var(--fbody);font-size:13px;color:var(--muted);font-weight:300;}
+.smv{font-family:var(--fmono);font-size:12px;font-weight:500;}
+
+/* ── ANALYSER ── */
+.analyser-bg{background:var(--void);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.analyser-layout{display:grid;grid-template-columns:1fr 2.2fr;gap:64px;align-items:start;}
+.analyser-left{position:sticky;top:108px;}
+.analyser-features{display:flex;flex-direction:column;gap:1px;margin-top:40px;}
+.af{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--line);}
+.af:last-child{border:none;}
+.af-icon{width:32px;height:32px;background:var(--gold-bg);border:1px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--fhead);font-size:13px;color:var(--gold-lt);}
+.af-body h4{font-family:var(--fbody);font-size:13px;font-weight:500;color:var(--cream);margin-bottom:3px;}
+.af-body p{font-size:12px;color:var(--muted);line-height:1.6;}
+.analyser-shell{background:var(--srf2);border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;}
+.analyser-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:var(--srf);border-bottom:1px solid var(--line);flex-shrink:0;}
+.analyser-bar-left{display:flex;align-items:center;gap:14px;}
+.a-dots{display:flex;gap:6px;}
+.a-dot{width:9px;height:9px;border-radius:50%;}
+.a-dot-r{background:rgba(209,107,107,0.5);}
+.a-dot-y{background:rgba(196,163,94,0.5);}
+.a-dot-g{background:rgba(76,175,110,0.5);}
+.analyser-url{font-family:var(--fmono);font-size:10px;color:var(--dimmed);letter-spacing:1px;padding:4px 14px;background:var(--srf3);border:1px solid var(--line);}
+.analyser-bar-right{display:flex;align-items:center;gap:16px;}
+.analyser-badge{font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:2px;padding:4px 10px;border:1px solid var(--line2);text-transform:uppercase;}
+.analyser-open-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border:1px solid var(--line);background:transparent;cursor:pointer;text-decoration:none;transition:all .25s;}
+.analyser-open-btn:hover{border-color:var(--line2);color:var(--gold-lt);}
+.analyser-open-btn svg{width:10px;height:10px;opacity:.6;}
+.analyser-expand-btn{background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--fmono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:6px;}
+.analyser-expand-btn:hover{border-color:var(--line2);color:var(--gold-lt);}
+.analyser-frame-wrap{position:relative;width:100%;height:820px;background:var(--srf3);}
+.analyser-frame-wrap.expanded{height:1100px;}
+.frame-loader{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:var(--srf3);transition:opacity .6s ease;}
+.frame-loader.hidden{opacity:0;pointer-events:none;}
+.loader-mark{width:56px;height:56px;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--fhead);font-size:24px;font-weight:400;color:var(--gold-lt);animation:pulse-mark 2s ease-in-out infinite;}
+@keyframes pulse-mark{0%,100%{box-shadow:0 0 0 0 rgba(196,163,94,0.2);}50%{box-shadow:0 0 0 12px rgba(196,163,94,0);}}
+.loader-bar-wrap{width:200px;height:1px;background:var(--line);position:relative;overflow:hidden;}
+.loader-bar-fill{height:100%;background:var(--gold);animation:load-fill 2.5s ease-in-out infinite;}
+@keyframes load-fill{0%{width:0;opacity:1;}80%{width:100%;opacity:1;}100%{width:100%;opacity:0;}}
+.loader-text{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.analyser-iframe{width:100%;height:100%;border:none;display:block;filter:brightness(0.96) contrast(1.02);}
+.analyser-foot{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-top:1px solid var(--line);background:var(--srf);flex-shrink:0;}
+.analyser-foot-label{font-family:var(--fmono);font-size:9px;color:var(--dimmed);letter-spacing:2px;text-transform:uppercase;}
+.analyser-foot-status{display:flex;align-items:center;gap:6px;font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;}
+
+/* ── ROI ── */
+.roi-bg{background:var(--srf);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.roi-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.param-group{display:flex;flex-direction:column;gap:32px;}
+.param{display:flex;flex-direction:column;gap:10px;}
+.param-head{display:flex;justify-content:space-between;align-items:baseline;}
+.param-label{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.param-val{font-family:var(--fhead);font-size:20px;font-weight:400;color:var(--gold-lt);}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:1px;background:var(--line2);outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;background:var(--gold);border-radius:50%;border:2px solid var(--void);}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--gold);border-radius:50%;border:2px solid var(--void);}
+.result-panel{background:var(--srf2);border:1px solid var(--line);padding:40px;}
+.rp-label{font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:4px;text-transform:uppercase;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--line);}
+.rp-roi{font-family:var(--fhead);font-size:72px;font-weight:300;color:var(--white);line-height:1;margin-bottom:6px;letter-spacing:-2px;}
+.rp-roi.positive{color:var(--green);}
+.rp-roi-sub{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:36px;}
+.rp-rows{display:flex;flex-direction:column;}
+.rp-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);}
+.rp-row:last-child{border:none;padding-bottom:0;}
+.rp-k{font-family:var(--fbody);font-size:14px;color:var(--muted);font-weight:300;}
+.rp-v{font-family:var(--fhead);font-size:20px;font-weight:400;color:var(--white);}
+.roi-chart-box{margin-top:32px;padding-top:28px;border-top:1px solid var(--line);height:160px;position:relative;}
+
+/* ── RISK ── */
+.risk-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);}
+.risk-cell{background:var(--srf);padding:28px;}
+.rc-label{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;}
+.rc-score-row{display:flex;align-items:baseline;gap:4px;margin-bottom:14px;}
+.rc-score{font-family:var(--fhead);font-size:44px;font-weight:300;line-height:1;}
+.rc-score.l{color:var(--green);} .rc-score.m{color:var(--gold-lt);} .rc-score.h{color:#D16B6B;}
+.rc-max{font-family:var(--fmono);font-size:14px;color:var(--dimmed);}
+.rc-bar{height:1px;background:rgba(255,255,255,0.06);margin-bottom:14px;position:relative;}
+.rc-fill{height:1px;position:absolute;top:0;left:0;}
+.rc-tag{display:inline-block;padding:4px 10px;font-family:var(--fmono);font-size:9px;letter-spacing:2px;text-transform:uppercase;}
+.rc-tag.l{background:rgba(126,200,160,.08);color:var(--green);}
+.rc-tag.m{background:rgba(196,163,94,.08);color:var(--gold-lt);}
+
+/* ── ECOSYSTEM ── */
+.eco-bg{background:var(--void);border-top:1px solid var(--line);}
+.eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.eco-card{background:var(--srf);border:1px solid var(--line);padding:40px 36px;position:relative;overflow:hidden;transition:border-color .35s,background .35s;}
+.eco-card:hover{border-color:var(--line2);background:var(--srf2);}
+.eco-ghost{position:absolute;right:-10px;bottom:-20px;font-family:var(--fhead);font-size:120px;font-weight:300;color:rgba(196,163,94,0.04);line-height:1;pointer-events:none;}
+.eco-phase{font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:10px;}
+.eco-phase::before{content:'';width:20px;height:1px;background:var(--gold);opacity:.5;}
+.eco-name{font-family:var(--fhead);font-size:28px;font-weight:400;color:var(--white);margin-bottom:16px;line-height:1.1;}
+.eco-desc{font-size:14px;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:28px;}
+.eco-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.etag{padding:5px 12px;border:1px solid var(--line);font-family:var(--fmono);font-size:9px;color:var(--dimmed);letter-spacing:1.5px;text-transform:uppercase;}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);border-top:1px solid var(--line);padding:72px 64px 40px;position:relative;z-index:1;}
+.footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:48px;margin-bottom:64px;}
+.footer-logo{font-family:var(--fhead);font-size:24px;font-weight:400;letter-spacing:5px;color:var(--white);text-transform:uppercase;margin-bottom:16px;display:block;}
+.footer-logo em{color:var(--gold-lt);font-style:normal;}
+.footer-brand p{font-size:14px;font-weight:300;color:var(--muted);line-height:1.8;max-width:280px;}
+.footer-col h5{font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;}
+.footer-col a{display:block;font-size:14px;font-weight:300;color:var(--muted);text-decoration:none;margin-bottom:12px;transition:color .25s;}
+.footer-col a:hover{color:var(--cream2);}
+.footer-bottom{border-top:1px solid var(--line);padding-top:28px;display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-family:var(--fmono);font-size:10px;color:var(--dimmed);letter-spacing:1.5px;}
+.footer-links{display:flex;gap:28px;}
+.footer-links a{font-family:var(--fmono);font-size:10px;color:var(--dimmed);text-decoration:none;letter-spacing:1.5px;transition:color .25s;}
+.footer-links a:hover{color:var(--muted);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;} .reveal-delay-2{transition-delay:.2s;}
+
+@media(max-width:1100px){
+  nav,.data-status-bar{padding:0 28px;}
+  .nav-links{display:none;}
+  .hero,.ai-layout,.roi-layout,.chart-row,.analyser-layout{grid-template-columns:1fr;}
+  .hero{padding:120px 28px 80px;margin-top:28px;}
+  .hero-left{padding-right:0;}
+  .sec-inner{padding:72px 28px;}
+  .analyser-left{position:static;}
+  .sectors-grid,.eco-grid{grid-template-columns:1fr 1fr;}
+  .kpi-row,.risk-row{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  footer{padding:48px 28px 28px;}
+  .risk-row{margin:0 28px 72px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="#" class="logo">LUME<em>THA</em></a>
+    <ul class="nav-links">
+      <li><a href="#intelligence">Concierge</a></li>
+      <li><a href="#analyser">Analyser</a></li>
+      <li><a href="#dashboard">Markets</a></li>
+      <li><a href="#sectors">Sectors</a></li>
+      <li><a href="#roi">Returns</a></li>
+      <li><a href="#ecosystem">Platform</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <span class="nav-badge">Gurgaon · Live</span>
+    <a href="#analyser" class="nav-btn">Property Analyser</a>
+  </div>
+</nav>
+
+<!-- DATA STATUS BAR -->
+<div class="data-status-bar">
+  <div class="dsb-left">
+    <span class="dsb-live"><span class="dsb-dot"></span>LIVE DATA</span>
+    <span class="dsb-source" id="dsbSource">Loading from GitHub…</span>
+  </div>
+  <div class="dsb-right" id="dsbMeta">—</div>
+</div>
+
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <div class="hero-left">
+      <div class="kicker"><span class="kicker-line"></span>Lumetha Realty Intelligence</div>
+      <h1>Invest<br>with<br><em>precision.</em></h1>
+      <p class="hero-body" id="heroBody">AI-powered real estate intelligence built exclusively for Gurgaon's most discerning investors. Price forecasting, ROI modelling, and risk analysis — synthesised in real time.</p>
+      <div class="hero-actions">
+        <a href="#analyser" class="btn-gold">Property Analyser</a>
+        <a href="#dashboard" class="btn-ghost">View Markets</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-panel">
+        <div class="panel-header">
+          <span class="panel-label">Top Investment Score · Live</span>
+          <span class="live-indicator"><span class="live-dot"></span>Active</span>
+        </div>
+        <div class="score-display">
+          <div class="score-number" id="heroScore"><span class="skel" style="width:120px;height:72px;">&nbsp;</span></div>
+          <div class="score-loc" id="heroLoc">Loading…</div>
+          <div class="score-subloc" id="heroSubloc">—</div>
+        </div>
+        <div class="score-metrics">
+          <div class="sm-row">
+            <span class="sm-key">Appr.</span>
+            <div class="sm-bar"><div class="sm-fill" id="smApprFill" style="width:0%;background:var(--gold);"></div></div>
+            <span class="sm-val" style="color:var(--gold-lt);" id="smApprVal">—</span>
+          </div>
+          <div class="sm-row">
+            <span class="sm-key">ROI Adj.</span>
+            <div class="sm-bar"><div class="sm-fill" id="smRoiFill" style="width:0%;background:var(--cream2);"></div></div>
+            <span class="sm-val" style="color:var(--cream2);" id="smRoiVal">—</span>
+          </div>
+          <div class="sm-row">
+            <span class="sm-key">Listings</span>
+            <div class="sm-bar"><div class="sm-fill" id="smListFill" style="width:0%;background:var(--muted);"></div></div>
+            <span class="sm-val" style="color:var(--muted);" id="smListVal">—</span>
+          </div>
+          <div class="sm-row">
+            <span class="sm-key">Signal</span>
+            <div class="sm-bar"><div class="sm-fill" id="smSignalFill" style="width:70%;background:#7EC8A0;"></div></div>
+            <span class="sm-val" style="color:#7EC8A0;" id="smSignalVal">Buy</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats-row">
+        <div class="hstat">
+          <div class="hstat-val">₹<span id="hAvgPrice">—</span></div>
+          <div class="hstat-key">Avg. price / sqft</div>
+          <div class="hstat-chg pos" id="hListCount">— listings</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><span id="hAppr">—</span></div>
+          <div class="hstat-key">Avg. appr. potential</div>
+          <div class="hstat-chg pos">Score / 100</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><span id="hRoi">—</span>%</div>
+          <div class="hstat-key">Avg. risk-adj. ROI</div>
+          <div class="hstat-chg pos" id="hBuyPct">—% Buy-rated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER — rendered by JS -->
+<div class="ticker">
+  <div class="ticker-wrap" id="tickerEl"></div>
+</div>
+
+<!-- AI INTELLIGENCE -->
+<section id="intelligence" class="ai-wrap">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">AI Concierge</div>
+    <div class="sec-title">Private Intelligence.<br><em>Instant answers.</em></div>
+    <p class="sec-body">Ask anything about the Gurgaon market. Our intelligence engine synthesises price trends, infrastructure data, builder performance, and investment patterns across every live listing.</p>
+    <div class="ai-layout">
+      <div>
+        <div class="capability-list">
+          <div class="cap"><span class="cap-num">01</span><div class="cap-body"><h4>Price Forecasting</h4><p>ML-based appreciation modelling across all Gurgaon micro-markets. Full coverage from affordable to ultra-premium — live from your dataset.</p></div></div>
+          <div class="cap"><span class="cap-num">02</span><div class="cap-body"><h4>Infrastructure Impact</h4><p>Quantified impact scores for metro extension, highway proximity, IT-SEZ influence, and urban development pipelines — scored per listing.</p></div></div>
+          <div class="cap"><span class="cap-num">03</span><div class="cap-body"><h4>ROI & Risk Scoring</h4><p>Multi-factor scoring: builder tier, livability index, metro accessibility, healthcare, and employment proximity — all computed from your CSV.</p></div></div>
+          <div class="cap"><span class="cap-num">04</span><div class="cap-body"><h4>Sector Intelligence</h4><p id="capFourText">Buy vs Hold signals across all listings. Loading dataset stats…</p></div></div>
+        </div>
+      </div>
+      <div class="concierge">
+        <div class="conc-top">
+          <div class="conc-brand">
+            <div class="conc-mark">L</div>
+            <div>
+              <div class="conc-name">Lumetha Intelligence</div>
+              <div class="conc-sub" id="concSub">Loading dataset…</div>
+            </div>
+          </div>
+        </div>
+        <div class="conc-suggestions">
+          <button class="sug" onclick="useSug(this)">Best Buy-rated localities?</button>
+          <button class="sug" onclick="useSug(this)">Dwarka Expressway appreciation outlook</button>
+          <button class="sug" onclick="useSug(this)">Top risk-adjusted ROI corridors</button>
+          <button class="sug" onclick="useSug(this)">Ardee City vs Sohna Road</button>
+        </div>
+        <div class="conc-msgs" id="msgs">
+          <div class="cmsg ai">
+            <div class="cmsg-bub" id="welcomeMsg">Good morning. I'm your Lumetha intelligence concierge. Dataset loading — one moment…</div>
+            <div class="cmsg-meta">LUMETHA INTELLIGENCE · INITIALISING</div>
+          </div>
+        </div>
+        <div class="conc-input-row">
+          <textarea class="conc-input" id="chatIn" placeholder="Ask about any sector, budget, or investment strategy…" onkeydown="onKey(event)"></textarea>
+          <button class="conc-send" id="sendBtn" onclick="send()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROPERTY ANALYSER -->
+<section id="analyser" class="analyser-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">Property Analyser</div>
+    <div class="sec-title">Deep-dive<br><em>any property.</em></div>
+    <p class="sec-body">Run full AI-powered analysis on any listing — valuation, neighbourhood scoring, price history, growth potential, and rental yield — all in a single tool.</p>
+    <div class="analyser-layout">
+      <div class="analyser-left">
+        <div class="analyser-features">
+          <div class="af"><div class="af-icon">₹</div><div class="af-body"><h4>Instant Valuation</h4><p>AI-assessed fair market value vs. listing price. Know if you're getting a deal or overpaying.</p></div></div>
+          <div class="af"><div class="af-icon">↗</div><div class="af-body"><h4>Price History & Trends</h4><p>Historical price trajectory for the locality, with forward appreciation projections.</p></div></div>
+          <div class="af"><div class="af-icon">⊙</div><div class="af-body"><h4>Neighbourhood Score</h4><p>Infrastructure, connectivity, social amenities, and future development proximity — all scored.</p></div></div>
+          <div class="af"><div class="af-icon">%</div><div class="af-body"><h4>Rental Yield Forecast</h4><p>Projected rental income based on current demand, comparable leases, and micro-market depth.</p></div></div>
+          <div class="af"><div class="af-icon">⚑</div><div class="af-body"><h4>Risk Flags</h4><p>Builder tier, RERA compliance, legal encumbrances, and delivery risk — all flagged per listing.</p></div></div>
+        </div>
+        <div style="margin-top:36px;padding:24px;background:var(--gold-bg);border:1px solid var(--line);">
+          <div style="font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Powered by</div>
+          <div style="font-family:var(--fhead);font-size:22px;font-weight:400;color:var(--white);margin-bottom:8px;">Lumetha AI Engine</div>
+          <p style="font-size:13px;font-weight:300;color:var(--muted);line-height:1.7;" id="engineDesc">Trained on Gurgaon listings across 30+ micro-markets. Dataset loading…</p>
+        </div>
+      </div>
+      <div class="analyser-shell reveal reveal-delay-1">
+        <div class="analyser-bar">
+          <div class="analyser-bar-left">
+            <div class="a-dots"><div class="a-dot a-dot-r"></div><div class="a-dot a-dot-y"></div><div class="a-dot a-dot-g"></div></div>
+            <div class="analyser-url">realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app</div>
+          </div>
+          <div class="analyser-bar-right">
+            <span class="analyser-badge">Live · AI Powered</span>
+            <button class="analyser-expand-btn" onclick="toggleExpand()" id="expandBtn">
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/></svg>
+              Expand
+            </button>
+            <a href="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app" target="_blank" class="analyser-open-btn">
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1H1V11H11V7M11 1H7M11 1V5M6 6L11 1" stroke="currentColor" stroke-width="1.2"/></svg>
+              Open Full
+            </a>
+          </div>
+        </div>
+        <div class="analyser-frame-wrap" id="frameWrap">
+          <div class="frame-loader" id="frameLoader">
+            <div class="loader-mark">L</div>
+            <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+            <div class="loader-text">Initialising Analyser</div>
+          </div>
+          <iframe id="analyserFrame" class="analyser-iframe"
+            src="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app/?embed=true&embed_options=dark_theme,hide_loading_screen,hide_footer"
+            title="Lumetha Property Analyser" allow="clipboard-read; clipboard-write" loading="lazy" onload="frameLoaded()">
+          </iframe>
+        </div>
+        <div class="analyser-foot">
+          <span class="analyser-foot-label">Lumetha Property Analyser · Gurgaon & NCR</span>
+          <div class="analyser-foot-status"><span class="live-dot" style="width:4px;height:4px;"></span><span id="frameStatus">Connecting…</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="dash-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">Market Intelligence</div>
+    <div class="sec-title">Gurgaon<br><em>at a glance.</em></div>
+    <p class="sec-body">Analytics derived from live scored listings across Gurgaon. Refreshed automatically whenever the dataset is updated on GitHub.</p>
+    <div class="data-note">
+      <div class="data-note-dot"></div>
+      <p id="dataNoteTxt"><strong>Loading…</strong> Fetching latest data from GitHub.</p>
+    </div>
+    <div class="kpi-row reveal">
+      <div class="kpi"><div class="kpi-label">Average Price / Sqft</div><div class="kpi-val gold" id="kAvgPrice">—</div><div class="kpi-chg pos" id="kMedianPrice">—</div></div>
+      <div class="kpi"><div class="kpi-label">Listings Scored</div><div class="kpi-val" id="kListings">—</div><div class="kpi-chg pos" id="kMarkets">30+ micro-markets</div></div>
+      <div class="kpi"><div class="kpi-label">Avg. Risk-Adj. ROI</div><div class="kpi-val gold" id="kRoi">—</div><div class="kpi-chg pos" id="kPayback">Avg. payback: — yrs</div></div>
+      <div class="kpi"><div class="kpi-label">Buy-Rated Listings</div><div class="kpi-val" id="kBuy">—</div><div class="kpi-chg" style="color:var(--muted);" id="kBuyPct">—% of dataset</div></div>
+    </div>
+    <div class="chart-row reveal">
+      <div class="chart-panel">
+        <div class="cp-title">Price Distribution — Key Corridors</div>
+        <div class="cp-sub">₹ PER SQFT · LIVE DATASET AVERAGES</div>
+        <div style="position:relative;height:240px;"><canvas id="priceC"></canvas></div>
+      </div>
+      <div class="chart-panel">
+        <div class="cp-title">Listing Budget Bands</div>
+        <div class="cp-sub">BY PRICE RANGE · LIVE COUNT</div>
+        <div class="legend-row" id="bandLegend"></div>
+        <div style="position:relative;height:188px;"><canvas id="typeC"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-panel reveal">
+      <div class="cp-title">Investment Score vs Price/Sqft — Top Localities</div>
+      <div class="cp-sub">INVESTMENT SCORE (0–100) · LIVE FROM DATASET</div>
+      <div style="position:relative;height:220px;"><canvas id="sectorC"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTOR SCORING — rendered by JS -->
+<section id="sectors" class="sectors-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">Investment Scoring</div>
+    <div class="sec-title">Ranked<br><em>by intelligence.</em></div>
+    <p class="sec-body">Every Gurgaon micro-market scored across twelve parameters. Rankings update automatically whenever the dataset changes on GitHub.</p>
+  </div>
+  <div class="sectors-grid" id="sectorsGrid">
+    <!-- JS renders cards here -->
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section id="roi" class="roi-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">Return Engine</div>
+    <div class="sec-title">Model your<br><em>returns.</em></div>
+    <p class="sec-body" id="roiDesc">Adjust parameters to simulate your investment scenario. Defaults seeded from live dataset averages.</p>
+    <div class="roi-layout">
+      <div class="param-group">
+        <div class="param">
+          <div class="param-head"><span class="param-label">Investment Amount</span><span class="param-val" id="pInvest">₹1,00,00,000</span></div>
+          <input type="range" min="5000000" max="100000000" step="500000" value="10000000" id="sInvest" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head"><span class="param-label">Holding Period</span><span class="param-val" id="pHold">5 Years</span></div>
+          <input type="range" min="1" max="20" step="1" value="5" id="sHold" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head"><span class="param-label">Annual Appreciation</span><span class="param-val" id="pAppr">8.0%</span></div>
+          <input type="range" min="3" max="25" step="0.5" value="8" id="sAppr" oninput="calcROI()">
+        </div>
+        <div class="param">
+          <div class="param-head"><span class="param-label">Rental Yield</span><span class="param-val" id="pYield">3.4%</span></div>
+          <input type="range" min="1" max="10" step="0.1" value="3.4" id="sYield" oninput="calcROI()">
+        </div>
+      </div>
+      <div class="result-panel">
+        <div class="rp-label">Projected Returns</div>
+        <div class="rp-roi positive" id="rROI">—</div>
+        <div class="rp-roi-sub" id="rSub">TOTAL ROI</div>
+        <div class="rp-rows">
+          <div class="rp-row"><span class="rp-k">Exit Value</span><span class="rp-v" id="rExit" style="color:var(--gold-lt);">—</span></div>
+          <div class="rp-row"><span class="rp-k">Total Rental Income</span><span class="rp-v" id="rRental" style="color:#7EC8A0;">—</span></div>
+          <div class="rp-row"><span class="rp-k">Capital Gain</span><span class="rp-v" id="rGain">—</span></div>
+          <div class="rp-row"><span class="rp-k">Net Profit</span><span class="rp-v" id="rNet" style="color:#7EC8A0;font-size:24px;">—</span></div>
+          <div class="rp-row"><span class="rp-k">CAGR</span><span class="rp-v" id="rCAGR">—</span></div>
+        </div>
+        <div class="roi-chart-box"><canvas id="roiC"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK -->
+<section style="background:var(--ink);border-top:1px solid var(--line);">
+  <div class="sec-inner reveal" style="padding-bottom:0;">
+    <div class="sec-kicker">Risk Intelligence</div>
+    <div class="sec-title">Know your<br><em>exposure.</em></div>
+    <p class="sec-body" id="riskDesc">Multi-dimensional risk scoring derived from live listings. Loading dataset…</p>
+  </div>
+  <div class="risk-row reveal" style="margin:0 64px 100px;">
+    <div class="risk-cell"><div class="rc-label">Infra Impact Score</div><div class="rc-score-row"><span class="rc-score m" id="rInfra">—</span><span class="rc-max">/100</span></div><div class="rc-bar"><div class="rc-fill" id="rInfraBar" style="background:var(--gold);width:0%;"></div></div><span class="rc-tag m">Dataset Avg.</span></div>
+    <div class="risk-cell"><div class="rc-label">Livability Index</div><div class="rc-score-row"><span class="rc-score m" id="rLivi">—</span><span class="rc-max">/100</span></div><div class="rc-bar"><div class="rc-fill" id="rLiviBar" style="background:var(--gold);width:0%;"></div></div><span class="rc-tag m">Dataset Avg.</span></div>
+    <div class="risk-cell"><div class="rc-label">Tier 1 Builder Share</div><div class="rc-score-row"><span class="rc-score l" id="rTier1">—</span><span class="rc-max">%</span></div><div class="rc-bar"><div class="rc-fill" id="rTier1Bar" style="background:#7EC8A0;width:0%;"></div></div><span class="rc-tag l" id="rTier1Count">— Listings</span></div>
+    <div class="risk-cell"><div class="rc-label">Buy-Grade Listings</div><div class="rc-score-row"><span class="rc-score l" id="rBuyPct">—</span><span class="rc-max">%</span></div><div class="rc-bar"><div class="rc-fill" id="rBuyBar" style="background:#7EC8A0;width:0%;"></div></div><span class="rc-tag l" id="rBuyCount">— of —</span></div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem" class="eco-bg">
+  <div class="sec-inner reveal">
+    <div class="sec-kicker">The Platform</div>
+    <div class="sec-title">One ecosystem.<br><em>Three futures.</em></div>
+    <p class="sec-body">Lumetha is built as a unified AI platform — sharing intelligence infrastructure, user systems, and data engines across every product.</p>
+    <div class="eco-grid">
+      <div class="eco-card reveal"><div class="eco-ghost">I</div><div class="eco-phase">Stage One · Now</div><div class="eco-name">LifeQuest AI</div><p class="eco-desc">A gamified life simulator where real habits drive virtual progression. Productivity becomes gameplay. AI becomes your personal mentor.</p><div class="eco-tags"><span class="etag">Habit Engine</span><span class="etag">XP System</span><span class="etag">AI Coach</span><span class="etag">City Builder</span></div></div>
+      <div class="eco-card reveal reveal-delay-1" style="border-color:var(--line2);"><div class="eco-ghost">II</div><div class="eco-phase" style="color:var(--gold);">Stage Two · Active</div><div class="eco-name">Lumetha Realty AI</div><p class="eco-desc">India's most sophisticated real estate intelligence platform. Live-synced with your GitHub dataset — scores, rankings, and signals update automatically on every CSV push.</p><div class="eco-tags"><span class="etag">Price AI</span><span class="etag">ROI Engine</span><span class="etag">Live Data</span><span class="etag">Risk Scoring</span></div></div>
+      <div class="eco-card reveal reveal-delay-2"><div class="eco-ghost">III</div><div class="eco-phase">Stage Three · Vision</div><div class="eco-name">Construction Tycoon</div><p class="eco-desc">India's first large-scale AI-driven real estate simulation. Buy land, develop projects, navigate market cycles, and build a property empire.</p><div class="eco-tags"><span class="etag">AI Economy</span><span class="etag">Land Trading</span><span class="etag">Market Cycles</span><span class="etag">Multiplayer</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="footer-logo">LUME<em>THA</em></span>
+      <p>AI-powered real estate intelligence for Gurgaon's most discerning investors. Data synced live from GitHub — every CSV push refreshes the entire site automatically.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <a href="#intelligence">AI Concierge</a>
+      <a href="#analyser">Property Analyser</a>
+      <a href="#dashboard">Market Dashboard</a>
+      <a href="#sectors">Sector Scores</a>
+      <a href="#roi">Return Engine</a>
+    </div>
+    <div class="footer-col">
+      <h5>Products</h5>
+      <a href="#">LifeQuest AI</a>
+      <a href="#">Realty Intelligence</a>
+      <a href="#">Construction Tycoon</a>
+      <a href="#">Lumetha Cloud</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="#">About Lumetha</a>
+      <a href="#">Lumetha Labs</a>
+      <a href="#">Research</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy" id="footerCopy">© 2025 Lumetha AI · Gurugram, India · Live data via GitHub</span>
+    <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Disclaimer</a></div>
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+//  CONFIGURATION — update GITHUB_RAW_URL to point to your repo
+// ══════════════════════════════════════════════════════════════════════
+const GITHUB_RAW_URL =
+  'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/data.json';
+// Example: 'https://raw.githubusercontent.com/arnavtaneja/lumetha-realty/main/data.json'
+
+// ══════════════════════════════════════════════════════════════════════
+//  CHART REGISTRY (so we can destroy & rebuild on data load)
+// ══════════════════════════════════════════════════════════════════════
+Chart.defaults.color = '#6E6860';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 10;
+const gridColor = 'rgba(196,163,94,0.06)';
+let chartPrice=null, chartType=null, chartSector=null, roiChart=null;
+
+// ══════════════════════════════════════════════════════════════════════
+//  FETCH DATA.JSON FROM GITHUB RAW
+// ══════════════════════════════════════════════════════════════════════
+async function loadData() {
+  try {
+    // Cache-bust so GitHub Pages always gets latest
+    const url = GITHUB_RAW_URL + '?t=' + Date.now();
+    const res  = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const d = await res.json();
+    renderAll(d);
+  } catch (err) {
+    console.error('Data load failed:', err);
+    // Show fallback status
+    document.getElementById('dsbSource').textContent =
+      'Could not load data — update GITHUB_RAW_URL in the HTML config block';
+    document.getElementById('dsbMeta').textContent = 'Check console for details';
+    // Still call calcROI so sliders work
+    calcROI();
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  RENDER EVERYTHING FROM DATA OBJECT
+// ══════════════════════════════════════════════════════════════════════
+function renderAll(d) {
+  const k  = d.kpis;
+  const meta = d.meta;
+
+  // ── Status bar ───────────────────────────────────────────────────
+  document.getElementById('dsbSource').textContent =
+    'github.com · ' + meta.source + ' · ' + meta.total_listings + ' listings';
+  document.getElementById('dsbMeta').textContent =
+    'Updated ' + meta.generated_at;
+
+  // ── Hero panel ───────────────────────────────────────────────────
+  const top = d.sector_rankings[0];
+  document.getElementById('heroScore').innerHTML =
+    top.investment_score + '<span class="score-denom">/100</span>';
+  document.getElementById('heroLoc').textContent  = top.locality;
+  document.getElementById('heroSubloc').textContent =
+    'Rank #1 Investment Score · ' + top.listing_count + ' listings';
+
+  const apprPct = Math.min(top.appreciation / 100 * 100, 100);
+  const roiPct  = Math.min(top.roi / 50 * 100, 100);
+  const listPct = Math.min(top.listing_count / 60 * 100, 100);
+  document.getElementById('smApprFill').style.width  = apprPct + '%';
+  document.getElementById('smApprVal').textContent   = top.appreciation;
+  document.getElementById('smRoiFill').style.width   = roiPct + '%';
+  document.getElementById('smRoiVal').textContent    = top.roi + '%';
+  document.getElementById('smListFill').style.width  = listPct + '%';
+  document.getElementById('smListVal').textContent   = top.listing_count;
+
+  document.getElementById('hAvgPrice').textContent =
+    Number(k.avg_price_sqft).toLocaleString('en-IN');
+  document.getElementById('hListCount').textContent =
+    k.total_listings + ' live listings';
+  document.getElementById('hAppr').textContent   = k.avg_appreciation_potential;
+  document.getElementById('hRoi').textContent    = k.avg_roi_risk_adjusted;
+  document.getElementById('hBuyPct').textContent = k.buy_pct + '% Buy-rated';
+
+  document.getElementById('heroBody').textContent =
+    'AI-powered real estate intelligence built exclusively for Gurgaon's most discerning investors — synthesised across ' +
+    k.total_listings + ' live listings in ' + meta.generated_at.slice(0,7) + '.';
+
+  // ── Ticker ───────────────────────────────────────────────────────
+  const tickerEl = document.getElementById('tickerEl');
+  const ticks    = [...d.ticker, ...d.ticker]; // duplicate for seamless loop
+  tickerEl.innerHTML = ticks.map(t =>
+    `<span class="tick">
+       <span class="tn">${t.locality}</span>
+       <span class="tv">₹${Number(t.avg_price_sqft).toLocaleString('en-IN')}/sqft</span>
+       <span class="tc pos">▲ Live</span>
+     </span>`
+  ).join('');
+
+  // ── Concierge sub-label & welcome ────────────────────────────────
+  document.getElementById('concSub').textContent =
+    k.total_listings + ' Listings · Gurgaon Market · Live Analysis';
+  document.getElementById('welcomeMsg').textContent =
+    'Good morning. I\'m your Lumetha intelligence concierge, with deep knowledge of the Gurgaon property market across ' +
+    k.total_listings + ' scored listings.\n\nI can analyse investment scores, appreciation projections, risk-adjusted ROI, and compare micro-markets across any budget.\n\nHow may I assist you today?';
+  document.querySelector('.cmsg-meta').textContent =
+    'LUMETHA INTELLIGENCE · ' + k.total_listings + ' LISTINGS LOADED';
+
+  // ── Cap four text ────────────────────────────────────────────────
+  document.getElementById('capFourText').textContent =
+    'Buy vs Hold signals across ' + k.total_listings + ' listings — ' +
+    k.buy_count + ' rated Buy (' + k.buy_pct + '%), ' +
+    k.hold_count + ' rated Hold. Average payback horizon: ' +
+    k.avg_payback_years + ' years.';
+
+  // ── Engine description ───────────────────────────────────────────
+  document.getElementById('engineDesc').textContent =
+    'Trained on ' + k.total_listings + ' Gurgaon listings across 30+ micro-markets, covering ' +
+    Object.keys(d.property_types).length + ' property types and 3 builder tiers.';
+
+  // ── Dashboard data note ──────────────────────────────────────────
+  document.getElementById('dataNoteTxt').innerHTML =
+    '<strong>Dataset: ' + k.total_listings + ' listings</strong> · Gurgaon ' +
+    meta.generated_at.slice(0,7) + ' · 30+ micro-markets · ' +
+    'Avg investment score: ' + k.avg_investment_score + ' · ' +
+    k.buy_pct + '% rated Buy · Median price: ₹' +
+    Number(k.median_price_sqft).toLocaleString('en-IN') + '/sqft';
+
+  // ── KPI row ──────────────────────────────────────────────────────
+  document.getElementById('kAvgPrice').textContent   = '₹' + Number(k.avg_price_sqft).toLocaleString('en-IN');
+  document.getElementById('kMedianPrice').textContent= 'Median: ₹' + Number(k.median_price_sqft).toLocaleString('en-IN') + '/sqft';
+  document.getElementById('kListings').textContent   = k.total_listings;
+  document.getElementById('kRoi').textContent        = k.avg_roi_risk_adjusted + '%';
+  document.getElementById('kPayback').textContent    = 'Avg. payback: ' + k.avg_payback_years + ' yrs';
+  document.getElementById('kBuy').textContent        = k.buy_count;
+  document.getElementById('kBuyPct').textContent     = k.buy_pct + '% of dataset';
+
+  // ── Charts ───────────────────────────────────────────────────────
+  buildPriceChart(d.price_chart);
+  buildBandChart(d.price_bands, k.total_listings);
+  buildSectorChart(d.sector_rankings);
+
+  // ── Sector cards ────────────────────────────────────────────────
+  buildSectorCards(d.sector_rankings);
+
+  // ── ROI defaults from live data ──────────────────────────────────
+  // Implied annual appreciation ≈ avg appreciation potential / 5
+  const impliedAppr = Math.min(Math.round(k.avg_appreciation_potential / 5 * 10) / 10, 12);
+  const impliedYield = Math.round((1 / k.avg_payback_years) * 1000) / 10;
+  document.getElementById('sAppr').value  = impliedAppr;
+  document.getElementById('sYield').value = impliedYield;
+  document.getElementById('roiDesc').textContent =
+    'Adjust parameters to simulate your investment scenario. Defaults seeded from live dataset averages: ' +
+    '₹' + Number(k.avg_price_sqft).toLocaleString('en-IN') + '/sqft, ' +
+    k.avg_roi_risk_adjusted + '% risk-adjusted ROI.';
+  calcROI();
+
+  // ── Risk panel ───────────────────────────────────────────────────
+  // We approximate infra/livability from known values in the dataset
+  // (these come from the feature_matrix — using 35 & 36.9 from prior analysis)
+  // If you add them to generate_data.py output they can be dynamic too
+  const tier1 = d.builder_tiers['Tier 1'] || 0;
+  const tier1pct = Math.round(tier1 / k.total_listings * 100);
+  document.getElementById('rInfra').textContent      = '35.0';
+  document.getElementById('rInfraBar').style.width   = '35%';
+  document.getElementById('rLivi').textContent       = '36.9';
+  document.getElementById('rLiviBar').style.width    = '36.9%';
+  document.getElementById('rTier1').textContent      = tier1pct;
+  document.getElementById('rTier1Bar').style.width   = tier1pct + '%';
+  document.getElementById('rTier1Count').textContent = tier1 + ' Listings';
+  document.getElementById('rBuyPct').textContent     = k.buy_pct;
+  document.getElementById('rBuyBar').style.width     = k.buy_pct + '%';
+  document.getElementById('rBuyCount').textContent   = k.buy_count + ' of ' + k.total_listings;
+
+  document.getElementById('riskDesc').textContent =
+    'Multi-dimensional risk scoring derived from ' + k.total_listings +
+    ' listings. Builder tier distribution: ' + tier1pct +
+    '% Tier 1 (' + tier1 + ' listings), ' +
+    Math.round((d.builder_tiers['Tier 2']||0)/k.total_listings*100) + '% Tier 2, ' +
+    Math.round((d.builder_tiers['Individual']||0)/k.total_listings*100) + '% Individual.';
+
+  // ── Footer ───────────────────────────────────────────────────────
+  document.getElementById('footerCopy').textContent =
+    '© 2025 Lumetha AI · Gurugram, India · ' + k.total_listings +
+    ' Listings · Dataset ' + meta.generated_at;
+
+  // ── Build AI concierge system prompt with live data ──────────────
+  buildSystemPrompt(d);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  CHART BUILDERS
+// ══════════════════════════════════════════════════════════════════════
+function buildPriceChart(priceChart) {
+  if (chartPrice) chartPrice.destroy();
+  chartPrice = new Chart(document.getElementById('priceC'), {
+    type: 'bar',
+    data: {
+      labels:   priceChart.map(p => p.locality.replace(' (','<br>').replace(')','') ),
+      datasets: [{
+        data:            priceChart.map(p => p.avg_price_sqft),
+        backgroundColor: 'rgba(196,163,94,0.18)',
+        borderColor:     'rgba(196,163,94,0.55)',
+        borderWidth: 1, borderRadius: 0
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid:{display:false}, ticks:{autoSkip:false, maxRotation:30, font:{size:8}} },
+        y: { grid:{color:gridColor}, ticks:{callback:v=>'₹'+(v/1000).toFixed(0)+'K'} }
+      }
+    }
+  });
+}
+
+function buildBandChart(bands, total) {
+  const labels  = ['₹1–2Cr','₹2–5Cr','Under ₹1Cr','Above ₹5Cr'];
+  const values  = [bands['1_2cr'], bands['2_5cr'], bands['under_1cr'], bands['above_5cr']];
+  const colours = ['#C4A35E','#EDE8E0','#7EC8A0','#6E6860'];
+  // Legend
+  const leg = document.getElementById('bandLegend');
+  leg.innerHTML = labels.map((l,i) =>
+    `<span class="leg"><span class="leg-dot" style="background:${colours[i]}"></span>
+     ${l} ${Math.round(values[i]/total*100)}%</span>`
+  ).join('');
+  if (chartType) chartType.destroy();
+  chartType = new Chart(document.getElementById('typeC'), {
+    type: 'doughnut',
+    data: { labels, datasets:[{ data:values, backgroundColor:colours, borderWidth:0, hoverOffset:4 }] },
+    options: { responsive:true, maintainAspectRatio:false, cutout:'72%', plugins:{legend:{display:false}} }
+  });
+}
+
+function buildSectorChart(rankings) {
+  const top10 = rankings.slice(0,10);
+  if (chartSector) chartSector.destroy();
+  chartSector = new Chart(document.getElementById('sectorC'), {
+    type: 'bar',
+    data: {
+      labels: top10.map(s => s.locality),
+      datasets: [
+        {
+          label: 'Investment Score',
+          data:  top10.map(s => s.investment_score),
+          backgroundColor: 'rgba(126,200,160,0.18)',
+          borderColor:     'rgba(126,200,160,0.55)',
+          borderWidth:1, borderRadius:0, yAxisID:'y'
+        },
+        {
+          label: 'Price/sqft (₹K)',
+          data:  top10.map(s => +(s.avg_price_sqft/1000).toFixed(1)),
+          type: 'line', tension:0.4, pointRadius:3,
+          pointBackgroundColor:'#C4A35E',
+          backgroundColor: 'rgba(196,163,94,0.08)',
+          borderColor:     'rgba(196,163,94,0.5)',
+          borderWidth:1.5, yAxisID:'y1'
+        }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:true, labels:{color:'#6E6860',font:{size:10},boxWidth:10} } },
+      scales:{
+        x:  { grid:{display:false}, ticks:{autoSkip:false,maxRotation:25,font:{size:9}} },
+        y:  { grid:{color:gridColor}, ticks:{callback:v=>v.toFixed(0)}, title:{display:true,text:'Inv. Score',color:'#6E6860',font:{size:9}} },
+        y1: { position:'right', grid:{display:false}, ticks:{callback:v=>'₹'+v+'K'}, title:{display:true,text:'₹/sqft (K)',color:'#6E6860',font:{size:9}} }
+      }
+    }
+  });
+}
+
+function buildSectorCards(rankings) {
+  const grid  = document.getElementById('sectorsGrid');
+  const types = ['Employment-Linked','Mid-Segment','Established','Premium','Gated Community',
+                 'Established Residential','High-Growth Corridor','Affordable Residential',
+                 'Commercial Premium','Ultra-Premium'];
+  grid.innerHTML = rankings.slice(0,6).map((s, i) => {
+    const rec     = s.roi > 28 ? 'Buy' : s.roi > 24 ? 'Hold' : 'Caution';
+    const recClr  = rec==='Buy' ? '#7EC8A0' : rec==='Hold' ? 'var(--gold-lt)' : '#D16B6B';
+    const delay   = ['','reveal-delay-1','reveal-delay-2'][i%3];
+    return `
+    <div class="sc reveal ${delay}">
+      <div class="sc-rank">RANK ${String(i+1).padStart(2,'0')}</div>
+      <div class="sc-name">${s.locality}</div>
+      <div class="sc-type">${types[i] || 'Residential'}</div>
+      <div class="sc-score-row"><span class="sc-score">${s.investment_score}</span><span class="sc-score-max">/100</span></div>
+      <div class="sc-score-lbl">Investment Score · ${s.listing_count} listings</div>
+      <div class="sc-divider"></div>
+      <div class="sc-metrics">
+        <div class="sm"><span class="smk">Avg. Price</span><span class="smv" style="color:var(--cream2);">₹${Number(s.avg_price_sqft).toLocaleString('en-IN')}/sqft</span></div>
+        <div class="sm"><span class="smk">Appr. Score</span><span class="smv" style="color:#7EC8A0;">${s.appreciation} / 100</span></div>
+        <div class="sm"><span class="smk">Risk-Adj. ROI</span><span class="smv">${s.roi}%</span></div>
+        <div class="sm"><span class="smk">Signal</span><span class="smv" style="color:${recClr};">${rec}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Re-observe newly rendered cards
+  document.querySelectorAll('.sc.reveal').forEach(el => revealObs.observe(el));
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  ROI CALCULATOR
+// ══════════════════════════════════════════════════════════════════════
+function inr(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+
+function calcROI(){
+  const invest = +document.getElementById('sInvest').value;
+  const hold   = +document.getElementById('sHold').value;
+  const appr   = +document.getElementById('sAppr').value / 100;
+  const yield_ = +document.getElementById('sYield').value / 100;
+
+  document.getElementById('pInvest').textContent = inr(invest);
+  document.getElementById('pHold').textContent   = hold + ' Year' + (hold>1?'s':'');
+  document.getElementById('pAppr').textContent   = (+document.getElementById('sAppr').value).toFixed(1)+'%';
+  document.getElementById('pYield').textContent  = (+document.getElementById('sYield').value).toFixed(1)+'%';
+
+  const exit   = invest * Math.pow(1+appr, hold);
+  const rental = invest * yield_ * hold;
+  const gain   = exit - invest;
+  const net    = gain + rental;
+  const roi    = net / invest * 100;
+  const cagr   = (Math.pow(exit/invest, 1/hold) - 1) * 100;
+
+  document.getElementById('rROI').textContent    = (roi>=0?'+':'')+roi.toFixed(1)+'%';
+  document.getElementById('rSub').textContent    = 'TOTAL ROI OVER '+hold+' YEAR'+(hold>1?'S':'');
+  document.getElementById('rExit').textContent   = inr(exit);
+  document.getElementById('rRental').textContent = inr(rental);
+  document.getElementById('rGain').textContent   = inr(gain);
+  document.getElementById('rNet').textContent    = inr(net);
+  document.getElementById('rCAGR').textContent   = cagr.toFixed(1)+'%';
+
+  const yrs  = Array.from({length:hold},(_,i)=>'Yr '+(i+1));
+  const vals = yrs.map((_,i)=>Math.round(invest*Math.pow(1+appr,i+1)));
+  if(roiChart) roiChart.destroy();
+  roiChart = new Chart(document.getElementById('roiC'),{
+    type:'bar',
+    data:{
+      labels:yrs,
+      datasets:[{
+        data:vals,
+        backgroundColor:vals.map((_,i)=>i===vals.length-1?'rgba(126,200,160,0.45)':'rgba(196,163,94,0.18)'),
+        borderColor:vals.map((_,i)=>i===vals.length-1?'#7EC8A0':'rgba(196,163,94,0.5)'),
+        borderWidth:1,borderRadius:0
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{display:false}},
+        y:{grid:{color:gridColor},ticks:{callback:v=>'₹'+(v/100000).toFixed(0)+'L'}}
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  AI CONCIERGE  — system prompt built from live data
+// ══════════════════════════════════════════════════════════════════════
+let SYSTEM_PROMPT = `You are Lumetha Intelligence, a private real estate concierge for the Lumetha Realty AI platform, specialising in Gurgaon and NCR India property markets. Dataset is still loading — give general Gurgaon real estate advice.`;
+
+function buildSystemPrompt(d) {
+  const k   = d.kpis;
+  const top3 = d.sector_rankings.slice(0,3).map(s=>
+    `${s.locality} (score ${s.investment_score}, ₹${Number(s.avg_price_sqft).toLocaleString('en-IN')}/sqft, ROI ${s.roi}%)`
+  ).join('; ');
+  const topPrice = d.ticker.slice(0,3).map(t=>
+    `${t.locality} ₹${Number(t.avg_price_sqft).toLocaleString('en-IN')}/sqft`
+  ).join('; ');
+
+  SYSTEM_PROMPT = `You are Lumetha Intelligence, a private real estate concierge for the Lumetha Realty AI platform. You specialise exclusively in Gurgaon and NCR India property markets.
+
+LIVE DATASET (${d.meta.generated_at}):
+- Total listings: ${k.total_listings} across 30+ micro-markets
+- Average price/sqft: ₹${Number(k.avg_price_sqft).toLocaleString('en-IN')} (median ₹${Number(k.median_price_sqft).toLocaleString('en-IN')})
+- Top investment score localities: ${top3}
+- Highest priced localities: ${topPrice}
+- ${k.buy_pct}% Buy-rated (${k.buy_count} listings), ${100-k.buy_pct}% Hold-rated (${k.hold_count} listings)
+- Average risk-adjusted ROI: ${k.avg_roi_risk_adjusted}%, avg payback: ${k.avg_payback_years} years
+- Budget distribution: ${Math.round(d.price_bands['1_2cr']/k.total_listings*100)}% ₹1–2Cr, ${Math.round(d.price_bands['2_5cr']/k.total_listings*100)}% ₹2–5Cr, ${Math.round(d.price_bands['under_1cr']/k.total_listings*100)}% under ₹1Cr
+- Builder tiers: ${d.builder_tiers['Tier 1']||0} Tier 1, ${d.builder_tiers['Tier 2']||0} Tier 2, ${d.builder_tiers['Individual']||0} Individual listings
+
+Tone: Refined, authoritative, concise — like a private wealth advisor. Use ₹ for prices. Cite specific numbers from the dataset above. Max 220 words unless depth is required.`;
+}
+
+async function callAI(msg){
+  const r = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SYSTEM_PROMPT,messages:[{role:'user',content:msg}]})
+  });
+  const d = await r.json();
+  return d.content?.map(b=>b.text||'').join('')||'Unable to retrieve response. Please try again.';
+}
+
+function addMsg(role,text){
+  const c=document.getElementById('msgs');
+  const d=document.createElement('div'); d.className='cmsg '+role;
+  const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const safe=text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  d.innerHTML=`<div class="cmsg-bub">${safe}</div><div class="cmsg-meta">${role==='ai'?'LUMETHA INTELLIGENCE':'YOU'} · ${t}</div>`;
+  c.appendChild(d); c.scrollTop=c.scrollHeight;
+}
+function showTyping(){const c=document.getElementById('msgs');const d=document.createElement('div');d.id='typing';d.className='typing-ind';d.innerHTML='<div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>';c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function hideTyping(){document.getElementById('typing')?.remove();}
+async function send(){
+  const inp=document.getElementById('chatIn'),btn=document.getElementById('sendBtn'),txt=inp.value.trim();
+  if(!txt)return;
+  addMsg('you',txt);inp.value='';btn.disabled=true;showTyping();
+  try{const rep=await callAI(txt);hideTyping();addMsg('ai',rep);}
+  catch(e){hideTyping();addMsg('ai','Connection error. Please check your network and try again.');}
+  btn.disabled=false;
+}
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function useSug(el){document.getElementById('chatIn').value=el.textContent;send();}
+
+// ══════════════════════════════════════════════════════════════════════
+//  IFRAME
+// ══════════════════════════════════════════════════════════════════════
+function frameLoaded(){setTimeout(()=>{document.getElementById('frameLoader').classList.add('hidden');document.getElementById('frameStatus').textContent='Connected · Live';},800);}
+setTimeout(()=>{const l=document.getElementById('frameLoader');if(l&&!l.classList.contains('hidden')){l.querySelector('.loader-text').textContent='Loading Analyser…';document.getElementById('frameStatus').textContent='Initialising…';}},3000);
+
+let expanded=false;
+function toggleExpand(){
+  const wrap=document.getElementById('frameWrap'),btn=document.getElementById('expandBtn');
+  expanded=!expanded; wrap.classList.toggle('expanded',expanded);
+  btn.innerHTML=expanded
+    ?`<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:10px;height:10px;opacity:.6"><path d="M4 1V4H1M8 4V1H11M11 8H8V11M1 8H4V11" stroke="currentColor" stroke-width="1.2"/></svg> Compress`
+    :`<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:10px;height:10px;opacity:.6"><path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/></svg> Expand`;
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  SCROLL REVEAL
+// ══════════════════════════════════════════════════════════════════════
+const revealObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('in');});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+// ══════════════════════════════════════════════════════════════════════
+//  BOOT
+// ══════════════════════════════════════════════════════════════════════
+loadData();
+calcROI(); // renders sliders immediately, data overrides defaults on load
+</script>
+</body>
+</html>
