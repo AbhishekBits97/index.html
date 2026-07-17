@@ -526,7 +526,7 @@ footer{background:var(--ink);border-top:1px solid var(--line);padding:72px 64px 
           </div>
           <iframe id="analyserFrame" class="analyser-iframe"
             src="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app/?embed=true&embed_options=dark_theme,hide_loading_screen,hide_footer"
-            title="Lumetha Property Analyser" allow="clipboard-read; clipboard-write" loading="lazy" onload="frameLoaded()">
+            title="Lumetha Property Analyser" allow="clipboard-read; clipboard-write" loading="lazy" onload="if(typeof frameLoaded==='function')frameLoaded();">
           </iframe>
         </div>
         <div class="analyser-foot">
@@ -652,8 +652,8 @@ footer{background:var(--ink);border-top:1px solid var(--line);padding:72px 64px 
     <p class="sec-body">Lumetha is built as a unified AI platform — sharing intelligence infrastructure, user systems, and data engines across every product.</p>
     <div class="eco-grid">
       <div class="eco-card reveal"><div class="eco-ghost">I</div><div class="eco-phase">Stage One · Now</div><div class="eco-name">LifeQuest AI</div><p class="eco-desc">A gamified life simulator where real habits drive virtual progression. Productivity becomes gameplay. AI becomes your personal mentor.</p><div class="eco-tags"><span class="etag">Habit Engine</span><span class="etag">XP System</span><span class="etag">AI Coach</span><span class="etag">City Builder</span></div></div>
-      <div class="eco-card reveal reveal-delay-1" style="border-color:var(--line2);"><div class="eco-ghost">II</div><div class="eco-phase" style="color:var(--gold);">Stage Two · Active</div><div class="eco-name">Lumetha Realty AI</div><p class="eco-desc">India's most sophisticated real estate intelligence platform. Live-synced with your GitHub dataset — scores, rankings, and signals update automatically on every CSV push.</p><div class="eco-tags"><span class="etag">Price AI</span><span class="etag">ROI Engine</span><span class="etag">Live Data</span><span class="etag">Risk Scoring</span></div></div>
-      <div class="eco-card reveal reveal-delay-2"><div class="eco-ghost">III</div><div class="eco-phase">Stage Three · Vision</div><div class="eco-name">Construction Tycoon</div><p class="eco-desc">India's first large-scale AI-driven real estate simulation. Buy land, develop projects, navigate market cycles, and build a property empire.</p><div class="eco-tags"><span class="etag">AI Economy</span><span class="etag">Land Trading</span><span class="etag">Market Cycles</span><span class="etag">Multiplayer</span></div></div>
+      <div class="eco-card reveal reveal-delay-1" style="border-color:var(--line2);"><div class="eco-ghost">II</div><div class="eco-phase" style="color:var(--gold);">Stage Two · Active</div><div class="eco-name">Lumetha Realty AI</div><p class="eco-desc">India\'s most sophisticated real estate intelligence platform. Live-synced with your GitHub dataset — scores, rankings, and signals update automatically on every CSV push.</p><div class="eco-tags"><span class="etag">Price AI</span><span class="etag">ROI Engine</span><span class="etag">Live Data</span><span class="etag">Risk Scoring</span></div></div>
+      <div class="eco-card reveal reveal-delay-2"><div class="eco-ghost">III</div><div class="eco-phase">Stage Three · Vision</div><div class="eco-name">Construction Tycoon</div><p class="eco-desc">India\'s first large-scale AI-driven real estate simulation. Buy land, develop projects, navigate market cycles, and build a property empire.</p><div class="eco-tags"><span class="etag">AI Economy</span><span class="etag">Land Trading</span><span class="etag">Market Cycles</span><span class="etag">Multiplayer</span></div></div>
     </div>
   </div>
 </section>
@@ -699,7 +699,7 @@ footer{background:var(--ink);border-top:1px solid var(--line);padding:72px 64px 
 //  CONFIGURATION — update GITHUB_RAW_URL to point to your repo
 // ══════════════════════════════════════════════════════════════════════
 const GITHUB_RAW_URL =
-  'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/data.json';
+  'https://cdn.jsdelivr.net/gh/AbhishekBits97/realestate_ai@main/data.json';
 // Example: 'https://raw.githubusercontent.com/arnavtaneja/lumetha-realty/main/data.json'
 
 // ══════════════════════════════════════════════════════════════════════
@@ -773,7 +773,7 @@ function renderAll(d) {
   document.getElementById('hBuyPct').textContent = k.buy_pct + '% Buy-rated';
 
   document.getElementById('heroBody').textContent =
-    'AI-powered real estate intelligence built exclusively for Gurgaon's most discerning investors — synthesised across ' +
+    'AI-powered real estate intelligence built exclusively for Gurgaon\'s most discerning investors - synthesised across ' +
     k.total_listings + ' live listings in ' + meta.generated_at.slice(0,7) + '.';
 
   // ── Ticker ───────────────────────────────────────────────────────
