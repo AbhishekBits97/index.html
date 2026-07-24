@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markets — Lumetha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Instrument+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--void:#09080A;--ink:#0F0E10;--srf:#141316;--srf2:#1A191C;--srf3:#201F23;--line:rgba(196,163,94,0.12);--line2:rgba(196,163,94,0.24);--gold:#C4A35E;--gold-lt:#E2C98A;--gold-dk:#9A7C3E;--gold-bg:rgba(196,163,94,0.06);--cream:#EDE8E0;--cream2:#C8C0B4;--muted:#6E6860;--dimmed:#3A3830;--white:#F5F2EC;--green:#7EC8A0;--red:#D16B6B;--fhead:"Cormorant Garamond",Georgia,serif;--fbody:"Instrument Sans",system-ui,sans-serif;--fmono:"DM Mono","Courier New",monospace;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{background:var(--void);color:var(--cream);font-family:var(--fbody);-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--ink);}::-webkit-scrollbar-thumb{background:var(--gold-dk);}
+nav{position:fixed;top:0;left:0;right:0;z-index:300;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(9,8,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);}
+.logo{font-family:var(--fhead);font-size:20px;font-weight:500;letter-spacing:6px;color:var(--white);text-decoration:none;text-transform:uppercase;}
+.logo em{color:var(--gold);font-style:normal;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:var(--fbody);font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1.8px;text-transform:uppercase;transition:color .3s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold-lt);}
+.nav-right{display:flex;gap:10px;}
+.nbtn{font-family:var(--fbody);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--void);background:var(--gold);padding:9px 20px;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;}
+.nbtn:hover{background:var(--gold-lt);}
+.page{padding:88px 48px 60px;}
+.page-kicker{font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.page-kicker::before{content:"";width:28px;height:1px;background:var(--gold);opacity:.5;}
+.page-title{font-family:var(--fhead);font-size:clamp(32px,4vw,56px);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:8px;}
+.page-title em{font-style:italic;color:var(--gold-lt);}
+.page-sub{font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:40px;}
+/* KPI strip */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:32px;}
+.ks{background:var(--srf);padding:22px 20px;}
+.ksl{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+.ksv{font-family:var(--fhead);font-size:28px;font-weight:300;line-height:1;}
+.ksv.gold{color:var(--gold-lt);}
+.ksv.green{color:var(--green);}
+.kss{font-family:var(--fmono);font-size:9px;color:var(--dimmed);margin-top:4px;letter-spacing:1px;}
+/* Charts */
+.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.charts-1{margin-bottom:20px;}
+.cpanel{background:var(--srf);border:1px solid var(--line);padding:24px;}
+.cptitle{font-family:var(--fbody);font-size:13px;font-weight:500;color:var(--cream2);margin-bottom:4px;}
+.cpsub{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1.5px;margin-bottom:20px;}
+/* Heatmap */
+.heatmap-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);}
+.hm-cell{padding:18px 14px;position:relative;cursor:pointer;transition:filter .2s;}
+.hm-cell:hover{filter:brightness(1.2);}
+.hm-loc{font-family:var(--fmono);font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;opacity:.8;}
+.hm-val{font-family:var(--fhead);font-size:20px;font-weight:300;}
+.hm-sub{font-family:var(--fmono);font-size:9px;opacity:.7;margin-top:3px;}
+/* Comparison table */
+.ctbl{width:100%;border-collapse:collapse;}
+.ctbl th{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;cursor:pointer;}
+.ctbl th:hover{color:var(--gold-lt);}
+.ctbl td{padding:13px 14px;border-bottom:1px solid rgba(196,163,94,0.05);font-size:13px;vertical-align:middle;}
+.ctbl tr:hover td{background:var(--srf2);}
+.tloc{font-family:var(--fhead);font-size:15px;color:var(--white);}
+.tsub{font-family:var(--fmono);font-size:9px;color:var(--muted);margin-top:2px;}
+.tsc{font-family:var(--fhead);font-size:17px;font-weight:300;}
+.tmono{font-family:var(--fmono);font-size:11px;color:var(--cream2);}
+.tprice{font-family:var(--fhead);font-size:14px;color:var(--gold-lt);}
+/* Tab toggle */
+.tab-row{display:flex;gap:1px;margin-bottom:20px;}
+.tab{background:var(--srf);border:1px solid var(--line);color:var(--muted);font-family:var(--fmono);font-size:9px;letter-spacing:2px;padding:8px 16px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.tab.on{background:var(--gold-bg);border-color:var(--line2);color:var(--gold-lt);}
+/* Minibar */
+.mbar{display:inline-block;height:6px;border-radius:1px;vertical-align:middle;margin-right:6px;}
+@media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}.page{padding:80px 20px 40px;}.kpi-strip{grid-template-columns:1fr 1fr;}.charts-2{grid-template-columns:1fr;}.heatmap-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">LUME<em>THA</em></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="analyser.html">Analyser</a></li>
+    <li><a href="markets.html" class="active">Markets</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="analyser.html" class="nbtn">Analyse Property</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-kicker">Market Intelligence</div>
+  <h1 class="page-title">Gurgaon<br><em>market deep-dive.</em></h1>
+  <div class="page-sub" id="dataSub">Loading live data from GitHub…</div>
+
+  <!-- KPIs -->
+  <div class="kpi-strip">
+    <div class="ks"><div class="ksl">Localities Tracked</div><div class="ksv gold" id="kLocs">—</div><div class="kss">With 3+ listings</div></div>
+    <div class="ks"><div class="ksl">Price Range</div><div class="ksv" id="kRange" style="color:var(--cream2)">—</div><div class="kss">Min to max avg</div></div>
+    <div class="ks"><div class="ksl">Top ROI Locality</div><div class="ksv green" id="kTopRoi">—</div><div class="kss" id="kTopRoiLoc">—</div></div>
+    <div class="ks"><div class="ksl">Top Score Locality</div><div class="ksv gold" id="kTopScore">—</div><div class="kss" id="kTopScoreLoc">—</div></div>
+  </div>
+
+  <!-- Charts row 1 -->
+  <div class="charts-2">
+    <div class="cpanel">
+      <div class="cptitle">Average Price / sqft by Locality</div>
+      <div class="cpsub">RANKED HIGH TO LOW · ALL LOCALITIES WITH 3+ LISTINGS</div>
+      <div style="position:relative;height:280px"><canvas id="priceBarC"></canvas></div>
+    </div>
+    <div class="cpanel">
+      <div class="cptitle">Investment Score vs Appreciation Potential</div>
+      <div class="cpsub">BUBBLE SIZE = LISTING COUNT</div>
+      <div style="position:relative;height:280px"><canvas id="bubbleC"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Charts row 2 -->
+  <div class="charts-2">
+    <div class="cpanel">
+      <div class="cptitle">Risk-Adjusted ROI by Locality</div>
+      <div class="cpsub">AVERAGE ROI % · DATASET DERIVED</div>
+      <div style="position:relative;height:260px"><canvas id="roiBarC"></canvas></div>
+    </div>
+    <div class="cpanel">
+      <div class="cptitle">Price Range by Locality</div>
+      <div class="cpsub">MIN / AVG / MAX &#8377; PER SQFT</div>
+      <div style="position:relative;height:260px"><canvas id="rangeC"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Heatmap -->
+  <div class="cpanel charts-1">
+    <div class="cptitle">Investment Score Heatmap</div>
+    <div class="cpsub">ALL LOCALITIES · COLOUR = SCORE INTENSITY</div>
+    <div class="tab-row">
+      <button class="tab on" onclick="setHeatMetric('score',this)">Score</button>
+      <button class="tab" onclick="setHeatMetric('avg_roi',this)">ROI</button>
+      <button class="tab" onclick="setHeatMetric('avg_appr',this)">Appreciation</button>
+      <button class="tab" onclick="setHeatMetric('avg_price',this)">Price/sqft</button>
+    </div>
+    <div class="heatmap-grid" id="heatmap"></div>
+  </div>
+
+  <!-- Comparison table -->
+  <div class="cpanel">
+    <div class="cptitle" style="margin-bottom:4px">Full Market Comparison</div>
+    <div class="cpsub">ALL 25 LOCALITIES · CLICK HEADERS TO SORT</div>
+    <table class="ctbl" id="mktTable">
+      <thead><tr>
+        <th onclick="sortTable('locality')">Locality &#8597;</th>
+        <th onclick="sortTable('avg_price')">Avg &#8377;/sqft &#8597;</th>
+        <th onclick="sortTable('avg_score')">Inv. Score &#8597;</th>
+        <th onclick="sortTable('avg_roi')">ROI % &#8597;</th>
+        <th onclick="sortTable('avg_appr')">Appr. &#8597;</th>
+        <th onclick="sortTable('count')">Listings &#8597;</th>
+        <th>Price Range</th>
+      </tr></thead>
+      <tbody id="mktBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ── LIVE DATA FROM GITHUB ────────────────────────────────────────────
+const JSDELIVR = 'https://cdn.jsdelivr.net/gh/AbhishekBits97/realestate_ai@main/data.json';
+let MARKET_DATA = [];
+
+async function loadData() {
+  document.getElementById('dataSub').textContent = 'Loading live data from GitHub…';
+  document.getElementById('mktBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;font-family:var(--fmono);font-size:10px;color:var(--muted);letter-spacing:2px;">LOADING…</td></tr>';
+  try {
+    const res = await fetch(JSDELIVR + '?t=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    MARKET_DATA = data.market_data || [];
+    init();
+  } catch(e) {
+    console.error('Failed to load:', e);
+    document.getElementById('dataSub').textContent = 'Failed to load data — check console';
+  }
+}
+
+Chart.defaults.color="#6E6860";
+Chart.defaults.font.family="DM Mono, monospace";
+Chart.defaults.font.size=10;
+const gc="rgba(196,163,94,0.06)";
+let heatMetric="score";
+let tableSort={col:"avg_score",asc:false};
+
+function init(){
+  // KPIs
+  const topROI=[...MARKET_DATA].sort((a,b)=>b.avg_roi-a.avg_roi)[0];
+  const topScore=[...MARKET_DATA].sort((a,b)=>b.avg_score-a.avg_score)[0];
+  const minAvg=Math.min(...MARKET_DATA.map(d=>d.avg_price));
+  const maxAvg=Math.max(...MARKET_DATA.map(d=>d.avg_price));
+  document.getElementById("kLocs").textContent=MARKET_DATA.length;
+  document.getElementById("kRange").innerHTML="&#8377;"+Math.round(minAvg/1000)+"K &ndash; &#8377;"+Math.round(maxAvg/1000)+"K";
+  document.getElementById("kTopRoi").textContent=topROI.avg_roi+"%";
+  document.getElementById("kTopRoiLoc").textContent=topROI.locality;
+  document.getElementById("kTopScore").textContent=topScore.avg_score;
+  document.getElementById("kTopScoreLoc").textContent=topScore.locality;
+  document.getElementById("dataSub").textContent=MARKET_DATA.length+" localities tracked · 560 listings · Dataset 2025-06";
+
+  buildCharts();
+  buildHeatmap();
+  buildTable();
+}
+
+function buildCharts(){
+  const sorted=[...MARKET_DATA].sort((a,b)=>b.avg_price-a.avg_price);
+  const labels=sorted.map(d=>d.locality.length>18?d.locality.slice(0,16)+"…":d.locality);
+
+  // Price bar
+  new Chart(document.getElementById("priceBarC"),{
+    type:"bar",
+    data:{labels,datasets:[{data:sorted.map(d=>d.avg_price),backgroundColor:"rgba(196,163,94,0.18)",borderColor:"rgba(196,163,94,0.55)",borderWidth:1,borderRadius:0}]},
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gc},ticks:{callback:v=>"&#8377;"+(v/1000).toFixed(0)+"K"}},y:{grid:{display:false},ticks:{font:{size:9}}}}}
+  });
+
+  // Bubble: score vs appr, size = count
+  new Chart(document.getElementById("bubbleC"),{
+    type:"bubble",
+    data:{datasets:[{
+      data:MARKET_DATA.map(d=>({x:d.avg_score,y:d.avg_appr,r:Math.max(4,d.count/3),locality:d.locality})),
+      backgroundColor:"rgba(196,163,94,0.35)",borderColor:"rgba(196,163,94,0.7)",borderWidth:1
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:d=>`${d.raw.locality}: Score ${d.raw.x}, Appr ${d.raw.y}`}}},scales:{x:{grid:{color:gc},title:{display:true,text:"Inv. Score",color:"#6E6860"}},y:{grid:{color:gc},title:{display:true,text:"Appr. Potential",color:"#6E6860"}}}}
+  });
+
+  // ROI bar
+  const roiSorted=[...MARKET_DATA].sort((a,b)=>b.avg_roi-a.avg_roi);
+  new Chart(document.getElementById("roiBarC"),{
+    type:"bar",
+    data:{
+      labels:roiSorted.map(d=>d.locality.length>16?d.locality.slice(0,14)+"…":d.locality),
+      datasets:[{data:roiSorted.map(d=>d.avg_roi),backgroundColor:roiSorted.map(d=>d.avg_roi>28?"rgba(126,200,160,0.35)":"rgba(196,163,94,0.18)"),borderColor:roiSorted.map(d=>d.avg_roi>28?"rgba(126,200,160,0.6)":"rgba(196,163,94,0.5)"),borderWidth:1}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:40}},y:{grid:{color:gc},ticks:{callback:v=>v+"%"}}}}
+  });
+
+  // Range chart (min/avg/max)
+  const rangeSorted=[...MARKET_DATA].sort((a,b)=>b.avg_price-a.avg_price).slice(0,12);
+  new Chart(document.getElementById("rangeC"),{
+    type:"bar",
+    data:{
+      labels:rangeSorted.map(d=>d.locality.length>14?d.locality.slice(0,12)+"…":d.locality),
+      datasets:[
+        {label:"Min",data:rangeSorted.map(d=>d.min_price),backgroundColor:"rgba(126,200,160,0.2)",borderColor:"rgba(126,200,160,0.5)",borderWidth:1},
+        {label:"Avg",data:rangeSorted.map(d=>d.avg_price),backgroundColor:"rgba(196,163,94,0.3)",borderColor:"rgba(196,163,94,0.6)",borderWidth:1},
+        {label:"Max",data:rangeSorted.map(d=>d.max_price),backgroundColor:"rgba(209,107,107,0.15)",borderColor:"rgba(209,107,107,0.4)",borderWidth:1},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#6E6860",boxWidth:10}}},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:35}},y:{grid:{color:gc},ticks:{callback:v=>"&#8377;"+(v/1000).toFixed(0)+"K"}}}}
+  });
+}
+
+function buildHeatmap(){
+  const data=[...MARKET_DATA];
+  const vals=data.map(d=>d[heatMetric]);
+  const min=Math.min(...vals),max=Math.max(...vals);
+  const hm=document.getElementById("heatmap");
+  hm.innerHTML=data.sort((a,b)=>b[heatMetric]-a[heatMetric]).map(d=>{
+    const v=d[heatMetric];
+    const pct=(v-min)/(max-min);
+    const r=Math.round(196+(126-196)*pct);
+    const g=Math.round(163+(200-163)*pct);
+    const b=Math.round(94+(160-94)*pct);
+    const bg=`rgba(${r},${g},${b},${0.08+pct*0.28})`;
+    const col=pct>0.5?"#7EC8A0":"#E2C98A";
+    const label=heatMetric==="avg_price"?"&#8377;"+(v/1000).toFixed(1)+"K":v;
+    const sub=heatMetric==="avg_price"?d.count+" listings":heatMetric==="avg_roi"?v+"%":d.avg_price/1000>10?"&#8377;"+(d.avg_price/1000).toFixed(0)+"K":d.count+" listings";
+    return`<div class="hm-cell" style="background:${bg}" onclick="window.location='analyser.html'">
+      <div class="hm-loc" style="color:${col}">${d.locality.slice(0,20)}</div>
+      <div class="hm-val" style="color:${col}">${label}</div>
+      <div class="hm-sub" style="color:${col}">${sub}</div>
+    </div>`;
+  }).join("");
+}
+
+function setHeatMetric(m,btn){
+  heatMetric=m;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("on"));
+  btn.classList.add("on");
+  buildHeatmap();
+}
+
+let sortDir=false;
+function sortTable(col){
+  if(tableSort.col===col)tableSort.asc=!tableSort.asc;
+  else{tableSort.col=col;tableSort.asc=col==="locality";}
+  buildTable();
+}
+
+function buildTable(){
+  const data=[...MARKET_DATA].sort((a,b)=>{
+    const av=a[tableSort.col],bv=b[tableSort.col];
+    if(typeof av==="string")return tableSort.asc?av.localeCompare(bv):bv.localeCompare(av);
+    return tableSort.asc?av-bv:bv-av;
+  });
+  const sc=s=>s>=53?"var(--green)":s>=48?"var(--gold-lt)":"var(--red)";
+  document.getElementById("mktBody").innerHTML=data.map(d=>`<tr onclick="window.location='analyser.html'">
+    <td><div class="tloc">${d.locality}</div><div class="tsub">${d.count} listings</div></td>
+    <td class="tprice">&#8377;${d.avg_price.toLocaleString("en-IN")}</td>
+    <td><span class="tsc" style="color:${sc(d.avg_score)}">${d.avg_score}</span></td>
+    <td class="tmono" style="color:var(--green)">${d.avg_roi}%</td>
+    <td class="tmono" style="color:var(--gold-lt)">${d.avg_appr}</td>
+    <td class="tmono">${d.count}</td>
+    <td><span class="tmono" style="font-size:10px">&#8377;${Math.round(d.min_price/1000)}K &ndash; &#8377;${Math.round(d.max_price/1000)}K</span></td>
+  </tr>`).join("");
+}
+
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Lumetha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Instrument+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--void:#09080A;--ink:#0F0E10;--srf:#141316;--srf2:#1A191C;--srf3:#201F23;--line:rgba(196,163,94,0.12);--line2:rgba(196,163,94,0.24);--gold:#C4A35E;--gold-lt:#E2C98A;--gold-dk:#9A7C3E;--gold-bg:rgba(196,163,94,0.06);--cream:#EDE8E0;--cream2:#C8C0B4;--muted:#6E6860;--dimmed:#3A3830;--white:#F5F2EC;--green:#7EC8A0;--red:#D16B6B;--fhead:"Cormorant Garamond",Georgia,serif;--fbody:"Instrument Sans",system-ui,sans-serif;--fmono:"DM Mono","Courier New",monospace;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{background:var(--void);color:var(--cream);font-family:var(--fbody);-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--ink);}::-webkit-scrollbar-thumb{background:var(--gold-dk);}
+nav{position:fixed;top:0;left:0;right:0;z-index:300;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(9,8,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);}
+.logo{font-family:var(--fhead);font-size:20px;font-weight:500;letter-spacing:6px;color:var(--white);text-decoration:none;text-transform:uppercase;}
+.logo em{color:var(--gold);font-style:normal;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:var(--fbody);font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1.8px;text-transform:uppercase;transition:color .3s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold-lt);}
+.nav-right{display:flex;gap:10px;}
+.nbtn{font-family:var(--fbody);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--void);background:var(--gold);padding:9px 20px;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;}
+.nbtn:hover{background:var(--gold-lt);}
+.page{padding:88px 48px 60px;}
+.page-header{margin-bottom:40px;}
+.page-kicker{font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.page-kicker::before{content:"";width:28px;height:1px;background:var(--gold);opacity:.5;}
+.page-title{font-family:var(--fhead);font-size:clamp(32px,4vw,56px);font-weight:300;color:var(--white);line-height:1.1;}
+.page-title em{font-style:italic;color:var(--gold-lt);}
+/* KPI strip */
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:40px;}
+.ks{background:var(--srf);padding:22px 20px;}
+.ksl{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+.ksv{font-family:var(--fhead);font-size:28px;font-weight:300;color:var(--white);line-height:1;}
+.ksv.gold{color:var(--gold-lt);}
+.ksv.green{color:var(--green);}
+.kss{font-family:var(--fmono);font-size:9px;color:var(--dimmed);margin-top:4px;letter-spacing:1px;}
+/* Charts row */
+.charts-row{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:32px;}
+.cpanel{background:var(--srf);border:1px solid var(--line);padding:24px;}
+.cptitle{font-family:var(--fbody);font-size:13px;font-weight:500;color:var(--cream2);margin-bottom:4px;}
+.cpsub{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1.5px;margin-bottom:20px;}
+/* Holdings table */
+.holdings-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.holdings-title{font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+.clear-btn{font-family:var(--fmono);font-size:9px;color:var(--red);letter-spacing:1px;text-transform:uppercase;background:none;border:1px solid rgba(209,107,107,.3);padding:5px 12px;cursor:pointer;transition:all .2s;}
+.clear-btn:hover{background:rgba(209,107,107,.08);}
+.htbl{width:100%;border-collapse:collapse;}
+.htbl th{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;}
+.htbl td{padding:14px;border-bottom:1px solid rgba(196,163,94,0.05);font-size:13px;vertical-align:middle;}
+.htbl tr:hover td{background:var(--srf2);}
+.tloc{font-family:var(--fhead);font-size:15px;color:var(--white);}
+.tsub{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-top:2px;}
+.tprice{font-family:var(--fhead);font-size:15px;color:var(--gold-lt);}
+.tsc{font-family:var(--fhead);font-size:17px;font-weight:300;}
+.tmono{font-family:var(--fmono);font-size:11px;color:var(--cream2);}
+.badge{padding:3px 9px;font-family:var(--fmono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;}
+.bbuy{background:rgba(126,200,160,.1);color:#7EC8A0;border:1px solid rgba(126,200,160,.3);}
+.bhold{background:rgba(226,201,138,.08);color:#E2C98A;border:1px solid rgba(226,201,138,.25);}
+.rem-btn{background:none;border:1px solid var(--line);color:var(--dimmed);font-family:var(--fmono);font-size:9px;padding:4px 10px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
+.rem-btn:hover{border-color:var(--red);color:var(--red);}
+/* ROI projection */
+.roi-section{background:var(--srf);border:1px solid var(--line);padding:28px;margin-bottom:20px;}
+.roi-controls{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:24px;}
+.rc-param{display:flex;flex-direction:column;gap:8px;}
+.rc-head{display:flex;justify-content:space-between;}
+.rc-label{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.rc-val{font-family:var(--fhead);font-size:16px;color:var(--gold-lt);}
+input[type=range]{-webkit-appearance:none;width:100%;height:1px;background:var(--line2);outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;background:var(--gold);border-radius:50%;border:2px solid var(--void);}
+.roi-results{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);}
+.rr{background:var(--srf2);padding:16px 18px;}
+.rrl{font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.rrv{font-family:var(--fhead);font-size:22px;font-weight:300;}
+/* Empty state */
+.empty-state{text-align:center;padding:100px 40px;}
+.empty-icon{font-family:var(--fhead);font-size:80px;color:var(--dimmed);margin-bottom:16px;}
+.empty-title{font-family:var(--fhead);font-size:32px;font-weight:300;color:var(--muted);margin-bottom:10px;}
+.empty-sub{font-family:var(--fmono);font-size:10px;color:var(--dimmed);letter-spacing:1px;line-height:1.8;}
+.empty-cta{display:inline-block;margin-top:28px;padding:12px 32px;background:var(--gold);color:var(--void);font-family:var(--fbody);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:background .2s;}
+.empty-cta:hover{background:var(--gold-lt);}
+/* Comparison */
+.compare-panel{background:var(--srf);border:1px solid var(--line);padding:24px;margin-bottom:20px;}
+.compare-grid{display:grid;gap:1px;background:var(--line);}
+@media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}.page{padding:80px 20px 40px;}.kpi-strip{grid-template-columns:1fr 1fr;}.charts-row{grid-template-columns:1fr;}.roi-controls{grid-template-columns:1fr;}.roi-results{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">LUME<em>THA</em></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="analyser.html">Analyser</a></li>
+    <li><a href="markets.html">Markets</a></li>
+    <li><a href="portfolio.html" class="active">Portfolio</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="analyser.html" class="nbtn">+ Add Properties</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-kicker">My Portfolio</div>
+    <h1 class="page-title">Your saved<br><em>properties.</em></h1>
+  </div>
+
+  <div id="emptyState" style="display:none">
+    <div class="empty-state">
+      <div class="empty-icon">&#9671;</div>
+      <div class="empty-title">Portfolio is empty</div>
+      <div class="empty-sub">Browse 560 scored listings and save the ones that match your criteria.<br>Your portfolio tracks ROI projections, scores, and signals.</div>
+      <a href="analyser.html" class="empty-cta">Browse Listings</a>
+    </div>
+  </div>
+
+  <div id="portfolioContent">
+    <!-- KPIs -->
+    <div class="kpi-strip" id="kpiStrip">
+      <div class="ks"><div class="ksl">Total Properties</div><div class="ksv gold" id="kTotal">—</div><div class="kss">Saved listings</div></div>
+      <div class="ks"><div class="ksl">Total Value</div><div class="ksv gold" id="kValue">—</div><div class="kss">Sum of prices</div></div>
+      <div class="ks"><div class="ksl">Avg. Score</div><div class="ksv" id="kScore">—</div><div class="kss">Investment score</div></div>
+      <div class="ks"><div class="ksl">Avg. ROI</div><div class="ksv green" id="kRoi">—</div><div class="kss">Risk-adjusted</div></div>
+      <div class="ks"><div class="ksl">Buy Signals</div><div class="ksv" id="kBuy">—</div><div class="kss">of saved properties</div></div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-row">
+      <div class="cpanel">
+        <div class="cptitle">Score vs ROI — Portfolio Properties</div>
+        <div class="cpsub">INVESTMENT SCORE / RISK-ADJUSTED ROI %</div>
+        <div style="position:relative;height:220px"><canvas id="scatterC"></canvas></div>
+      </div>
+      <div class="cpanel">
+        <div class="cptitle">Portfolio by Signal</div>
+        <div class="cpsub">BUY VS HOLD BREAKDOWN</div>
+        <div style="position:relative;height:220px"><canvas id="donutC"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ROI Projection -->
+    <div class="roi-section">
+      <div class="cptitle" style="margin-bottom:4px">Portfolio ROI Projector</div>
+      <div class="cpsub">PROJECT TOTAL PORTFOLIO VALUE OVER TIME</div>
+      <div class="roi-controls">
+        <div class="rc-param">
+          <div class="rc-head"><span class="rc-label">Holding Period</span><span class="rc-val" id="rHoldV">5 Years</span></div>
+          <input type="range" id="rHold" min="1" max="20" step="1" value="5" oninput="updateROI()">
+        </div>
+        <div class="rc-param">
+          <div class="rc-head"><span class="rc-label">Annual Appreciation</span><span class="rc-val" id="rApprV">8%</span></div>
+          <input type="range" id="rAppr" min="3" max="20" step="0.5" value="8" oninput="updateROI()">
+        </div>
+      </div>
+      <div class="roi-results">
+        <div class="rr"><div class="rrl">Current Value</div><div class="rrv" id="rCurrent" style="color:var(--gold-lt)">—</div></div>
+        <div class="rr"><div class="rrl">Exit Value</div><div class="rrv" id="rExit" style="color:var(--cream)">—</div></div>
+        <div class="rr"><div class="rrl">Capital Gain</div><div class="rrv" id="rGain" style="color:var(--green)">—</div></div>
+        <div class="rr"><div class="rrl">Total ROI</div><div class="rrv" id="rTotalRoi" style="color:var(--green)">—</div></div>
+      </div>
+      <div style="position:relative;height:160px;margin-top:24px"><canvas id="projC"></canvas></div>
+    </div>
+
+    <!-- Holdings table -->
+    <div class="holdings-header">
+      <span class="holdings-title">Saved Properties</span>
+      <button class="clear-btn" onclick="clearAll()">Clear All</button>
+    </div>
+    <div id="holdingsWrap"></div>
+  </div>
+</div>
+
+<script>
+Chart.defaults.color="#6E6860";
+Chart.defaults.font.family="DM Mono, monospace";
+Chart.defaults.font.size=10;
+const gc="rgba(196,163,94,0.06)";
+let scatterChart=null,donutChart=null,projChart=null;
+
+function getPort(){try{return JSON.parse(localStorage.getItem("lumetha_portfolio")||"[]")}catch{return[]}}
+function setPort(p){localStorage.setItem("lumetha_portfolio",JSON.stringify(p))}
+function fmtCr(n){return"&#8377;"+n.toFixed(2)+"Cr"}
+function fmtCrNum(n){return"&#8377;"+(n>=100?n.toFixed(0):n.toFixed(1))+"Cr"}
+
+function render(){
+  const port=getPort();
+  if(!port.length){
+    document.getElementById("emptyState").style.display="block";
+    document.getElementById("portfolioContent").style.display="none";
+    return;
+  }
+  document.getElementById("emptyState").style.display="none";
+  document.getElementById("portfolioContent").style.display="block";
+  renderKPIs(port);
+  renderCharts(port);
+  renderTable(port);
+  updateROI();
+}
+
+function renderKPIs(port){
+  const total=port.length;
+  const totalVal=port.reduce((s,p)=>s+p.price_cr,0);
+  const avgScore=(port.reduce((s,p)=>s+p.score,0)/total).toFixed(1);
+  const avgRoi=(port.reduce((s,p)=>s+p.roi,0)/total).toFixed(1);
+  const buyCount=port.filter(p=>p.rec==="Buy").length;
+  document.getElementById("kTotal").textContent=total;
+  document.getElementById("kValue").innerHTML=fmtCrNum(totalVal);
+  document.getElementById("kScore").textContent=avgScore;
+  document.getElementById("kRoi").textContent=avgRoi+"%";
+  document.getElementById("kBuy").textContent=buyCount+" / "+total;
+}
+
+function renderCharts(port){
+  // Scatter: score vs roi
+  if(scatterChart)scatterChart.destroy();
+  scatterChart=new Chart(document.getElementById("scatterC"),{
+    type:"scatter",
+    data:{datasets:[
+      {label:"Buy",data:port.filter(p=>p.rec==="Buy").map(p=>({x:p.score,y:p.roi,locality:p.locality})),backgroundColor:"rgba(126,200,160,0.6)",pointRadius:6,pointHoverRadius:8},
+      {label:"Hold",data:port.filter(p=>p.rec==="Hold").map(p=>({x:p.score,y:p.roi,locality:p.locality})),backgroundColor:"rgba(226,201,138,0.5)",pointRadius:6,pointHoverRadius:8},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#6E6860",boxWidth:8}},tooltip:{callbacks:{label:d=>`${d.raw.locality}: Score ${d.raw.x}, ROI ${d.raw.y}%`}}},scales:{x:{grid:{color:gc},title:{display:true,text:"Investment Score",color:"#6E6860"}},y:{grid:{color:gc},title:{display:true,text:"ROI %",color:"#6E6860"}}}}
+  });
+
+  // Donut: buy vs hold
+  const buyC=port.filter(p=>p.rec==="Buy").length;
+  const holdC=port.length-buyC;
+  if(donutChart)donutChart.destroy();
+  donutChart=new Chart(document.getElementById("donutC"),{
+    type:"doughnut",
+    data:{labels:["Buy","Hold"],datasets:[{data:[buyC,holdC],backgroundColor:["#7EC8A0","#E2C98A"],borderWidth:0,hoverOffset:4}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:"72%",plugins:{legend:{display:true,position:"bottom",labels:{color:"#6E6860",boxWidth:10,padding:16}}}}
+  });
+}
+
+function updateROI(){
+  const port=getPort();
+  if(!port.length)return;
+  const hold=+document.getElementById("rHold").value;
+  const appr=+document.getElementById("rAppr").value/100;
+  document.getElementById("rHoldV").textContent=hold+" Year"+(hold>1?"s":"");
+  document.getElementById("rApprV").textContent=document.getElementById("rAppr").value+"%";
+  const curVal=port.reduce((s,p)=>s+p.price_cr,0);
+  const exitVal=curVal*Math.pow(1+appr,hold);
+  const gain=exitVal-curVal;
+  const roi=(gain/curVal*100);
+  document.getElementById("rCurrent").innerHTML=fmtCrNum(curVal);
+  document.getElementById("rExit").innerHTML=fmtCrNum(exitVal);
+  document.getElementById("rGain").innerHTML=(gain>=0?"+":"")+fmtCrNum(gain);
+  document.getElementById("rTotalRoi").textContent=(roi>=0?"+":"")+roi.toFixed(1)+"%";
+  // Projection chart
+  const yrs=Array.from({length:hold},(_,i)=>"Yr "+(i+1));
+  const vals=yrs.map((_,i)=>+(curVal*Math.pow(1+appr,i+1)).toFixed(2));
+  if(projChart)projChart.destroy();
+  projChart=new Chart(document.getElementById("projC"),{
+    type:"line",
+    data:{labels:yrs,datasets:[{data:vals,borderColor:"#C4A35E",backgroundColor:"rgba(196,163,94,0.06)",borderWidth:1.5,pointRadius:3,pointBackgroundColor:"#C4A35E",fill:true,tension:.4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:gc},ticks:{callback:v=>"&#8377;"+v.toFixed(1)+"Cr"}}}}
+  });
+}
+
+function renderTable(port){
+  const rows=port.map((p,i)=>{
+    const sc=p.score>=55?"var(--green)":p.score>=48?"var(--gold-lt)":"var(--red)";
+    const rc=p.rec==="Buy"?"bbuy":"bhold";
+    const saved=new Date(p.saved_at).toLocaleDateString("en-IN",{day:"numeric",month:"short"});
+    return`<tr>
+      <td><div class="tloc">${p.locality}</div><div class="tsub">${p.type} &middot; ${p.bhk} BHK &middot; ${p.tier}</div></td>
+      <td><div class="tprice">&#8377;${p.price_cr}Cr</div><div class="tsub">&#8377;${p.price_sqft.toLocaleString("en-IN")}/sqft</div></td>
+      <td class="tmono">${p.area.toLocaleString("en-IN")}</td>
+      <td><span class="tsc" style="color:${sc}">${p.score}</span></td>
+      <td class="tmono" style="color:var(--green)">${p.roi}%</td>
+      <td class="tmono" style="color:var(--gold-lt)">${p.appr}</td>
+      <td><span class="badge ${rc}">${p.rec}</span></td>
+      <td class="tsub">${saved}</td>
+      <td><button class="rem-btn" onclick="remove('${p.id}')">Remove</button></td>
+    </tr>`;
+  }).join("");
+  document.getElementById("holdingsWrap").innerHTML=`<table class="htbl"><thead><tr><th>Property</th><th>Price</th><th>Area</th><th>Score</th><th>ROI</th><th>Appr.</th><th>Signal</th><th>Saved</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function remove(id){
+  const port=getPort().filter(p=>p.id!==id);
+  setPort(port);render();
+}
+function clearAll(){
+  if(confirm("Remove all saved properties?")){{setPort([]);render();}}
+}
+
+render();
+</script>
+</body>
+</html>
