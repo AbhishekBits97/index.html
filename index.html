@@ -502,43 +502,48 @@ footer{background:var(--ink);border-top:1px solid var(--line);padding:72px 64px 
         </div>
       </div>
       <div class="analyser-shell reveal reveal-delay-1" style="background:var(--srf2);border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;">
-        <!-- Native analyser preview -->
-        <div style="padding:28px 32px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <div style="font-family:var(--fmono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">Native · Built-in · No Dependencies</div>
-            <div style="font-family:var(--fhead);font-size:22px;font-weight:300;color:var(--white);">Full Property Analyser</div>
+        <!-- Browser bar -->
+        <div class="analyser-bar">
+          <div class="analyser-bar-left">
+            <div class="a-dots"><div class="a-dot a-dot-r"></div><div class="a-dot a-dot-y"></div><div class="a-dot a-dot-g"></div></div>
+            <div class="analyser-url">realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app</div>
           </div>
-          <div style="font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:1px;display:flex;align-items:center;gap:6px;"><span style="width:5px;height:5px;border-radius:50%;background:#4CAF6E;display:inline-block;animation:breathe 2s ease-in-out infinite;"></span>Live · 560 listings</div>
+          <div class="analyser-bar-right">
+            <span class="analyser-badge">Live · AI Powered</span>
+            <button class="analyser-expand-btn" onclick="toggleExpand()" id="expandBtn">
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4V1H4M8 1H11V4M11 8V11H8M4 11H1V8" stroke="currentColor" stroke-width="1.2"/></svg>
+              Expand
+            </button>
+            <a href="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app" target="_blank" class="analyser-open-btn">
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1H1V11H11V7M11 1H7M11 1V5M6 6L11 1" stroke="currentColor" stroke-width="1.2"/></svg>
+              Open Full
+            </a>
+          </div>
         </div>
-        <div style="padding:32px;display:flex;flex-direction:column;gap:20px;flex:1;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div style="background:var(--srf3);border:1px solid var(--line);padding:20px;">
-              <div style="font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Filter & Search</div>
-              <div style="font-family:var(--fhead);font-size:18px;color:var(--cream);margin-bottom:6px;">25 Localities</div>
-              <div style="font-family:var(--fmono);font-size:10px;color:var(--dimmed);">Budget · BHK · Type · Tier · Score</div>
-            </div>
-            <div style="background:var(--srf3);border:1px solid var(--line);padding:20px;">
-              <div style="font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Deep Analysis</div>
-              <div style="font-family:var(--fhead);font-size:18px;color:var(--cream);margin-bottom:6px;">560 Listings</div>
-              <div style="font-family:var(--fmono);font-size:10px;color:var(--dimmed);">Score · ROI · Proximity · Infra</div>
-            </div>
-            <div style="background:var(--srf3);border:1px solid var(--line);padding:20px;">
-              <div style="font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Save Properties</div>
-              <div style="font-family:var(--fhead);font-size:18px;color:var(--cream);margin-bottom:6px;">Portfolio Tracker</div>
-              <div style="font-family:var(--fmono);font-size:10px;color:var(--dimmed);">ROI projections · Compare · Export</div>
-            </div>
-            <div style="background:var(--srf3);border:1px solid var(--line);padding:20px;">
-              <div style="font-family:var(--fmono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Live Data</div>
-              <div style="font-family:var(--fhead);font-size:18px;color:var(--cream);margin-bottom:6px;">GitHub Synced</div>
-              <div style="font-family:var(--fmono);font-size:10px;color:var(--dimmed);">Auto-updates on CSV push</div>
-            </div>
+        <!-- iframe with loader overlay -->
+        <div class="analyser-frame-wrap" id="frameWrap">
+          <div class="frame-loader" id="frameLoader">
+            <div class="loader-mark">L</div>
+            <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+            <div class="loader-text">Initialising Analyser</div>
           </div>
-          <a href="analyser.html" style="display:block;padding:18px;background:var(--gold);color:var(--void);font-family:var(--fbody);font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;text-align:center;transition:background .2s;" onmouseover="this.style.background='var(--gold-lt)'" onmouseout="this.style.background='var(--gold)'">
-            Open Full Property Analyser &rarr;
-          </a>
-          <a href="markets.html" style="display:block;padding:14px;background:transparent;color:var(--muted);font-family:var(--fbody);font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;text-align:center;border:1px solid var(--line);transition:all .2s;" onmouseover="this.style.borderColor='var(--line2)';this.style.color='var(--gold-lt)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--muted)'">
-            Market Deep-Dive &rarr;
-          </a>
+          <iframe
+            id="analyserFrame"
+            class="analyser-iframe"
+            src="https://realestateai-dahdenkjgpqezerd8d9hqz.streamlit.app/?embed=true&embed_options=dark_theme,hide_loading_screen,hide_footer"
+            title="Lumetha Property Analyser"
+            allow="clipboard-read; clipboard-write"
+            loading="lazy"
+            onload="if(typeof frameLoaded==='function')frameLoaded();">
+          </iframe>
+        </div>
+        <!-- Footer bar -->
+        <div class="analyser-foot">
+          <span class="analyser-foot-label">Lumetha Property Analyser · Gurgaon & NCR</span>
+          <div class="analyser-foot-status">
+            <span class="live-dot" style="width:4px;height:4px;"></span>
+            <span id="frameStatus">Connecting…</span>
+          </div>
         </div>
       </div>
     </div>
