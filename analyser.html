@@ -394,7 +394,7 @@ function renderCard(l){
     </div>
     <div class="cfoot">
       <div style="display:flex;gap:5px"><span class="badge ${rc}">${l.rec}</span><span class="badge ${gc}">Grade ${l.grade}</span></div>
-      <button class="sbtn ${saved?"saved":""}" onclick="event.stopPropagation();toggleSave(this,'${lid(l)}',${JSON.stringify(l).replace(/"/g,"&quot;")})">${saved?"&#10003; Saved":"+ Save"}</button>
+      <button class="sbtn ${saved?"saved":""}" onclick="event.stopPropagation();toggleSave(this,'${lid(l)}')">${saved?"&#10003; Saved":"+ Save"}</button>
     </div>
   </div>`;
 }
@@ -496,8 +496,8 @@ function openModal(l){
 function overlayClick(e){if(e.target===document.getElementById("moverlay"))closeModal();}
 function closeModal(){document.getElementById("moverlay").classList.remove("open");document.body.style.overflow="";}
 
-function toggleSave(btn,id,lStr){
-  const l=typeof lStr==="string"?JSON.parse(lStr.replace(/&quot;/g,'"')):{};
+function toggleSave(btn,id){
+  const l=ALL_LISTINGS.find(x=>lid(x)===id)||{};
   const port=getPort(),idx=port.findIndex(p=>p.id===id);
   if(idx>-1){port.splice(idx,1);btn.textContent="+ Save";btn.classList.remove("saved");notif("Removed from portfolio");}
   else{port.push({...l,id,saved_at:new Date().toISOString()});btn.textContent="&#10003; Saved";btn.classList.add("saved");notif("Saved to portfolio");}
