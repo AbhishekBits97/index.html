@@ -184,7 +184,15 @@ function fmtCr(n){return"&#8377;"+n.toFixed(2)+"Cr"}
 function fmtCrNum(n){return"&#8377;"+(n>=100?n.toFixed(0):n.toFixed(1))+"Cr"}
 
 function render(){
-  const port=getPort();
+  let port=getPort();
+  const REQUIRED=["locality","type","bhk","area","price_cr","price_sqft","score","rec","roi"];
+  const valid=port.filter(p=>p&&REQUIRED.every(k=>p[k]!==undefined&&p[k]!==null&&!Number.isNaN(p[k])));
+  const removed=port.length-valid.length;
+  if(removed>0){
+    port=valid;
+    setPort(port);
+    console.warn("Removed "+removed+" malformed saved propert(ies) from portfolio.");
+  }
   if(!port.length){
     document.getElementById("emptyState").style.display="block";
     document.getElementById("portfolioContent").style.display="none";
