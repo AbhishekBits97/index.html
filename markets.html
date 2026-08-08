@@ -129,7 +129,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:64px;display:flex;ali
     <div class="cptitle">Investment Score Heatmap</div>
     <div class="cpsub">ALL LOCALITIES · COLOUR = SCORE INTENSITY</div>
     <div class="tab-row">
-      <button class="tab on" onclick="setHeatMetric('score',this)">Score</button>
+      <button class="tab on" onclick="setHeatMetric('avg_score',this)">Score</button>
       <button class="tab" onclick="setHeatMetric('avg_roi',this)">ROI</button>
       <button class="tab" onclick="setHeatMetric('avg_appr',this)">Appreciation</button>
       <button class="tab" onclick="setHeatMetric('avg_price',this)">Price/sqft</button>
@@ -180,7 +180,7 @@ Chart.defaults.color="#6E6860";
 Chart.defaults.font.family="DM Mono, monospace";
 Chart.defaults.font.size=10;
 const gc="rgba(196,163,94,0.06)";
-let heatMetric="score";
+let heatMetric="avg_score";
 let tableSort={col:"avg_score",asc:false};
 
 function init(){
@@ -252,7 +252,11 @@ function buildCharts(){
 
 function buildHeatmap(){
   const data=[...MARKET_DATA];
-  const vals=data.map(d=>d[heatMetric]);
+  const vals=data.map(d=>d[heatMetric]).filter(v=>v!==undefined&&v!==null&&!Number.isNaN(v));
+  if(!vals.length){
+    document.getElementById("heatmap").innerHTML='<div style="padding:24px;font-family:var(--fmono);font-size:10px;color:var(--muted);">No data for metric &quot;'+heatMetric+'&quot;</div>';
+    return;
+  }
   const min=Math.min(...vals),max=Math.max(...vals);
   const hm=document.getElementById("heatmap");
   hm.innerHTML=data.sort((a,b)=>b[heatMetric]-a[heatMetric]).map(d=>{
